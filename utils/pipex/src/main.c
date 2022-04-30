@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:56:50 by mtellal           #+#    #+#             */
-/*   Updated: 2022/04/30 21:36:32 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/04/30 21:55:18 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	open_heredoc(t_pip *s, char *outfile)
 	if (out == -1)
 		err("Err file\Err", 1);
 	get_input(s);
-	s->data.argc++;
+	s->data.argc--;
 	s->data.argv++;
 }
 
