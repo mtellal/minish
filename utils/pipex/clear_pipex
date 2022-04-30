@@ -1,0 +1,9 @@
+unlick .here_doc end of program
++ clear leaks for here_doc
+
+norm (functions + 25 lines)
+
+more tests simple/double quotes
+
+--verify all malloc
+--clear all leaks from pipes / files / commands / bad commands etc

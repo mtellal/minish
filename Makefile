@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/04/27 13:55:33 by mtellal          ###   ########.fr        #
+#    Updated: 2022/04/27 14:54:54 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,9 +56,11 @@ $(NAME): $(OBJ)
 	$(GCC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIB)
 
 clean:
+	make clean -C $(PDIR)
 	rm -rf $(OBJ)
 
 fclean: clean
+	make fclean -C $(PDIR)
 	rm -rf $(NAME)
 
 re: fclean all

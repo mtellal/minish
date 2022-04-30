@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 22:14:32 by mtellal           #+#    #+#             */
-/*   Updated: 2022/04/26 17:48:25 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/04/30 20:23:11 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,20 @@ void	process(t_pip *s, int i, int nbp)
 {
 	if (i == (nbp - 1))
 	{
-		ft_dup2(s, s->fdi, 0);
-		ft_dup2(s, s->pipe[(nbp - 1) - i][1], 1);
+		ft_dup2(s->fdi, 0);
+		ft_dup2(s->pipe[(nbp - 1) - i][1], 1);
 		ft_exe(s, 0);
 	}
 	if (i == nbp)
 	{
-		ft_dup2(s, s->pipe[i - 1][0], 0);
-		ft_dup2(s, s->fdo, 1);
+		ft_dup2(s->pipe[i - 1][0], 0);
+		ft_dup2(s->fdo, 1);
 		ft_exe(s, i);
 	}
 	else
 	{
-		ft_dup2(s, s->pipe[i][0], 0);
-		ft_dup2(s, s->pipe[i + 1][1], 1);
+		ft_dup2(s->pipe[i][0], 0);
+		ft_dup2(s->pipe[i + 1][1], 1);
 		ft_exe(s, i + 1);
 	}
 }
@@ -87,11 +87,7 @@ void	processes(t_pip *s)
 		i++;
 	}
 	wait(NULL);
-	/*i = 0;
-        while (i < nb_pipes - 1)
-        {
-                wait(NULL);
-                i++;
-        }*/
+	if (s->hd)
+		unlink(".here_doc");
 	process(s, nb_pipes, nb_pipes);
 }

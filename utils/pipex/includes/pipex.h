@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:38:51 by mtellal           #+#    #+#             */
-/*   Updated: 2022/04/27 14:35:59 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/04/30 20:22:34 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_data {
 }		t_data;
 
 typedef struct s_pip {
+	int		hd;
 	int		fdi;
 	int		fdo;
 	int		**pipe;
@@ -58,15 +59,15 @@ void	fill_commands(t_pip *s, int nbc);
 
 /////		ERROR 			/////
 
+void	close_files(t_pip *s);
 void	err(char *err, int eno);
-void	ft_dup2(t_pip *s, int n, int old);
+void	ft_dup2(int n, int old);
 void	ft_pipe(int i, t_pip *s);
 void	free_s(t_pip *s, int pipe, int args, int cmd);
 
 /////		ERROR_UTILS		/////
 
-void	stop(t_pip *s, char *msg, int eno);
-int		ft_dup(t_pip *s, int fd);
+int		ft_dup(int fd);
 int		ft_open(int *fd, char *file, int flags, mode_t mode);
 void	free_args(t_pip *s);
 void	free_cmd(t_pip *s);

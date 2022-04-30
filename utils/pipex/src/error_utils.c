@@ -6,31 +6,19 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 19:06:39 by mtellal           #+#    #+#             */
-/*   Updated: 2022/04/27 10:39:21 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/04/30 19:22:51 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	stop(t_pip *s, char *msg, int eno)
-{
-	if (eno && msg && *msg)
-		err(msg, 1);
-	if (eno)
-		err("", 1);
-	else
-		err("", 0);
-	//renmove s !!!!!!!
-	s++;
-}
-
-int	ft_dup(t_pip *s, int fd)
+int	ft_dup(int fd)
 {
 	int	f;
 
 	f = dup(fd);
 	if (f == -1)
-		stop(s, "Err dup", 1);
+		err("Err dup", 1);
 	return (f);
 }
 

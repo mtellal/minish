@@ -6,7 +6,7 @@
 /*   By: bzalugas <bzalugas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 18:57:46 by bzalugas          #+#    #+#             */
-/*   Updated: 2021/10/09 18:59:51 by bzalugas         ###   ########.fr       */
+/*   Updated: 2022/04/27 19:04:04 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 0
+#  define BUFFER_SIZE 32
 # endif
 
 size_t	ft_strlen(const char *s);

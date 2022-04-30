@@ -6,20 +6,20 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 14:58:04 by mtellal           #+#    #+#             */
-/*   Updated: 2022/04/26 17:14:56 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/04/30 20:24:01 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	**tab_path(char **env, t_pip *s)
+char	**tab_path(char **env)
 {
 	char	**tab;
 
 	while (env && *env && ft_strncmp("PATH", *env, 4) != 0)
 		env++;
 	if (!*env)
-		stop(s, "Err probleme de PATH", 0);
+		err("Error PATH problem", 0);
 	tab = ft_split(*env + 5, ':');
 	return (tab);
 }
@@ -47,7 +47,7 @@ void	command(char *cmd, t_pip *st, int a, char **env)
 	int		i;
 
 	i = 0;
-	p = tab_path(env, st);
+	p = tab_path(env);
 	while (p[i] && !valid_cmd(p[i], cmd))
 		i++;
 	if (p[i])

@@ -6,20 +6,11 @@
 /*   By: mtellal <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 10:07:58 by mtellal           #+#    #+#             */
-/*   Updated: 2022/04/26 17:11:07 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/04/30 19:19:18 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	ft_malloc(t_pip *s, char **t, size_t m)
-{
-	s++;
-	s--;
-	*t = malloc(m);
-	if (!*t)
-		err("Err malloc", 1);
-}
 
 int	len_mtab(char **t1, char **t2)
 {

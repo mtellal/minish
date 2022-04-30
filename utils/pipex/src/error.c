@@ -6,11 +6,20 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 15:29:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/04/26 17:18:07 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/04/30 21:37:14 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	close_files(t_pip *s)
+{
+	close(s->fdo);
+	if (s->hd)
+		unlink(".here_doc");
+	else
+		close(s->fdi);
+}
 
 void	err(char *err, int eno)
 {
@@ -27,10 +36,10 @@ void	err(char *err, int eno)
 	exit(0);
 }
 
-void	ft_dup2(t_pip *s, int new, int old)
+void	ft_dup2(int new, int old)
 {
 	if (dup2(new, old) == -1)
-		stop(s, "Err dup", 1);
+		err("Err dup", 1);
 }
 
 void	ft_pipe(int i, t_pip *s)
@@ -42,10 +51,16 @@ void	ft_pipe(int i, t_pip *s)
 	while (j < i)
 	{
 		s->pipe[j] = malloc(sizeof(int) * 2);
-		if (!s->pipe[j])
-			stop(s, "Error pipe", 1);
-		if (pipe(s->pipe[j]) == -1)
-			stop(s, "Err pipe", 1);
+		if (!s->pipe[j] || pipe(s->pipe[j]) == -1)
+		{
+			close_files(s);
+			while (j > 0)
+			{
+				free(s->pipe[j]);
+				j--;
+			}
+			err("Error pipe\nError", 1);
+		}
 		j++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/19 17:38:27 by mtellal           #+#    #+#             */
-/*   Updated: 2022/03/18 15:33:36 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/04/30 21:21:50 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	**add_tab(char **tab, char *s)
 
 	i = 0;
 	t = malloc(sizeof(char *) * (len_tab(tab) + 2));
+	if (!t)
+		return (NULL);
 	while (tab && tab[i])
 	{
 		t[i] = ft_strdup(tab[i]);
@@ -55,7 +57,7 @@ char	**add_tab(char **tab, char *s)
 	return (t);
 }
 
-char	**quote_split(t_pip *s, char *argv, int index)
+char	**quote_split(char *argv, int index)
 {
 	char	**tab;
 	char	**tab2;
@@ -65,12 +67,16 @@ char	**quote_split(t_pip *s, char *argv, int index)
 
 	sub = NULL;
 	i2 = quote_block(argv + index + 1);
-	ft_malloc(s, &sub, sizeof(char) * index + 1);
+	sub = malloc(sizeof(char) * index + 1);
+	if (!sub)
+		return (NULL);
 	ft_strlcpy(sub, argv, index);
 	tab = ft_split(sub, ' ');
 	free(sub);
 	sub = NULL;
-	ft_malloc(s, &sub, sizeof(char) * i2 + 1);
+	sub = malloc(sizeof(char) * i2 + 1);
+	if (!sub)
+		return (NULL);
 	ft_strlcpy(sub, argv + index + 1, i2 + 1);
 	tab2 = add_tab(tab, sub);
 	tab = ft_split(argv + index + i2 + 2, ' ');
@@ -88,7 +94,7 @@ void	fill_args(t_pip *s, char **argv, int nbc)
 	{
 		quote = quote_block(argv[2 + i]);
 		if (quote)
-			s->arg[i] = quote_split(s, argv[2 + i], quote);
+			s->arg[i] = quote_split(argv[2 + i], quote);
 		else
 			s->arg[i] = ft_split(argv[2 + i], ' ');
 		i++;
