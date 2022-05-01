@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 14:58:04 by mtellal           #+#    #+#             */
-/*   Updated: 2022/04/30 20:24:01 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/01 17:23:58 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,9 @@ void	fill_commands(t_pip *s, int nbc)
 		i++;
 	}
 	if (s->err.cmd)
+	{
+		close_files(s);
 		free_s(s, 1, 1, 1);
+		err("", 0);
+	}
 }
