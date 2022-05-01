@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:38:51 by mtellal           #+#    #+#             */
-/*   Updated: 2022/04/30 20:22:34 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/01 16:48:57 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	free_cmd(t_pip *s);
 /////		INPUT			/////
 
 void	get_input(t_pip *s);
-
 
 void	free_tab(char **p);
 void	fill_args(t_pip *s, char **argv, int nbc);
