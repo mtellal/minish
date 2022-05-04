@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/09 18:22:09 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/01 17:17:42 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/04 11:19:09 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,8 +54,8 @@ all : $(NAME)
 
 $(NAME): $(OBJ)
 	make -C $(LDIR)
-	$(CC) $(CFLAGS) -o pipex $(OBJ) -L libft/ -lft
-	#ar -rc $(NAME) $(OBJ) $(LOBJ)
+	#$(CC) $(CFLAGS) -o pipex $(OBJ) -L libft/ -lft
+	ar -rc $(NAME) $(OBJ) $(LOBJ)
 
 val: $(NAME)
 	valgrind --leak-check=full --tool=memcheck --show-reachable=yes --track-fds=yes --errors-for-leak-kinds=all --show-leak-kinds=all --trace-children=yes ./pipex main.c cat wc output
