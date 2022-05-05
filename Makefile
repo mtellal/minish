@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/05 11:32:00 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/05 19:16:00 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,13 @@ NAME = minishell
 
 #############		MINISH 		#################
 	
-FILES =	main.c \
-	input/input.c input/getInput.c input/init.c
+SOURCES =	main.c \
+	input/input.c \
+	input/lexer/lexer.c
 
-SRC = $(addprefix src/, $(FILES))
+DEBUG = $(addprefix utils/debug/, lexer/debug_lexer.c)
+
+SRC = $(addprefix src/, $(SOURCES)) $(DEBUG) 
 
 OBJ = $(SRC:.c=.o)
 
