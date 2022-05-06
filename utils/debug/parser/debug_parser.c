@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 14:01:36 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/06 15:04:42 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/06 20:03:26 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,16 @@
 void	show_command_table(t_input *s)
 {
 	int	i;
+	t_list	*list;
+	t_token	*token;
 
 	i = 0;
-	while (s->table[i])
+	list = s->clist;
+	while (list)
 	{
-		printf(" '%s' ", s->table[i]);
+		token = list->content;
+		printf(" '%s' ", token->c);
+		list = list->next;
 		i++;
 	}
 	printf("\n");

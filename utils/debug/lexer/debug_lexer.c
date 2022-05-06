@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 19:11:04 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/06 13:58:33 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/06 17:24:52 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void    show_token_list(t_input *s)
                         type = "ARITHMETIC";
                 if (token->type == 8)
                         type = "OTHER";
-                printf("%c      %s\n",token->c, type );
+                printf("%c      %s\n",*(char*)(token->c), type );
                 list = list->next;
                 if (list)
                         token = list->content;

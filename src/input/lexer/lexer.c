@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:58:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/05 22:08:17 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/06 17:38:56 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	clear_telement(void	*s)
 	free(s);
 }
 
-enum s_type	type_char(char c)
+enum s_type	type_token(char c)
 {
 	if (ft_isalnum(c))
 		return (ALPHANUM);
@@ -38,12 +38,12 @@ enum s_type	type_char(char c)
 	return (OTHER);
 }
 
-t_token	*token(char c)
+t_token	*token(char *c)
 {
 	t_token	*token;
 
 	token = malloc(sizeof(t_token));
-	token->type = type_char(c);
+	token->type = type_token(*c);
 	token->c = c; 
 	return (token);
 }
@@ -56,9 +56,9 @@ void	lexer(t_input	*s)
 	while (s->input && s->input[i])
 	{
 		if (!s->tlist)
-			s->tlist = ft_lstnew(token(s->input[i]));
+			s->tlist = ft_lstnew(token(&s->input[i]));
 		else
-			ft_lstadd_back(&s->tlist, ft_lstnew(token(s->input[i])));
+			ft_lstadd_back(&s->tlist, ft_lstnew(token(&s->input[i])));
 		i++;
 	}
 }

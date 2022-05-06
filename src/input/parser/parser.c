@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/06 15:19:44 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/06 21:06:31 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*tlist_to_s(t_list	*list, int l)
 	while (list && i < l)
 	{
 		token = list->content;
-		tab[i] = token->c;
+		tab[i] = *token->c;
 		i++;
 		list = list->next;
 	}
@@ -99,7 +99,7 @@ int	number_of_groups(t_list	*list)
  *	regroupe les tokens avec un type similaire
  *	et remplie le tableau avec ces groupes
  */
-
+/*
 void	parser(t_input *s)
 {
 	int	nb_groups;
@@ -125,4 +125,38 @@ void	parser(t_input *s)
 		}	
 	}
 	s->table[nb_groups] = NULL;	
+}
+*/
+t_token	*tokenize(char *s)
+{
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (!token || !s)
+		return (NULL);
+	token->c = s;
+	token->type = type_token(*s);
+	return (token);
+}
+
+void	parser(t_input *s)
+{
+	int	nb_groups;
+	int	i;
+	int	next_group;
+	t_token	*token;
+
+	i = 0;
+	nb_groups = number_of_groups(s->tlist);
+	while (i < nb_groups)
+	{
+		next_group = next_index_group(s->tlist);
+		token = tokenize(tlist_to_s(s->tlist, next_group));
+		if (!s->clist)
+			s->clist = ft_lstnew(token);
+		else
+			ft_lstadd_back(&s->clist, ft_lstnew(token));
+		s->tlist = tlist_index(s->tlist, next_group);
+		i++;
+	}
 }

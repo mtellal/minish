@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/06 15:04:11 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/06 21:08:16 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_data_input(t_input *s, int argc, char **argv, char **env)
 	s->input = NULL;
 	s->tlist = NULL;
 	s->llist = 0;
-	s->table = NULL;
+	s->clist = NULL;
 }
 
 int	getInput(t_input *s)
@@ -47,6 +47,7 @@ int	getInput(t_input *s)
 			parser(s);
 			show_command_table(s);
 			ft_lstclear(&s->tlist, clear_tlist);
+			ft_lstclear(&s->clist, clear_tlist);
 		}
 		i++;
 		free(buffer);

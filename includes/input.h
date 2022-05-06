@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/06 15:03:17 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/06 21:08:09 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,8 @@ enum s_type
 typedef struct s_token
 {
 	enum s_type	type;
-	char		c;
+	char		*c;
 }		t_token;
-
 
 /////////////////////////////////////////////////////////
 //                      I N P U T                      //
@@ -61,7 +60,7 @@ typedef struct s_input
 	int		llist;
 
 	// command table used by parser
-	char		**table;
+	struct s_list	*clist;
 
 }		t_input;
 
@@ -80,6 +79,8 @@ void	init_sinput(t_input *s, int argc, char **argv, char **env);
 /////////////////////////////////////////////////////////
 
 //////////		L E X E R . C		//////////
+
+enum s_type     type_token(char c);
 
 void	lexer(t_input *s);
 
