@@ -6,11 +6,16 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:58:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/05 18:07:34 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/05 22:08:17 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
+
+void	clear_telement(void	*s)
+{
+	free(s);
+}
 
 enum s_type	type_char(char c)
 {

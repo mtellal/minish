@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/05 19:16:00 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/06 15:03:49 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,10 @@ NAME = minishell
 	
 SOURCES =	main.c \
 	input/input.c \
-	input/lexer/lexer.c
+	input/lexer/lexer.c \
+	input/parser/parser.c input/parser/parser_utils.c
 
-DEBUG = $(addprefix utils/debug/, lexer/debug_lexer.c)
+DEBUG = $(addprefix utils/debug/, lexer/debug_lexer.c parser/debug_parser.c)
 
 SRC = $(addprefix src/, $(SOURCES)) $(DEBUG) 
 
