@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/06 21:06:31 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/08 15:45:47 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 /*
  *	transforme les l premiers tokens en une string 
+ *	string qui va etre le contenu d'un nouveau token dans clist (commandlist)
+ *	utilise pour transformer un groupe de token tlist en un seul token clist
+ *	(token : a | b | c | /// d => token : abcd avec le meme )
  */
 
 char	*tlist_to_s(t_list	*list, int l)
@@ -65,8 +68,8 @@ int	next_index_group(t_list	*list)
 }
 
 /*
- *	Le but du parser =>
- *	Transformer la liste de token en plusieurs groupe et selon leurs type
+ *	determine le nombre de groupes dans tlist (lexer)
+ *	afin de determine le nombre de token pour la clist (commandlist)
  */
 
 int	number_of_groups(t_list	*list)
@@ -95,38 +98,10 @@ int	number_of_groups(t_list	*list)
 }
 
 /*
- *	creer un tableau de de string
- *	regroupe les tokens avec un type similaire
- *	et remplie le tableau avec ces groupes
+ *	transforme une string, correspondant a plusieurs tokens de la tlist (lexer)
+ *	en contenu du nouveau token dans clist (parser)
  */
-/*
-void	parser(t_input *s)
-{
-	int	nb_groups;
-	int	i;
-	int	next_groups;
 
-	i = 0;
-	nb_groups = number_of_groups(s->tlist);
-	s->table = malloc(sizeof(char*) * nb_groups);
-	if (nb_groups == 1)
-		s->table[0] = tlist_to_s(s->tlist, s->llist);
-	else
-	{
-		while (i < nb_groups)
-		{
-			next_groups = next_index_group(s->tlist);
-			if (next_groups != -1)
-			{
-				s->table[i] = tlist_to_s(s->tlist, next_groups);
-				s->tlist = tlist_index(s->tlist, next_groups);
-			}
-			i++;
-		}	
-	}
-	s->table[nb_groups] = NULL;	
-}
-*/
 t_token	*tokenize(char *s)
 {
 	t_token	*token;
@@ -138,6 +113,12 @@ t_token	*tokenize(char *s)
 	token->type = type_token(*s);
 	return (token);
 }
+
+/*
+ *	remplie la liste chainee
+ *	determine le nombre de groupe de type different = nb de token pour clist
+ *	creer les tokens dans clist en regroupant les tokens (tlist) selon leurs types similaire 
+ */
 
 void	parser(t_input *s)
 {
@@ -159,4 +140,5 @@ void	parser(t_input *s)
 		s->tlist = tlist_index(s->tlist, next_group);
 		i++;
 	}
+	show_command_table(s);
 }
