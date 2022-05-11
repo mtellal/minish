@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/09 18:22:09 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/10 14:38:18 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/11 13:37:28 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ HEADER = -I includes -I libft/
 
 ########################	PIPEX 		#######################
 
-SRC = main.c src/main.c src/error.c src/error_utils.c src/processes.c src/commands.c src/input.c\
+SRC = src/main.c src/error.c src/error_utils.c src/processes.c src/commands.c src/input.c\
 	src/utils/free_tab.c src/utils/quote_split.c src/utils/quote_utils.c \
 
 OBJ = $(SRC:.c=.o)
@@ -54,8 +54,8 @@ all : $(NAME)
 
 $(NAME): $(OBJ)
 	make -C $(LDIR)
-	$(CC) $(CFLAGS) -o pipex $(OBJ) -L libft/ -lft
-	#ar -rc $(NAME) $(OBJ) $(LOBJ)
+	#(CC) $(CFLAGS) -o pipex $(OBJ) -L libft/ -lft
+	ar -rc $(NAME) $(OBJ) $(LOBJ)
 
 val: $(NAME)
 	valgrind --leak-check=full --tool=memcheck --show-reachable=yes --track-fds=yes --errors-for-leak-kinds=all --show-leak-kinds=all --trace-children=yes ./pipex main.c cat wc output

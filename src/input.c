@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/08 17:15:56 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/11 14:48:38 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	getInput(t_input *s)
 		{
 			lexer(s);
 			parser(s);
-			pipex_integration(s);
 			ft_lstclear(&s->tlist, clear_list);
 			ft_lstclear(&s->clist, clear_list);
 		}

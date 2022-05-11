@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/08 17:14:05 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/11 17:35:30 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 #define INPUT_H
 
 #include "libft.h"
+#include "pipex.h"
 
 #include <readline/readline.h>
 #include <readline/history.h>
 
 #define PROMPT "minishell> "
+
+
 
 typedef struct s_list	t_list;
 
@@ -27,9 +30,7 @@ typedef struct s_list	t_list;
 enum s_type
 {
 	ALPHANUM,
-	REDIRECTION,
 	BRACKET,
-	PIPE, 
 	EXPAND,
 	SEPARATOR,
 	QUOTE,
@@ -95,6 +96,8 @@ void	clear_telement(void *s);
 
 //////////		P A R S E R . C		//////////
 
+char    *tlist_to_s(t_list      *list, int l);
+
 void	parser(t_input *s);
 
 int	number_of_groups(t_list	*list);
@@ -103,7 +106,11 @@ int	number_of_groups(t_list	*list);
 
 t_list	*tlist_index(t_list *list, int i);
 
-void	pipex_integration(t_input *s);
+char	**argv_pipex(t_input *s);
+
+//////////	L A U N C H _ P I P E X . C	//////////
+
+void    launch_pipex(t_input *s);
 
 /////////////////////////////////////////////////////////
 //                      D E B U G                      //

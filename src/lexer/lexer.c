@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:58:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/09 14:06:58 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/11 17:55:15 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,13 @@ void	clear_telement(void	*s)
 
 enum s_type	type_token(char c)
 {
-	if (ft_isalnum(c) || c == '-')
+	if (ft_isalnum(c) || c == '-' || c == ' ')
 		return (ALPHANUM);
-	if (c == '<' || c == '>')
-		return (REDIRECTION);
 	if (c == '(' || c == ')' || c == '{' || c == '}')
 		return (BRACKET);
-	if (c == '|')
-		return (PIPE);
 	if (c == '$')
 		return (EXPAND);
-	if (c == ' ')
+	if (c == '|' || c == '<' || c == '>' || c == ':')
 		return (SEPARATOR);
 	if (c == '\'' || c == '\"')
 		return (QUOTE);
@@ -86,6 +82,6 @@ void	lexer(t_input	*s)
 			ft_lstadd_back(&s->tlist, ft_lstnew(token(&s->input[i])));
 		i++;
 	}
-	show_token_list(s);
-	printf("number of groups: %i\n",number_of_groups(s->tlist));
+	//show_token_list(s);
+	//printf("number of groups: %i\n",number_of_groups(s->tlist));
 }

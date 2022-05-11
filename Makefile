@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/08 15:51:05 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/11 14:50:04 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ NAME = minishell
 SOURCES =	main.c \
 	input.c \
 	lexer/lexer.c \
-	parser/parser.c parser/parser_utils.c
+	parser/parser.c parser/parser_utils.c parser/launch_pipex.c
 
 DEBUG = $(addprefix utils/debug/, lexer/debug_lexer.c parser/debug_parser.c)
 
