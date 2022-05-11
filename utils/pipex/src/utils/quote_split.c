@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/19 17:38:27 by mtellal           #+#    #+#             */
-/*   Updated: 2022/04/30 21:21:50 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/10 16:34:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ void	fill_args(t_pip *s, char **argv, int nbc)
 	i = 0;
 	while (i < nbc)
 	{
-		quote = quote_block(argv[2 + i]);
+		quote = quote_block(argv[s->pos_cmd + i]);
 		if (quote)
-			s->arg[i] = quote_split(argv[2 + i], quote);
+			s->arg[i] = quote_split(argv[s->pos_cmd + i], quote);
 		else
-			s->arg[i] = ft_split(argv[2 + i], ' ');
+			s->arg[i] = ft_split(argv[s->pos_cmd + i], ' ');
 		i++;
 	}
 }

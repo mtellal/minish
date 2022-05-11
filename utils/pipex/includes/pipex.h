@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:38:51 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/04 11:18:15 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/10 17:01:45 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,32 @@ typedef struct s_data {
 	char	**env;
 }		t_data;
 
+enum s_options
+{
+	NOFILES,
+	OUTPUT,
+	APPEND,
+	INPUT,
+	HEREDOC,
+	NONE
+};
+
 typedef struct s_pip {
 	int		hd;
 	int		fdi;
 	int		fdo;
 	int		**pipe;
+
+	int		nb_cmd;	
+	int		pos_cmd;
+	int		nb_pipes;
+	/*
+	 *	nofile => cmd simple with 
+	 */
+
+	enum s_options	option;
+	
+	
 	char	***arg;
 	char	**cmd;
 	t_data	data;
@@ -46,7 +67,7 @@ typedef struct s_pip {
 
 /////		MAIN			/////
 
-int		pipex(int argc, char **argv, char **env);
+int		pipex(int argc, char **argv, char **env, int option);
 
 /////		PROCESSES		/////
 

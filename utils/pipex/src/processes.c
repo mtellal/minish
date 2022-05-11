@@ -6,18 +6,31 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 22:14:32 by mtellal           #+#    #+#             */
-/*   Updated: 2022/04/30 20:23:11 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/11 10:33:38 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	close_fd(t_pip *s)
+{
+	if (s->option == OUTPUT || s->option == APPEND)
+		close(s->fdo);
+	if (s->option == INPUT || s->option == HEREDOC)
+		close(s->fdi);
+	if (s->option == NONE)
+	{
+		close(s->fdi);
+		close(s->fdo);
+	}
+}
 
 void	close_all_pipes(t_pip *s)
 {
 	int	i;
 
 	i = 0;
-	while (i < s->data.argc - 4)
+	while (i < s->nb_cmd - 1)
 	{
 		close(s->pipe[i][0]);
 		close(s->pipe[i][1]);
@@ -25,8 +38,7 @@ void	close_all_pipes(t_pip *s)
 		i++;
 	}
 	free(s->pipe);
-	close(s->fdi);
-	close(s->fdo);
+	close_fd(s);
 }
 
 void	ft_exe(t_pip *s, int i)
@@ -50,7 +62,10 @@ void	process(t_pip *s, int i, int nbp)
 	}
 	if (i == nbp)
 	{
-		ft_dup2(s->pipe[i - 1][0], 0);
+		if (s->nb_pipes != 0)
+			ft_dup2(s->pipe[i - 1][0], 0);
+		else
+			ft_dup2(s->fdi, 0);
 		ft_dup2(s->fdo, 1);
 		ft_exe(s, i);
 	}
@@ -75,8 +90,8 @@ void	processes(t_pip *s)
 	int		nb_pipes;
 	pid_t	f;
 
-	nb_pipes = s->data.argc - 4;
 	i = 0;
+	nb_pipes = s->nb_pipes;
 	while (i < nb_pipes)
 	{
 		f = fork();

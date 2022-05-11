@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/08 15:45:47 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/08 17:12:25 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void	parser(t_input *s)
 
 	i = 0;
 	nb_groups = number_of_groups(s->tlist);
+	s->llist = nb_groups;
 	while (i < nb_groups)
 	{
 		next_group = next_index_group(s->tlist);

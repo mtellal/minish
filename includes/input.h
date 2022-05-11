@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/06 21:08:09 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/08 17:14:05 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ typedef struct s_input
 
 	// tokens list used by lexer
 	struct s_list	*tlist;
+	
+	// longueur de la list selon lexer ou parser
 	int		llist;
 
 	// command table used by parser
@@ -101,6 +103,7 @@ int	number_of_groups(t_list	*list);
 
 t_list	*tlist_index(t_list *list, int i);
 
+void	pipex_integration(t_input *s);
 
 /////////////////////////////////////////////////////////
 //                      D E B U G                      //
