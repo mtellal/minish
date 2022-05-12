@@ -6,12 +6,15 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 14:44:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/12 14:53:08 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/12 15:18:30 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
+/*
+ *	renvoie le nombre de token du type 'type' dans la liste
+ */
 
 int     nb_token_type(t_list *list, enum s_type type)
 {
@@ -29,6 +32,12 @@ int     nb_token_type(t_list *list, enum s_type type)
         return (i);
 }
 
+/*
+ *	verifie s'il y a un separateur dans une liste
+ *	et renvoie son index
+ *	utile pour isoler les cmd
+ */
+
 int	exist_separator(t_list *list)
 {
 	int	i;
@@ -45,6 +54,12 @@ int	exist_separator(t_list *list)
 	}
 	return (-1);
 }
+
+/*
+ *	paracours s-clist jusqu'a l
+ *	et transforme les tokens en char*
+ *	ex: ls -la [f] => 
+ */
 
 char	**cmd_and_args(t_input *s, int l)
 {
@@ -98,6 +113,9 @@ char	**argv_pipex(t_input *s)
 
 /*
  *	s->llist + 1 pour le ./pipex
+ *	parse la clist et la transforme en char** pour l'**argv de pipex
+ *	lance un processus et dans le fils exe pipex 
+ *	je fork parceque pipex se termine tout seul
  */
 
 void	launch_pipex(t_input *s)
