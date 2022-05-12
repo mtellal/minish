@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/11 17:55:01 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/11 20:05:32 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void	parser(t_input *s)
 			s->clist = ft_lstnew(token);
 		else
 			ft_lstadd_back(&s->clist, ft_lstnew(token));
-		s->tlist = tlist_index(s->tlist, next_group);
+		s->tlist = list_index(s->tlist, next_group);
 		i++;
 	}
 	//show_command_table(s);

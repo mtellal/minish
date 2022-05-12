@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/09 18:22:09 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/11 13:37:28 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/11 21:37:39 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,7 @@ all : $(NAME)
 
 $(NAME): $(OBJ)
 	make -C $(LDIR)
-	#(CC) $(CFLAGS) -o pipex $(OBJ) -L libft/ -lft
+	#$(GCC) $(CFLAGS) -o pipex $(OBJ) -L libft/ -lft
 	ar -rc $(NAME) $(OBJ) $(LOBJ)
 
 val: $(NAME)

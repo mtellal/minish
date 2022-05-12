@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/11 17:35:30 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/12 14:09:52 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ enum s_type
 	EXPAND,
 	SEPARATOR,
 	QUOTE,
-	ARITHMETIC,
-	OTHER
 };
 
 typedef struct s_token
@@ -104,9 +102,11 @@ int	number_of_groups(t_list	*list);
 
 //////////	P A R S E R _ U T I L S . C	//////////
 
-t_list	*tlist_index(t_list *list, int i);
+t_list	*list_index(t_list *list, int i);
 
 char	**argv_pipex(t_input *s);
+
+char    *clist_to_s(t_list *list, int l);
 
 //////////	L A U N C H _ P I P E X . C	//////////
 

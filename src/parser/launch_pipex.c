@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 14:44:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/11 17:58:25 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/12 14:53:08 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,28 +41,53 @@ int	exist_separator(t_list *list)
 		if (token->type == SEPARATOR)
 			return (i);
 		list = list->next;
+		i++;
 	}
 	return (-1);
+}
+
+char	**cmd_and_args(t_input *s, int l)
+{
+	char	**tab;
+
+	tab = ft_calloc(3, sizeof(char*));
+	if (!tab)
+		return (NULL);
+	tab[0] = "./pipex";
+	tab[1] = clist_to_s(s->clist, l);
+	tab[2] = NULL;
+	return (tab);
 }
 
 char	**argv_pipex(t_input *s)
 {
         char    **tab;
+	t_token	*token;
+	int	i_sep;
+	int	nb_cmd;
 
-	if (exist_separator(s->clist) < 0)
+	i_sep = exist_separator(s->clist);
+	nb_cmd = nb_token_type(s->clist, ALPHANUM);
+	nb_cmd++;
+	if (i_sep < 0)
+		tab = cmd_and_args(s, s->llist);
+	else
 	{
-		tab = malloc(sizeof(char*) * 3);
-		if (!tab)
-			return (NULL);
-		tab[0] = "./pipex";
-		tab[1] = ((t_token*)s->clist->content)->c;
-		tab[2] = NULL;
+		// determiner le separateur ; | < > 
+		token  = ((t_token*)list_index(s->clist, i_sep)->content);
+		token->type = SEPARATOR;
+		if (!ft_strcmp(token->c, "|"))
+		{
+			
+		}
+
 	}
-        /*int i = 0;
+	/*
+        int i = 0;
         printf("tab send to pipex\n");
         while (i < 3)
         {
-                printf("%s      ", tab[i]);
+                printf("'%s'      ", tab[i]);
                 i++;
         }
         printf("\n");

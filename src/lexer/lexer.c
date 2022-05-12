@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:58:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/11 17:55:15 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/12 14:41:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ void	clear_telement(void	*s)
 
 enum s_type	type_token(char c)
 {
-	if (ft_isalnum(c) || c == '-' || c == ' ')
-		return (ALPHANUM);
 	if (c == '(' || c == ')' || c == '{' || c == '}')
 		return (BRACKET);
 	if (c == '$')
@@ -39,9 +37,7 @@ enum s_type	type_token(char c)
 		return (SEPARATOR);
 	if (c == '\'' || c == '\"')
 		return (QUOTE);
-	if (c == '+' || c == '=' || c == '*' || c == '/' || c == '%')
-		return (ARITHMETIC);
-	return (OTHER);
+	return (ALPHANUM);
 }
 
 /*
@@ -54,8 +50,10 @@ t_token	*token(char *c)
 {
 	t_token	*token;
 
+	if (!c)
+		return (NULL);
 	token = malloc(sizeof(t_token));
-	if (!c || !c)
+	if (!token)
 		return (NULL);
 	token->type = type_token(*c);
 	token->c = c; 
