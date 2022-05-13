@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:58:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/12 14:41:27 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/13 17:09:42 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,10 @@ void	clear_telement(void	*s)
 
 enum s_type	type_token(char c)
 {
-	if (c == '(' || c == ')' || c == '{' || c == '}')
-		return (BRACKET);
 	if (c == '$')
 		return (EXPAND);
-	if (c == '|' || c == '<' || c == '>' || c == ':')
+	if (c == '|' || c == '<' || c == '>' || c == ';' || c == '&' || c == ' ')
 		return (SEPARATOR);
-	if (c == '\'' || c == '\"')
-		return (QUOTE);
 	return (ALPHANUM);
 }
 

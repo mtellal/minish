@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 14:47:42 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/12 15:15:16 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/13 09:21:16 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,42 +31,4 @@ t_list	*list_index(t_list *list, int l)
 		i++;
 	}
 	return (list);
-}
-
-/*
- *	transforme les l premiers tokens de clist
- *	en char* 
- */
-
-char	*clist_to_s(t_list *list, int l)
-{
-	int	i;
-	int	lentab;
-	char	*tab;
-	char	*s;
-	t_token	*token;
-	t_list	*nl;
-
-	i = 0;
-	nl = list;
-	lentab = 0;
-	while (list)
-	{
-		token = list->content;
-		lentab += ft_strlen(token->c);
-		list = list->next;
-	}
-	tab = ft_calloc(lentab + 1, 1);
-	if (!tab)
-		return (NULL);
-	list = nl;
-	while (list && i < l)
-	{	
-		token = list->content;
-		s = ft_strdup(token->c);
-		tab = ft_strjoin_free(tab, s, 1, 1);
-		list = list->next;
-		i++;
-	}
-	return (tab);
 }

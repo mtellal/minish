@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 14:44:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/12 15:18:30 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/13 10:51:10 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,52 +61,90 @@ int	exist_separator(t_list *list)
  *	ex: ls -la [f] => 
  */
 
-char	**cmd_and_args(t_input *s, int l)
+char	**cmd_to_pipex(t_token *token, int pipex)
 {
 	char	**tab;
+	int		i;
 
-	tab = ft_calloc(3, sizeof(char*));
+	i = 0;
+	if (pipex)
+		tab = ft_calloc(3, sizeof(char*));
+	else
+		tab = ft_calloc(2, sizeof(char*));
 	if (!tab)
 		return (NULL);
-	tab[0] = "./pipex";
-	tab[1] = clist_to_s(s->clist, l);
-	tab[2] = NULL;
+	if (pipex)
+		tab[i++] = "./pipex";
+	tab[i++] = token->c;
+	tab[i] = NULL;
 	return (tab);
+}
+
+int	ft_strlen_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);	
+}
+
+void	free_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
+char	**add_argv(char **t, char *s)
+{
+	int	lt;
+	char	**tab;
+	int	i;
+
+	i = 0;
+	lt = ft_strlen_tab(t);
+	tab = ft_calloc(lt + 2, sizeof(char*));
+	if (!tab)
+		return (NULL);
+	while (i < lt)
+	{
+		tab[i] = ft_strdup(t[i]);
+		free(t[i]);
+		i++;
+	}
+	tab[i++] = s;
+	tab[i] = NULL;
+	free(t);
+	return (tab);
+}
+
+int	len_type(t_list *list, enum s_type type)
+{
+	int	len;
+	t_token	*token;
+
+	len = 0;
+	while (list)
+	{
+		token = list->content;
+		if (token->type == type)
+			len += ft_strlen(token->c);
+		list = list->next;
+	}
+	return (len);
 }
 
 char	**argv_pipex(t_input *s)
 {
-        char    **tab;
-	t_token	*token;
-	int	i_sep;
-	int	nb_cmd;
-
-	i_sep = exist_separator(s->clist);
-	nb_cmd = nb_token_type(s->clist, ALPHANUM);
-	nb_cmd++;
-	if (i_sep < 0)
-		tab = cmd_and_args(s, s->llist);
-	else
-	{
-		// determiner le separateur ; | < > 
-		token  = ((t_token*)list_index(s->clist, i_sep)->content);
-		token->type = SEPARATOR;
-		if (!ft_strcmp(token->c, "|"))
-		{
-			
-		}
-
-	}
-	/*
-        int i = 0;
-        printf("tab send to pipex\n");
-        while (i < 3)
-        {
-                printf("'%s'      ", tab[i]);
-                i++;
-        }
-        printf("\n");
-	*/return (tab);
+	return (NULL);
 }
 
 
@@ -133,7 +171,7 @@ void	launch_pipex(t_input *s)
 			exit(0);
 		}
 		if (t == 0)
-			pipex(s->llist + 1, argv, s->env, NOFILES);
+			pipex(ft_strlen_tab(argv), argv, s->env, s->option);
 	}
 	wait(NULL);
 }
