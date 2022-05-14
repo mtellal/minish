@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/13 09:35:23 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/14 19:25:26 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ void	init_data_input(t_input *s, int argc, char **argv, char **env)
 	s->llist = 0;
 	s->clist = NULL;
 	s->option = NOFILES;
+	s->nb_sep = 0;
+	s->nb_cmd = 0;
+	s->nb_expand = 0;
 }
 
 /*

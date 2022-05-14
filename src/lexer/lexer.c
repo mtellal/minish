@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:58:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/13 17:09:42 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/14 19:30:45 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ enum s_type	type_token(char c)
 {
 	if (c == '$')
 		return (EXPAND);
-	if (c == '|' || c == '<' || c == '>' || c == ';' || c == '&' || c == ' ')
+	if (c == '|' || c == '<' || c == '>' || c == ';' || c == '&')
 		return (SEPARATOR);
 	return (ALPHANUM);
 }

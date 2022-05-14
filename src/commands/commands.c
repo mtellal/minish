@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:48:28 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/13 17:35:03 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/14 20:40:45 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,161 +27,210 @@
  *
  */
 
-char	*tokens_to_char(t_list *list, int l)
-{
-	int	i;
-	t_token	*token;
-	char	*tab;
-
-	i = 0;
-	tab = NULL;
-	while (list && i < l)
-	{
-		token = list->content;
-		if (token->type != SEPARATOR)
-		{
-			if (!tab)
-				tab = ft_strdup(token->c);
-			else
-				tab = ft_strjoin_free(tab, ft_strjoin(" ",token->c), 1, 1);	
-		}
-		list = list->next;
-		i++;
-	}
-	return (tab);
-}
-
 int	init_argv(char ***argv)
 {
 	*argv = ft_calloc(2, sizeof(char*));
 	if (!argv)
-		return (-1);
+		return (0);
 	*argv[0] = ft_strdup("./pipex");
 	return (1);
 }
 
-void	free_token(void *token)
-{
-	t_token	*t;
 
-	t = (t_token*)token;
-	free(t->c);
-	free(t);
-}
+/////////////////////	functions verify separator	/////////////////
 
-void	rm_first_link(t_list *list, t_list *plist)
-{
-	t_token	*token;
-
-	token = list->content;
-	plist->next = list->next;
-	free(token->c);
-	free(token);
-}
-
-void	swap_first(t_list *list)
-{
-	t_list	*alist;
-	t_list	*blist;
-	t_list	*clist;
-	t_token	*token;
-
-	alist = list->next;
-	blist = alist->next;
-	clist = blist->next;
-	alist->next = clist;
-	blist->next = alist;
-	token = list->content;
-	free(token->c);
-	free(token);
-}
-
-/*
- *	savoir si le carac '<' existe en un seul exemplaire dans char*
- *
- */
-
-int	only_char(char *s, char c)
+int	ft_belong(char *s, char c)
 {
 	int	i;
 
 	i = 0;
-	if (!s)
-		return (-1);
-	while (s[i] == ' ')
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (1);
 		i++;
-	if (s[i] != c)
-		return (i);
-	while (s[i] == ' ')
-		i++;
-	if (s[i] != '\0' && s[i] != c)
-		return (i);
-	else
-		return (-1);
+	}
+	return (0);
 }
 
-void	order_clist(t_list *list)
+//	verifie si l char dans s sont bien c, utile pour << et >>	
+
+int	same_char(char *s, char c, int l)
 {
-	t_token	*token;
-	t_list	*plist;
 	int	i;
 
 	i = 0;
+	while (s[i] == c && i < l)
+		i++;
+	if (i == l)
+		return (-1);
+	return (i);
+}
+
+//	verifie si les separateurs (| > < >> << & ;) sont bien respectes
+
+int	valid_separator(char	*s, int *err_sep)
+{
+	int	l;
+	char	*tab;
+
+	tab = "|<>&;";
+	l = ft_strlen(s);
+	*err_sep = 0;
+	if (l == 2)
+	{
+		if (s[0] == '<')
+			*err_sep = same_char(s, '<', 2);
+		else if (s[0] == '>')
+			*err_sep = same_char(s, '>', 2);
+	}
+	else if (ft_belong(tab, s[0]))
+	{
+		if (s[1] == '\0')
+			*err_sep = -1;
+		else
+			*err_sep = 1;
+	}
+	return (*err_sep);
+}
+
+int	err_separator(char *s, int err_sep)
+{
+		ft_putstr_fd("error: syntax token '", 2);
+		ft_putchar_fd(s[err_sep], 2);
+		ft_putstr_fd("'\n", 2);
+		return (1);
+}
+
+int	verify_separator(t_list *list)
+{
+	t_token *token;
+	int	err_sep;
+
 	while (list)
 	{
 		token = list->content;
 		if (token->type == SEPARATOR)
 		{
-			if (only_char(token->c, '<') == -1)
-			{
-				//	ex:	"< Makefile ls" | "ls < Makefile"
-				if (i > 0)
+			if (valid_separator(token->c, &err_sep) != -1)
+				return (err_separator(token->c, err_sep));
+		}
+		list = list->next;
+	}
+	return (0);
+}
+
+/////////////////	verify is separator (| < > >> << ; &) correct //////////////////
+
+void	merge_tokens(t_list *l1, t_list *l2)
+{
+	t_token *t1;
+	t_token *t2;
+	t_token *token;
+
+	t1 = l1->content;
+	t2 = l2->content;
+	l1->content = ft_calloc(1, sizeof(t_token));
+        token = l1->content;
+	token->type = type_token(*(t1->c));
+        token->c = ft_strjoin_free(t1->c, t2->c, 1, 1);
+	l1->next = l2->next;
+}
+
+char	*swap_first(char **tab, int len)
+{
+	int	i;
+	char	*t;
+
+	i = 2;
+	if (!tab || !*tab)
+		return (NULL);
+	t = ft_strjoin_free(tab[1], " ", 1, 0);
+	t = ft_strjoin_free(t, tab[0], 1, 1);
+	while (tab[i])
+	{
+		if (!t)
+			t = ft_strjoin_free(t, tab[i], 0, 1);
+		else
+			t = ft_strjoin_free(t, tab[i], 1, 1);
+		free(tab[i]);
+		i++;
+	}
+	t[len] = '\0';
+	free(tab);
+	return (t);
+}
+
+void	order_clist(t_list *list, t_input *s)
+{
+	t_list	*plist;
+	t_token *ptoken;
+	t_list	*nlist;
+	t_token	*token;
+
+	plist = NULL;
+	nlist = list->next;
+	while (list)
+	{
+		token = list->content;
+		if (plist)
+			ptoken = plist->content;
+		if (*token->c == '<')
+		{
+			//	ls < Makefile || < ls Makefile
+			if (plist && !err_cmd(ptoken->c, s))
+			{	// ls < Makefile
+				if (nlist)
 				{
-					// cas "ls < Makefile" alors rendre "ls Makefile"
-					//ft_lstdelone(list, free_token);
-					rm_first_link(list, plist);
+					merge_tokens(plist, nlist);
+					free(token->c);
+					free(token);		
+					list = nlist->next;
 				}
-				else
-				{	
-					swap_first(list);
-				}
-			}
+			}	
 			else
-				ft_putstr_fd("error: parser token <", 2);
+			{	// <  Makefile ls
+				plist->next = nlist;
+				token = nlist->content;
+				char **tab = ft_split(token->c, ' ');
+				token->c = swap_first(tab, ft_strlen(token->c));
+			}
 		}
 		plist = list;
 		list = list->next;
-		i++;
+		if (nlist)
+			nlist = list->next;
 	}
 }
 
-void	clist_to_cmd(t_input *s)
+
+char	**clist_to_argv(t_input *s)
 {
 	t_token	*token;
-	int		index_sep;
 	char		**argv;
 
-	order_clist(s->clist);
-	index_sep = index_separator(s->clist);
-	if (init_argv(&argv) == -1)
-		return ;
+	verify_separator(s->clist);
+	if (s->nb_sep > 0)
+		order_clist(s->clist, s);
+	if (!init_argv(&argv))
+		return (NULL);
 	while (s->clist)
 	{
 		token = s->clist->content;
-		printf("%s ", token->c);
-		index_sep = index_separator(s->clist);
-		/*if (token->type != SEPARATOR && err_cmd(token->c, s))
-			return ;
-		*/if (index_sep == -1)
+		if (token->type == SEPARATOR)
 		{
-			argv = add_tab(argv, tokens_to_char(s->clist, s->llist));	
-			break ;
+			ft_putstr_fd("sep",2);
 		}
 		else
-			argv = add_tab(argv, tokens_to_char(s->clist, index_sep));
-		if (index_sep != -1)
-			s->clist = list_index(s->clist, index_sep + 1);
-		else
-			s->clist = s->clist->next;
+			argv = add_tab(argv, token->c);
+		s->clist = s->clist->next;
 	}
+	int i = 0;
+	while (i < ft_strlen_tab(argv))
+	{
+		printf("(%s) ", argv[i]);
+		i++;
+	}
+	printf("\n");
+	return (argv);
 }

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/13 17:09:50 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/14 19:30:54 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,10 @@ typedef struct s_input
 	// option pour pipex (pipe ou input ou output etc)
 	enum s_options	option;
 
+	int		nb_sep;
+	int		nb_cmd;
+	int		nb_expand;
+
 }		t_input;
 
 
@@ -106,7 +110,7 @@ char	**argv_pipex(t_input *s);
 
 //////////	C O M M A N D S . C		//////////
 
-void    clist_to_cmd(t_input *s);
+char	**clist_to_argv(t_input *s);
 
 //////////	L A U N C H _ P I P E X . C	//////////
 
