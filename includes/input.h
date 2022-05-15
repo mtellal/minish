@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/14 19:30:54 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/15 12:56:22 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,13 @@ void	init_sinput(t_input *s, int argc, char **argv, char **env);
 
 //////////		L E X E R . C		//////////
 
+void    clear_telement(void     *s);
+t_token *token(char *c);
 enum s_type     type_token(char c);
 void	lexer(t_input *s);
 void	clear_telement(void *s);
+
+
 
 
 /////////////////////////////////////////////////////////
@@ -96,13 +100,39 @@ void	clear_telement(void *s);
 //////////		P A R S E R . C		//////////
 
 char    *tlist_to_s(t_list      *list, int l);
-void	parser(t_input *s);
-int	number_of_groups(t_list	*list);
+void    parser(t_input *s);
+int     number_of_groups(t_list *list);
 
-//////////	P A R S E R _ U T I L S . C	//////////
+//////////		U T I L S 		//////////
 
-t_list	*list_index(t_list *list, int i);
-char	**argv_pipex(t_input *s);
+/////	P A R S E R _ U T I L S .C 	/////
+
+t_list	*list_index(t_list *list, int l);
+
+/////	V E R I F Y _ S E PA  R T O R . C 	/////
+
+int     ft_belong(char *s, char c);
+int     same_char(char *s, char c, int l);
+int     valid_separator(char    *s, int *err_sep);
+int     msg_err_separator(char *s, int err_sep);
+int     err_separator(t_list *list, t_input *s);
+
+/////		U T I L S . C 		/////
+
+int	ft_strlen_tab(char **tab);
+void	free_tab(char **tab);
+int	only_space(char *s);
+int	index_separator(t_list *list);
+int     nb_token_type(t_list *list, enum s_type type);
+
+/////	L I S T _ U T I L S . C 	/////
+
+void    clear_space(t_list *list, t_input *s);
+
+
+/////	O R D E R _ C L I S T . C	/////
+
+void    order_input(t_list *list, t_input *s);
 
 /////////////////////////////////////////////////////////
 //               C O M M A N D S . C         	       //
@@ -127,6 +157,9 @@ int     ft_strlen_tab(char **tab);
 void    free_tab(char **tab);
 int     index_separator(t_list *list);
 int     nb_token_type(t_list *list, enum s_type type);
+
+
+
 
 /////////////////////////////////////////////////////////
 //                      D E B U G                      //

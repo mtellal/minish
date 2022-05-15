@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:48:28 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/14 20:40:45 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/15 10:06:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,89 +37,6 @@ int	init_argv(char ***argv)
 }
 
 
-/////////////////////	functions verify separator	/////////////////
-
-int	ft_belong(char *s, char c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-//	verifie si l char dans s sont bien c, utile pour << et >>	
-
-int	same_char(char *s, char c, int l)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] == c && i < l)
-		i++;
-	if (i == l)
-		return (-1);
-	return (i);
-}
-
-//	verifie si les separateurs (| > < >> << & ;) sont bien respectes
-
-int	valid_separator(char	*s, int *err_sep)
-{
-	int	l;
-	char	*tab;
-
-	tab = "|<>&;";
-	l = ft_strlen(s);
-	*err_sep = 0;
-	if (l == 2)
-	{
-		if (s[0] == '<')
-			*err_sep = same_char(s, '<', 2);
-		else if (s[0] == '>')
-			*err_sep = same_char(s, '>', 2);
-	}
-	else if (ft_belong(tab, s[0]))
-	{
-		if (s[1] == '\0')
-			*err_sep = -1;
-		else
-			*err_sep = 1;
-	}
-	return (*err_sep);
-}
-
-int	err_separator(char *s, int err_sep)
-{
-		ft_putstr_fd("error: syntax token '", 2);
-		ft_putchar_fd(s[err_sep], 2);
-		ft_putstr_fd("'\n", 2);
-		return (1);
-}
-
-int	verify_separator(t_list *list)
-{
-	t_token *token;
-	int	err_sep;
-
-	while (list)
-	{
-		token = list->content;
-		if (token->type == SEPARATOR)
-		{
-			if (valid_separator(token->c, &err_sep) != -1)
-				return (err_separator(token->c, err_sep));
-		}
-		list = list->next;
-	}
-	return (0);
-}
-
 /////////////////	verify is separator (| < > >> << ; &) correct //////////////////
 
 void	merge_tokens(t_list *l1, t_list *l2)
@@ -143,6 +60,12 @@ char	*swap_first(char **tab, int len)
 	char	*t;
 
 	i = 2;
+	if (ft_strlen_tab(tab) < 2)
+	{
+		t = ft_strdup(tab[0]);
+		free_tab(tab);
+		return (t);
+	}
 	if (!tab || !*tab)
 		return (NULL);
 	t = ft_strjoin_free(tab[1], " ", 1, 0);
@@ -175,12 +98,12 @@ void	order_clist(t_list *list, t_input *s)
 		token = list->content;
 		if (plist)
 			ptoken = plist->content;
-		if (*token->c == '<')
+		if (*token->c == '<' && nlist)
 		{
 			//	ls < Makefile || < ls Makefile
 			if (plist && !err_cmd(ptoken->c, s))
 			{	// ls < Makefile
-				if (nlist)
+				if (nlist->next)
 				{
 					merge_tokens(plist, nlist);
 					free(token->c);
@@ -190,7 +113,10 @@ void	order_clist(t_list *list, t_input *s)
 			}	
 			else
 			{	// <  Makefile ls
-				plist->next = nlist;
+				if (plist)	
+					plist->next = nlist;
+				else
+					s->clist = nlist;
 				token = nlist->content;
 				char **tab = ft_split(token->c, ' ');
 				token->c = swap_first(tab, ft_strlen(token->c));

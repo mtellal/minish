@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/14 19:32:29 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/15 13:01:54 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	number_of_groups(t_list	*list)
 	while (list)
 	{
 		token = list->content;
-		if (i == 0 && token->type)
+		if (i == 0 && token)
 		{
 			type = token->type;
 			i++;
@@ -144,7 +144,10 @@ void	parser(t_input *s)
 	s->nb_cmd = nb_token_type(s->clist, ALPHANUM);
 	s->nb_sep = nb_token_type(s->clist, SEPARATOR);
 	s->nb_expand = nb_token_type(s->clist, EXPAND);
+	clear_space(s->clist, s);
 	show_command_table(s);
-	char **argv = clist_to_argv(s);
-	argv++;
+	if (err_separator(s->clist, s))
+		return ;
+	order_input(s->clist, s);
+	show_command_table(s);
 }
