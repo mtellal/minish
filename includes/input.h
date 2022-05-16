@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/15 12:56:22 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/15 18:57:12 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,17 @@ typedef struct s_token
 	char		*c;
 }		t_token;
 
+//////////		P A R S E R		//////////
+
+typedef struct s_cmd
+{
+	char		*args;
+	char		*fdi;
+	char		*fdo;
+	enum s_options	option;
+
+}		t_cmd;
+
 /////////////////////////////////////////////////////////
 //                      I N P U T                      //
 /////////////////////////////////////////////////////////
@@ -52,17 +63,18 @@ typedef struct s_input
 
 	char	*input;
 
-	// tokens list used by lexer
+	// tokens list used by lexer / content => t_token (c = char, type = alphanum | separator)
 	struct s_list	*tlist;
 	
-	// longueur de la list selon lexer ou parser
+	// longueur de la list selon lexer ou parser / content => t_token (c = cmd/mot, type an/sep)
 	int		llist;
 
-	// command table used by parser
+	// command list used by command list / 
 	struct s_list	*clist;
-	
-	// option pour pipex (pipe ou input ou output etc)
-	enum s_options	option;
+
+	// list chainee de t_cmd 
+	// content => t_cmd = (args = args, fdi, fdo, p_option = NOFILES, OUTPUT etc..)	
+	struct s_list	*cmd_list;
 
 	int		nb_sep;
 	int		nb_cmd;
@@ -102,6 +114,13 @@ void	clear_telement(void *s);
 char    *tlist_to_s(t_list      *list, int l);
 void    parser(t_input *s);
 int     number_of_groups(t_list *list);
+
+//////////	C O M M A N D S . C 		//////////
+
+void	command_table(t_list *list, t_input *s);
+
+void    show_cmd_list(t_list *list);
+void    clear_cmd_list(t_list *list, t_input *s);
 
 //////////		U T I L S 		//////////
 
