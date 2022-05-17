@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/15 18:57:12 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/17 15:06:28 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,10 @@ typedef struct s_token
 
 typedef struct s_cmd
 {
+	int		id;
 	char		*args;
-	char		*fdi;
-	char		*fdo;
+	int		fdi;
+	int		fdo;
 	enum s_options	option;
 
 }		t_cmd;
@@ -117,10 +118,17 @@ int     number_of_groups(t_list *list);
 
 //////////	C O M M A N D S . C 		//////////
 
+t_cmd   *cmd(int fdi, int fdo, char *args, enum s_options OPTION, int id);
+enum s_options  sep_to_opt(char *s);
+char    *join_tab(char **tab, int j);
 void	command_table(t_list *list, t_input *s);
 
 void    show_cmd_list(t_list *list);
 void    clear_cmd_list(t_list *list, t_input *s);
+
+//////////	L A Y E R 2 . C 		//////////
+
+void    layer2(t_list *list, t_input *s);
 
 //////////		U T I L S 		//////////
 

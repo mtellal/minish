@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:21:09 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/16 16:28:59 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/17 15:14:55 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ void	clear_cmd_list(t_list *list, t_input *s)
 	while (list)
 	{
 		cmd = list->content;
-		if (cmd->fdi)
-			free(cmd->fdi);
-		if (cmd->fdo)
-			free(cmd->fdo);
+		if (cmd->fdi > 2)
+			close(cmd->fdi);
+		if (cmd->fdo > 2)
+			close(cmd->fdo);
 		if (cmd->args)
 			free(cmd->args);
 		free(cmd);
@@ -59,7 +59,7 @@ void	show_cmd_list(t_list *list)
 	while (list)
 	{
 		cmd = list->content;
-		printf("%i   |   FDI:'%s'   |   FDO:'%s'	|   ARGS:'%s'  |  OPTION:%s \n", i, cmd->fdi, cmd->fdo, cmd->args, option(cmd->option));
+		printf("id: %i   |   FDI:'%i'   |   FDO:'%i'	|   ARGS:'%s'  |  OPTION:%s \n", cmd->id, cmd->fdi, cmd->fdo, cmd->args, option(cmd->option));
 		list = list->next;
 		i++;
 	}
