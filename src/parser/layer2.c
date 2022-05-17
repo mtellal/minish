@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:23:56 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/17 14:49:13 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/17 21:34:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,24 @@ void    cmd_pipe(t_list *plist, t_list *nlist, t_input *s, int index)
         ncmd = NULL;
         if (s->cmd_list)
         {
-                pcmd = list_index(s->cmd_list, index - 1)->content;
+                pcmd = list_index(s->cmd_list, index)->content;
                 if (ft_lstsize(s->cmd_list) > index + 1)
-                        ncmd = list_index(s->cmd_list, index)->content;
+                        ncmd = list_index(s->cmd_list, index + 1)->content;
         }
         if (!pcmd)
         {
-                pcmd = cmd(NULL, ft_strdup("pipe"), ptoken->c, NOFILES, index);
+                pcmd = cmd(0, -2, ptoken->c, NOFILES, index);
                 ft_lstadd_back(&s->cmd_list, ft_lstnew(pcmd));
         }
         if (!ncmd)
         {
-                ncmd = cmd (ft_strdup("pipe"), NULL, ntoken->c, NOFILES, index);
+                ncmd = cmd (-2, 1, ntoken->c, NOFILES, index + 1);
                 ft_lstadd_back(&s->cmd_list, ft_lstnew(ncmd));
         }
-        if (ncmd && !ncmd->fdi)
-        {
-                ncmd->fdi  = ft_strdup("pipe");
-        }
-        if (pcmd && !pcmd->fdo)
-        {
-                pcmd->fdo = ft_strdup("pipe");
-        }
+        if (ncmd && ncmd->fdi == 0)
+                ncmd->fdi  = -2;
+        if (pcmd && pcmd->fdo == 1)
+                pcmd->fdo = -2;
         plist->next = nlist;
 }
 
@@ -72,15 +68,9 @@ void	layer2(t_list *list, t_input *s)
                         {
                                 cmd_pipe(plist, list->next, s, i_cmd);
                                 list = s->clist;
-                                i_cmd = 0;
+                                i_cmd = -1;
                                 reset = 1;
-                        }
-                        /*if (*token->c == ';')
-                        {
-                                //      executer toutes les commands jusqu'q i conpris
-                                //      exemple avec cmd sleep 2 cmd2; cmd 3
-                                plist->next = list->next;
-                        }*/
+			}
                 }
                 else
                         i_cmd++;

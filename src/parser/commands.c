@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/17 18:05:16 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/17 21:38:41 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ char	*join_tab(char **tab, int j)
  */
 	// PRONLEME RECREER UNE COMMANDE POUR ls < in < file
 
-void	open_n_close(t_utils *data, int flags, mode_t mode, char *r)
+void	open_n_close(t_utils *data, int flags, mode_t mode, char r)
 {
-	if (*r == '<' && data->cmd && data->cmd->fdi > 2)
+	if (r == '<' && data->cmd && data->cmd->fdi > 2)
 		close(data->cmd->fdi);
-	if (*r == '>' && data->cmd && data->cmd->fdo > 2)
+	if (r == '>' && data->cmd && data->cmd->fdo > 2)
 		close(data->cmd->fdo);
 	if (ft_open(&data->file, data->tab[0], flags, mode) == -1)
 	{
@@ -93,9 +93,9 @@ void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *
 	data->tab = ft_split(data->ntoken->c, ' ');
 	
 	if (*r == '<')
-		open_n_close(data, O_RDONLY, 0, r);
+		open_n_close(data, O_RDONLY, 0, '<');
 	if (*r == '>')
-		open_n_close(data, O_CREAT | O_RDWR | O_TRUNC, 0666, r);
+		open_n_close(data, O_CREAT | O_RDWR | O_TRUNC, 0666, '>');
 
 	rest_args = join_tab(data->tab, 1);
 	if (data->cmd)
@@ -115,8 +115,11 @@ void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *
 	{
 		if (!plist || (plist && data->ptoken->type == SEPARATOR))
                 {
-                        ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, INPUT, index)));
-                        if (plist)
+                        if (*r == '<')
+				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, INPUT, index)));
+                        if (*r == '>')
+				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, rest_args, INPUT, index)));
+			if (plist)
                                 plist->next = nlist;
                         else
                                 s->clist = nlist;
@@ -125,7 +128,10 @@ void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *
 		else if (plist)
 		{
 			rest_args = ft_strjoin_free(data->ptoken->c, rest_args, 0, 1);
-			ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, INPUT, index)));
+			if (*r == '<')
+				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, INPUT, index)));
+			if (*r == '>')
+				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, rest_args, INPUT, index)));
 			data->ptoken->c = rest_args;
 			plist->next = nlist->next;
 		}
@@ -165,14 +171,6 @@ void	command_table(t_list *list, t_input *s)
 				i = 0;
 				reset = 1;
 			}
-			/*
-			if (*token->c == '>')
-			{
-				cmd_output(plist, list->next, s, i);
-				list = s->clist;
-				i = 0;
-				reset = 1;
-			}*/
 			if (*token->c != '<' && *token->c != '>')
 				i++;
 		}
@@ -185,5 +183,5 @@ void	command_table(t_list *list, t_input *s)
 	ft_putstr_fd("///////////////////////////////\n", 2);
 	show_command_table(s);
 	//show_cmd_list(s->cmd_list);
-	//	layer2(s->clist, s);
+	layer2(s->clist, s);
 }

@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/17 15:12:57 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/17 21:08:27 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ NAME = minishell
 SOURCES =	main.c \
 	input.c \
 	lexer/lexer.c \
-	parser/parser.c parser/commands.c parser/commands_utils.c \
+	parser/parser.c parser/commands.c parser/commands_utils.c parser/layer2.c \
 	parser/utils/parser_utils.c parser/utils/utils.c parser/utils/verify_separator.c \
 	parser/utils/list_utils.c parser/utils/order_clist.c
 
