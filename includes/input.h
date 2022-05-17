@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/17 15:06:28 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/17 16:58:53 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,27 @@ typedef struct s_cmd
 	enum s_options	option;
 
 }		t_cmd;
+
+typedef struct s_utils
+{
+	int	fdi;
+	int	fdo;
+	int	index;
+
+	int	file;
+
+	char	**tab;
+
+	t_list	*list;
+	t_list	*plist;
+	t_list	*nlist;
+	
+	t_token	*token;
+	t_token	*ptoken;
+	t_token	*ntoken;
+	
+	t_cmd	*cmd;
+}		t_utils;
 
 /////////////////////////////////////////////////////////
 //                      I N P U T                      //

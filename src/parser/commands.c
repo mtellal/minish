@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/17 15:26:27 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/17 18:05:16 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,137 +62,75 @@ char	*join_tab(char **tab, int j)
  */
 	// PRONLEME RECREER UNE COMMANDE POUR ls < in < file
 
-void	cmd_input(t_list *plist, t_list *nlist, t_input *s, int index)
+void	open_n_close(t_utils *data, int flags, mode_t mode, char *r)
 {
-	t_token *ntoken;
-	t_token *ptoken;
-	char	**tab;
-	int	infile;
-	char	*rest_args;
-
-	if (!nlist)
-		return ;
-	ntoken = nlist->content;
-	if (plist)
-		ptoken = plist->content;
-	
-	tab = ft_split(ntoken->c, ' ');
-
-	/*if (infile > 2)
-	       close(infile);	
-	*/
-	if (ft_open(&infile, tab[0], O_RDONLY, 0) == -1)
+	if (*r == '<' && data->cmd && data->cmd->fdi > 2)
+		close(data->cmd->fdi);
+	if (*r == '>' && data->cmd && data->cmd->fdo > 2)
+		close(data->cmd->fdo);
+	if (ft_open(&data->file, data->tab[0], flags, mode) == -1)
 	{
-		//	mieux gerer les erreurs
 		ft_putstr_fd("err input file \n", 2);
 		exit(0);
 	}
-
-	rest_args = join_tab(tab, 1);
-	if (!plist || (plist && ptoken->type == SEPARATOR))
-	{
-		//	< file ls
-		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(infile, 1, rest_args, INPUT, index)));
-		if (!plist)
-			s->clist = nlist;
-		else
-			plist->next = nlist;
-		ntoken->c = rest_args;
-	}
-	else if (plist)
-	{
-		// x < y args
-		char *args = ft_strjoin_free(ptoken->c, rest_args, 0, 1);
-		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(infile, 1, args, INPUT, index)));
-		ptoken->c = args;
-		plist->next = nlist->next;
-	}
-}
-//////////////////////////////////////////////////////////////////
-
-t_cmd	*is_cmd_existing(char *ss, t_input *s)
-{
-	t_cmd	*cmd;
-	int	i;	
-	int	index;
-	t_list *l;
-
-	i = 0;
-	index = -1;
-	if (!ss)
-		return (NULL);
-	l = s->cmd_list;
-	while (l)
-	{
-		cmd = l->content;
-		if (cmd->args && !ft_strcmp(ss, cmd->args))
-			index = i;
-		l = l->next;
-		i++;
-	}
-	if (index == -1)
-		return (NULL);
-	else
-		return (list_index(s->cmd_list, index)->content);
 }
 
-
-void	cmd_output(t_list *plist, t_list *nlist, t_input *s, char last_sep, int index)
+void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *r)
 {
-	t_cmd	*c;
-	t_token *ptoken;
-	t_token *ntoken;
-
-	char	**tab;
-	int	outfile;
+	t_utils	*data;
 	char	*rest_args;
 
+	data = ft_calloc(1, sizeof(t_utils));
 	if (!nlist)
 		return ;
-	c = NULL;
-	ptoken = NULL;
-	ntoken = nlist->content;
+	data->ntoken = nlist->content;
 	if (plist)
-	{
-		ptoken = plist->content;	
-		if (s->cmd_list && ptoken->type == ALPHANUM)
-			c = is_cmd_existing(ptoken->c, s);
-	}
-	tab = ft_split(ntoken->c, ' ');
-	if (c && c->fdo > 2)
-		close(c->fdo);
-        if (ft_open(&outfile, tab[0], O_RDONLY, 0) == -1)
-        {
-                //      mieux gerer les erreurs
-                ft_putstr_fd("err output file \n", 2);
-                exit(0);
-        }
+		data->ptoken = plist->content;
+	data->cmd = NULL;
+	if (s->cmd_list && ft_lstsize(s->cmd_list) - 1 >= index)
+		data->cmd = (t_cmd*)list_index(s->cmd_list, index)->content;
 
-        rest_args = join_tab(tab, 1);
-        if (!plist || (plist && ptoken->type == SEPARATOR))
-        {
-                //      > file ls
-		if (!c || (last_sep != '<' && last_sep != '>' && !c->fdi))
-                	ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(1, outfile, rest_args, OUTPUT, index)));
+	data->tab = ft_split(data->ntoken->c, ' ');
+	
+	if (*r == '<')
+		open_n_close(data, O_RDONLY, 0, r);
+	if (*r == '>')
+		open_n_close(data, O_CREAT | O_RDWR | O_TRUNC, 0666, r);
+
+	rest_args = join_tab(data->tab, 1);
+	if (data->cmd)
+	{
+		if (*r == '<')
+			data->cmd->fdi = data->file;
+		if (*r == '>')
+			data->cmd->fdo = data->file;
+		if (nlist)
+			plist->next = nlist->next;
 		else
+			plist->next = nlist;
+		if (rest_args)
+			data->cmd->args = ft_strjoin_free(data->cmd->args, rest_args, 0, 1);	
+	}
+	if (!data->cmd)
+	{
+		if (!plist || (plist && data->ptoken->type == SEPARATOR))
+                {
+                        ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, INPUT, index)));
+                        if (plist)
+                                plist->next = nlist;
+                        else
+                                s->clist = nlist;
+                        data->ntoken->c = rest_args;
+                }
+		else if (plist)
 		{
-			// ouvrir et fermer pour trunc
-			c->fdo = outfile;
+			rest_args = ft_strjoin_free(data->ptoken->c, rest_args, 0, 1);
+			ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, INPUT, index)));
+			data->ptoken->c = rest_args;
+			plist->next = nlist->next;
 		}
-		s->clist = nlist;
-                ntoken->c = rest_args;
-        }
-        else if (plist)
-        {
-                // x < y args
-                char *args = ft_strjoin_free(ptoken->c, rest_args, 0, 1);
-                if (!c || (last_sep != '>' && last_sep != '<' && ptoken->type == SEPARATOR))
-			ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(1, outfile, args, OUTPUT, index)));
-		else
-			c->fdo = outfile;
-		ptoken->c = args;
-                plist->next = nlist->next;
-        }
+	}
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -207,39 +145,37 @@ void	command_table(t_list *list, t_input *s)
 {
 	t_token	*token;
 	t_list	*plist;
-	char	last_sep;
 	int		i;
 	int		reset;
 
 	if (index_separator(list) == -1)
-		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, 1, token->c, NOFILES, 0)));
+		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, 1, ((t_token*)list->content)->c, NOFILES, 0)));
 	plist = NULL;
-	last_sep = 0;
-	i = -1;
+	i = 0;
 	while (list)
 	{
 		reset = 0;
 		token = list->content;
 		if (token->type == SEPARATOR)
 		{
-			if (*token->c == '<')
+			if (*token->c == '<' || *token->c == '>')
 			{
-				cmd_input(plist, list->next, s, i);
+				cmd_redirection(plist, list->next, s, i, token->c);
 				list = s->clist;
 				i = 0;
 				reset = 1;
 			}
+			/*
 			if (*token->c == '>')
 			{
-				cmd_output(plist, list->next, s, last_sep, i);
+				cmd_output(plist, list->next, s, i);
 				list = s->clist;
 				i = 0;
 				reset = 1;
-			}
-			last_sep = *token->c;
+			}*/
+			if (*token->c != '<' && *token->c != '>')
+				i++;
 		}
-		else
-			i++;
 		if (!reset)
 		{
 			plist = list;
