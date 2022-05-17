@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/16 18:34:22 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/17 11:31:44 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char	*join_tab(char **tab, int j)
  *	convertir les inputs x < y z et < y x z dans la cmd_list avec le fdi et fdo set
  *	+ modifie la clist pour que traiter correctement le reste des separateurs 
  */
+	// PRONLEME RECREER UNE COMMANDE POUR ls < in < file
 
 void	cmd_input(t_list *plist, t_list *nlist, t_input *s)
 {
@@ -80,7 +81,10 @@ void	cmd_input(t_list *plist, t_list *nlist, t_input *s)
 	{
 		//	< file ls
 		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(infile, NULL, rest_args, INPUT)));
-		s->clist = nlist;
+		if (!plist)
+			s->clist = nlist;
+		else
+			plist->next = nlist;
 		ntoken->c = rest_args;
 	}
 	else if (plist)
@@ -109,7 +113,7 @@ t_cmd	*is_cmd_existing(char *ss, t_input *s)
 	while (l)
 	{
 		cmd = l->content;
-		if (!ft_strcmp(ss, cmd->args))
+		if (cmd->args && !ft_strcmp(ss, cmd->args))
 			index = i;
 		l = l->next;
 		i++;
@@ -139,7 +143,8 @@ void	cmd_output(t_list *plist, t_list *nlist, t_input *s, char last_sep)
 	if (plist)
 	{
 		ptoken = plist->content;	
-		c = is_cmd_existing(ptoken->c, s);
+		if (s->cmd_list && ptoken->type == ALPHANUM)
+			c = is_cmd_existing(ptoken->c, s);
 	}
 	tab = ft_split(ntoken->c, ' ');
         outfile = ft_strdup(tab[0]);
@@ -161,7 +166,7 @@ void	cmd_output(t_list *plist, t_list *nlist, t_input *s, char last_sep)
         {
                 // x < y args
                 char *args = ft_strjoin_free(ptoken->c, rest_args, 0, 1);
-                if (!c || (last_sep != '>' && last_sep != '<'))
+                if (!c || (last_sep != '>' && last_sep != '<' && ptoken->type == SEPARATOR))
 			ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(NULL, outfile, args, OUTPUT)));
 		else
 			c->fdo = outfile;
@@ -169,6 +174,50 @@ void	cmd_output(t_list *plist, t_list *nlist, t_input *s, char last_sep)
                 plist->next = nlist->next;
         }
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+void	cmd_pipe(t_list *plist, t_list *nlist, t_input *s, int index)
+{
+	t_cmd	*pcmd;
+	t_cmd	*ncmd;
+	t_token	*ptoken;
+	t_token *ntoken;
+
+	ptoken = plist->content;
+	ntoken = nlist->content;
+	pcmd = NULL;
+	ncmd = NULL;
+	if (s->cmd_list)
+	{
+		pcmd = list_index(s->cmd_list, index - 1)->content;
+		if (ft_lstsize(s->cmd_list) >= index + 1)
+			ncmd = list_index(s->cmd_list, index)->content;
+	}
+	if (!pcmd)
+	{
+		pcmd = cmd(NULL, ft_strdup("pipe"), ptoken->c, NOFILES);
+		ft_lstadd_back(&s->cmd_list, ft_lstnew(pcmd));
+	}
+	if (!ncmd)
+	{
+		ncmd = cmd (ft_strdup("pipe"), NULL, ntoken->c, NOFILES);
+		ft_lstadd_back(&s->cmd_list, ft_lstnew(ncmd));
+	}
+	if (ncmd && !ncmd->fdi)
+	{
+		pcmd->fdo = ft_strdup("pipe");	
+	}
+	if (pcmd && !pcmd->fdo)
+	{
+		ncmd->fdi = ft_strdup("pipe");		
+	}
+	plist->next = nlist;
+}
+
+/*
+ *	degrouper les separator => err lorsque < x |> out	|> ou |< a separer
+ */
 
 void	command_table(t_list *list, t_input *s)
 {
@@ -201,12 +250,34 @@ void	command_table(t_list *list, t_input *s)
 				cmd_output(plist, list->next, s, last_sep);
 				list = s->clist;
 			}
-			/*ft_putchar_fd(*token->c, 2);
+			/*ft_putchar_fd('\n', 2);
+			ft_putchar_fd(*token->c, 2);
 			ft_putstr_fd("  ", 2);
 			show_command_table(s);
 			show_cmd_list(s->cmd_list);
 			*/last_sep = *token->c;
 		}
+		plist = list;
+		list = list->next;
+	}
+	ft_putstr_fd("///////////////////////////////", 2);
+	show_command_table(s);
+	//show_cmd_list(s->cmd_list);
+	list = s->clist;
+	int	i = 0;
+	while (list)
+	{
+		token = list->content;
+		if (token->type == SEPARATOR)
+		{
+			if (*token->c == '|')
+			{
+				cmd_pipe(plist, list->next, s, i);
+				list = s->clist;
+			}
+		}
+		else
+			i++;
 		plist = list;
 		list = list->next;
 	}
