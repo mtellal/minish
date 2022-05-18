@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/17 15:16:09 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/18 10:09:12 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,12 +145,10 @@ void	parser(t_input *s)
 	s->nb_sep = nb_token_type(s->clist, SEPARATOR);
 	s->nb_expand = nb_token_type(s->clist, EXPAND);
 	clear_space(s->clist, s);
-	show_command_table(s);
+	//show_command_table(s);
 	if (err_separator(s->clist, s))
 		return ;
-	//order_input(s->clist, s);
 	command_table(s->clist, s);
-	show_cmd_list(s->cmd_list);
-	//show_command_table(s);
+	//show_cmd_list(s->cmd_list);
 	clear_cmd_list(s->cmd_list, s);
 }
