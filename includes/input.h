@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/17 16:58:53 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/18 09:56:45 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_cmd
 	int		fdi;
 	int		fdo;
 	enum s_options	option;
+	char		*p_cmd;
 
 }		t_cmd;
 
@@ -182,6 +183,20 @@ void    clear_space(t_list *list, t_input *s);
 
 void    order_input(t_list *list, t_input *s);
 
+
+/////////////////////////////////////////////////////////
+//               E X E C U T E R  . C                  //
+/////////////////////////////////////////////////////////
+
+/////	E X E C U T E R .C 		/////
+
+void    executer(t_list *list, t_input *s);
+
+/////	C O M M A N D S . C 		/////
+
+char    *is_valid_cmd(char *cmd, char **env);
+
+
 /////////////////////////////////////////////////////////
 //               C O M M A N D S . C         	       //
 /////////////////////////////////////////////////////////
@@ -196,7 +211,6 @@ void    launch_pipex(t_input *s);
 
 //////////	I S _ C O M M A N D . C 	//////////
 
-int	is_valid_cmd(char *cmd, t_input *s);
 int     err_cmd(char    *cmd, t_input *s);
 
 //////////		U T I L S		//////////

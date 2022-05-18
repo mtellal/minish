@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/17 21:38:41 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/18 09:44:42 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_cmd	*cmd(int fdi, int fdo, char *args, enum s_options OPTION, int id)
 	cmd->args = args;
 	cmd->option = OPTION;
 	cmd->id = id;
+	cmd->p_cmd = NULL;
 	return (cmd);	
 }
 
