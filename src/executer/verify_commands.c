@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 14:58:04 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/18 09:40:06 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/18 10:17:54 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char	*is_valid_cmd(char *cmd, char **env)
 
 	i = 0;
 	p = tab_path(env);
+	s = NULL;
 	if (!p)
 		return (NULL);
 	while (p[i] && !valid_cmd(p[i], cmd))
@@ -64,7 +65,7 @@ char	*is_valid_cmd(char *cmd, char **env)
 		write(2, "Error: command not found: ", 26);
 		write(2, cmd, ft_strlen(cmd));
 		write(2, "\n", 1);
-		s = ft_strdup(cmd);
+		exit(0);
 	}
 	free_tab(p);
 	return (s);

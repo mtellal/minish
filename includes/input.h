@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/18 09:56:45 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/18 19:15:35 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ typedef struct s_input
 	int		nb_cmd;
 	int		nb_expand;
 
+	int		nb_pipes;
+	int		**pipes;
 }		t_input;
 
 
@@ -150,6 +152,7 @@ void    clear_cmd_list(t_list *list, t_input *s);
 
 //////////	L A Y E R 2 . C 		//////////
 
+t_cmd   *cmd_index(t_list *list, int index);
 void    layer2(t_list *list, t_input *s);
 
 //////////		U T I L S 		//////////
@@ -196,12 +199,17 @@ void    executer(t_list *list, t_input *s);
 
 char    *is_valid_cmd(char *cmd, char **env);
 
+/////	P I P E S . C			/////
+
+void    set_pipes(t_list *list, t_input *s);
 
 /////////////////////////////////////////////////////////
 //               C O M M A N D S . C         	       //
 /////////////////////////////////////////////////////////
 
 //////////	C O M M A N D S . C		//////////
+
+void    open_n_close(t_utils *data, int flags, mode_t mode, char r);
 
 char	**clist_to_argv(t_input *s);
 

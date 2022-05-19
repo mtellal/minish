@@ -6,11 +6,31 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:23:56 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/18 10:07:30 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/18 17:39:17 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
+
+t_cmd	*cmd_index(t_list *list, int index)
+{
+	t_cmd	*cmd;
+
+	if (!list)
+		return (NULL);
+	while (list)
+	{
+		cmd = list->content;
+		if (cmd->id == index)
+			return (cmd);
+		list = list->next;
+	}
+	return (NULL);
+}
+
+/*
+ *	suivant l'id de la commande changer le add_back ou add_front ou add_index
+ */
 
 void    cmd_pipe(t_list *plist, t_list *nlist, t_input *s, int index)
 {
@@ -25,9 +45,8 @@ void    cmd_pipe(t_list *plist, t_list *nlist, t_input *s, int index)
         ncmd = NULL;
         if (s->cmd_list)
         {
-                pcmd = list_index(s->cmd_list, index)->content;
-                if (ft_lstsize(s->cmd_list) > index + 1)
-                        ncmd = list_index(s->cmd_list, index + 1)->content;
+                pcmd = cmd_index(s->cmd_list, index);
+		ncmd = cmd_index(s->cmd_list, index + 1);
         }
         if (!pcmd)
         {
@@ -70,6 +89,7 @@ void	layer2(t_list *list, t_input *s)
                                 list = s->clist;
                                 i_cmd = -1;
                                 reset = 1;
+				s->nb_pipes++;
 			}
                 }
                 else
@@ -80,7 +100,7 @@ void	layer2(t_list *list, t_input *s)
                         list = list->next;
                 }
         }
-       // ft_putstr_fd("/////////////// L A Y E R 2 ////////////////\n\n", 2);
+       	//ft_putstr_fd("\n/////////////// L A Y E R 2 ////////////////\n", 2);
         //show_command_table(s);
         //show_cmd_list(s->cmd_list);
 	executer(s->cmd_list, s);
