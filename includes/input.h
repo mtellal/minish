@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/18 19:15:35 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/19 15:13:17 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_input
 
 	int		nb_pipes;
 	int		**pipes;
+	int		hd;
 }		t_input;
 
 
@@ -209,7 +210,7 @@ void    set_pipes(t_list *list, t_input *s);
 
 //////////	C O M M A N D S . C		//////////
 
-void    open_n_close(t_utils *data, int flags, mode_t mode, char r);
+void    open_n_close(t_utils *data, int flags, mode_t mode, char *r);
 
 char	**clist_to_argv(t_input *s);
 

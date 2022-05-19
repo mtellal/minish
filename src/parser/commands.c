@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/18 17:39:05 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/19 15:11:22 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,61 @@ char	*join_tab(char **tab, int j)
  */
 	// PRONLEME RECREER UNE COMMANDE POUR ls < in < file
 
-void	open_n_close(t_utils *data, int flags, mode_t mode, char r)
+void	open_n_close(t_utils *data, int flags, mode_t mode, char *r)
 {
-	if (r == '<' && data->cmd && data->cmd->fdi > 2)
+	if (*r == '<' && data->cmd && data->cmd->fdi > 2)
 		close(data->cmd->fdi);
-	if (r == '>' && data->cmd && data->cmd->fdo > 2)
+	if (*r == '>' && data->cmd && data->cmd->fdo > 2)
 		close(data->cmd->fdo);
 	if (ft_open(&data->file, data->tab[0], flags, mode) == -1)
 	{
 		ft_putstr_fd("err input file \n", 2);
+		exit(0);
+	}
+}
+
+void	modify_redirection(t_utils *data, t_list *plist, t_list *nlist, char *rest_args, char *r)
+{
+	if (*r == '<')
+		data->cmd->fdi = data->file;
+	if (*r == '>')
+		data->cmd->fdo = data->file;
+	if (nlist)
+		plist->next = nlist->next;
+	else
+		plist->next = nlist;
+	if (rest_args)
+		data->cmd->args = ft_strjoin_free(data->cmd->args, rest_args, 0, 1);
+}
+
+void	open_n_close_hd(t_utils *data)
+{
+	char	*buffer;
+
+	if (data->cmd && data->cmd->fdi > 2)
+		close(data->cmd->fdi);
+	data->file = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0666);
+	if (data->file == -1)
+	{
+		ft_putstr_fd("err open .heredoc", 2);
+		exit(0);
+	}
+	while ((buffer = readline("heredoc> ")))
+	{
+		if (!ft_strcmp(buffer, data->tab[0]))
+		{
+			free(buffer);
+			break ;
+		}
+		buffer = ft_strjoin_free(buffer, "\n", 1, 0);
+		ft_putstr_fd(buffer, data->file);
+		free(buffer);
+	}
+	close(data->file);
+	data->file = open(".heredoc", O_RDONLY, 0);
+	if (data->file == -1)
+	{
+		ft_putstr_fd("err open .heredoc", 2);
 		exit(0);
 	}
 }
@@ -93,30 +139,26 @@ void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *
 
 	data->tab = ft_split(data->ntoken->c, ' ');
 	
-	if (*r == '<')
-		open_n_close(data, O_RDONLY, 0, '<');
-	if (*r == '>')
-		open_n_close(data, O_CREAT | O_RDWR | O_TRUNC, 0666, '>');
+	if (!ft_strcmp(r, "<"))
+		open_n_close(data, O_RDONLY, 0, r);
+	if (!ft_strcmp(r, ">"))
+		open_n_close(data, O_CREAT | O_RDWR | O_TRUNC, 0666, r);
+	if (!ft_strcmp(r, ">>"))
+		open_n_close(data, O_CREAT | O_RDWR | O_APPEND, 0666, r);
+	if (!ft_strcmp(r, "<<"))
+		open_n_close_hd(data);
 
 	rest_args = join_tab(data->tab, 1);
 	if (data->cmd)
-	{
-		if (*r == '<')
-			data->cmd->fdi = data->file;
-		if (*r == '>')
-			data->cmd->fdo = data->file;
-		if (nlist)
-			plist->next = nlist->next;
-		else
-			plist->next = nlist;
-		if (rest_args)
-			data->cmd->args = ft_strjoin_free(data->cmd->args, rest_args, 0, 1);	
-	}
+		modify_redirection(data, plist, nlist, rest_args, r);
 	if (!data->cmd)
 	{
 		if (!plist || (plist && data->ptoken->type == SEPARATOR))
                 {
-                        if (*r == '<')
+			//	< file cmd args   ||  | < file cmd args
+			//	> file cmd args   ||  | > file cmd args
+                        
+			if (*r == '<')
 				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, INPUT, index)));
                         if (*r == '>')
 				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, rest_args, INPUT, index)));
@@ -128,6 +170,9 @@ void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *
                 }
 		else if (plist)
 		{
+			//	cmd < file args
+			//	cmd > file args
+
 			rest_args = ft_strjoin_free(data->ptoken->c, rest_args, 0, 1);
 			if (*r == '<')
 				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, INPUT, index)));
