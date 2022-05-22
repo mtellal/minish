@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/19 15:13:17 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/20 16:58:23 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,13 +156,25 @@ void    clear_cmd_list(t_list *list, t_input *s);
 t_cmd   *cmd_index(t_list *list, int index);
 void    layer2(t_list *list, t_input *s);
 
+/////	V E R I F _ Q U O T E S . C 		/////
+
+char    *clear_quotes(char *s);
+int     err_quotes(t_list *list);
+int     wrong_number_quote(char *s);
+
+
+
+
+
+
+
 //////////		U T I L S 		//////////
 
 /////	P A R S E R _ U T I L S .C 	/////
 
 t_list	*list_index(t_list *list, int l);
 
-/////	V E R I F Y _ S E PA  R T O R . C 	/////
+/////	V E R I F Y _ S E P A R T O R . C 	/////
 
 int     ft_belong(char *s, char c);
 int     same_char(char *s, char c, int l);
@@ -188,6 +200,15 @@ void    clear_space(t_list *list, t_input *s);
 void    order_input(t_list *list, t_input *s);
 
 
+
+
+
+
+
+
+
+
+
 /////////////////////////////////////////////////////////
 //               E X E C U T E R  . C                  //
 /////////////////////////////////////////////////////////
@@ -203,6 +224,13 @@ char    *is_valid_cmd(char *cmd, char **env);
 /////	P I P E S . C			/////
 
 void    set_pipes(t_list *list, t_input *s);
+
+
+
+
+
+
+
 
 /////////////////////////////////////////////////////////
 //               C O M M A N D S . C         	       //

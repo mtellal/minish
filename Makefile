@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/18 15:17:08 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/19 16:55:46 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SOURCES =	main.c \
 	parser/parser.c parser/commands.c parser/commands_utils.c parser/layer2.c \
 	parser/utils/parser_utils.c parser/utils/utils.c parser/utils/verify_separator.c \
 	parser/utils/list_utils.c parser/utils/order_clist.c \
+	parser/verif_quotes.c \
 	executer/verify_commands.c executer/executer.c executer/pipes.c
 
 DEBUG = $(addprefix utils/debug/, lexer/debug_lexer.c parser/debug_parser.c)

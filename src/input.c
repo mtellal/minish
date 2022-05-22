@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/18 19:53:22 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/19 15:41:21 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ int	getInput(t_input *s)
 	clear_list = &clear_telement;
 	while ((buffer = readline(PROMPT)) != NULL)
 	{
+		//	!!!!!	>> a ne pas add dans l'histo	!!!!
+		//	verifier si d'autres execptions
+
 		if (*buffer)
 			add_history(buffer);
 		s->input = buffer;
