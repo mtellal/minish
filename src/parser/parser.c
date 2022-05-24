@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/22 11:29:14 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/24 16:25:06 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,8 @@ void	parser(t_input *s)
 	{
 		next_group = next_index_group(s->tlist);
 		token = tokenize(next_group, s->tlist);
+		char *test = ft_strdup(token->c);
+		ft_putstr_fd(test, 2);
 		if (!s->clist)
 			s->clist = ft_lstnew(token);
 		else
@@ -147,12 +149,9 @@ void	parser(t_input *s)
 	}
 	s->nb_cmd = nb_token_type(s->clist, ALPHANUM);
 	s->nb_sep = nb_token_type(s->clist, SEPARATOR);
-	s->nb_expand = nb_token_type(s->clist, EXPAND);
 	clear_space(s->clist, s);
-	//show_command_table(s);
 	if (err_separator(s->clist, s))
 		return ;
 	command_table(s->clist, s);
-	//show_cmd_list(s->cmd_list);
 	clear_cmd_list(s->cmd_list, s);
 }

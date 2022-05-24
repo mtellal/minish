@@ -6,26 +6,11 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:21:09 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/17 15:14:55 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/24 16:36:18 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
-
-char	*option(enum s_options opt)
-{
-	if (opt == NOFILES)
-		return ("NOFILES");
-	if (opt == INPUT)
-		return ("INPUT");
-	if (opt == OUTPUT)
-		return ("OUTPUT");
-	if (opt == APPEND)
-		return ("APPEND");
-	if (opt == HEREDOC)
-		return ("HEREDOC");
-	return ("NONE");
-}
 
 void	clear_cmd_list(t_list *list, t_input *s)
 {
@@ -59,7 +44,7 @@ void	show_cmd_list(t_list *list)
 	while (list)
 	{
 		cmd = list->content;
-		printf("id: %i   |   FDI:'%i'   |   FDO:'%i'	|   ARGS:'%s'  |  OPTION:%s \n", cmd->id, cmd->fdi, cmd->fdo, cmd->args, option(cmd->option));
+		printf("id: %i   |   FDI:'%i'   |   FDO:'%i'	|   ARGS:' %s '  | cmd:' %s ' \n", cmd->id, cmd->fdi, cmd->fdo, cmd->args, cmd->cmd);
 		list = list->next;
 		i++;
 	}

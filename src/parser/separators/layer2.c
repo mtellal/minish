@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:23:56 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/22 10:42:50 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/24 10:04:40 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ void    cmd_pipe(t_list *plist, t_list *nlist, t_input *s, int index)
         }
         if (!pcmd)
         {
-                pcmd = cmd(0, -2, ptoken->c, NOFILES, index);
+                pcmd = cmd(0, -2, ptoken->c, index);
                 ft_lstadd_back(&s->cmd_list, ft_lstnew(pcmd));
         }
         if (!ncmd)
         {
-                ncmd = cmd (-2, 1, ntoken->c, NOFILES, index + 1);
+                ncmd = cmd (-2, 1, ntoken->c, index + 1);
                 ft_lstadd_back(&s->cmd_list, ft_lstnew(ncmd));
         }
         if (ncmd && ncmd->fdi == 0)
@@ -103,8 +103,8 @@ void	layer2(t_list *list, t_input *s)
        	//ft_putstr_fd("\n/////////////// L A Y E R 2 ////////////////\n", 2);
         //show_command_table(s);
         //show_cmd_list(s->cmd_list);
-	err_quotes(s->cmd_list);
+	modify_quotes(s->cmd_list);
 	ft_putstr_fd("\n", 2);
+	executer(s->cmd_list, s);
 	show_cmd_list(s->cmd_list);
-	//executer(s->cmd_list, s);
 }

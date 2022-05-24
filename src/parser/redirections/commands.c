@@ -6,13 +6,13 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/19 15:11:22 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/24 16:28:20 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-t_cmd	*cmd(int fdi, int fdo, char *args, enum s_options OPTION, int id)
+t_cmd	*cmd(int fdi, int fdo, char *args, int id)
 {
 	t_cmd	*cmd;
 
@@ -20,23 +20,10 @@ t_cmd	*cmd(int fdi, int fdo, char *args, enum s_options OPTION, int id)
 	cmd->fdi = fdi;
 	cmd->fdo = fdo;
 	cmd->args = args;
-	cmd->option = OPTION;
 	cmd->id = id;
-	cmd->p_cmd = NULL;
+	cmd->cmd = NULL;
+	cmd->cmd_args = NULL;
 	return (cmd);	
-}
-
-enum s_options	sep_to_opt(char *s)
-{
-	if (!ft_strcmp(s, "<"))
-		return (INPUT);
-	if (!ft_strcmp(s, ">"))
-		return (OUTPUT);
-	if (!ft_strcmp(s, "<<"))
-		return (HEREDOC);
-	if (!ft_strcmp(s, ">>"))
-		return (APPEND);
-	return (NOFILES);
 }
 
 char	*join_tab(char **tab, int j)
@@ -159,9 +146,9 @@ void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *
 			//	> file cmd args   ||  | > file cmd args
                         
 			if (*r == '<')
-				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, INPUT, index)));
+				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args,index)));
                         if (*r == '>')
-				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, rest_args, INPUT, index)));
+				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, rest_args, index)));
 			if (plist)
                                 plist->next = nlist;
                         else
@@ -175,9 +162,9 @@ void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *
 
 			rest_args = ft_strjoin_free(data->ptoken->c, rest_args, 0, 1);
 			if (*r == '<')
-				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, INPUT, index)));
+				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, index)));
 			if (*r == '>')
-				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, rest_args, INPUT, index)));
+				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, rest_args, index)));
 			data->ptoken->c = rest_args;
 			plist->next = nlist->next;
 		}
@@ -201,7 +188,7 @@ void	command_table(t_list *list, t_input *s)
 	int		reset;
 
 	if (index_separator(list) == -1)
-		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, 1, ((t_token*)list->content)->c, NOFILES, 0)));
+		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, 1, ((t_token*)list->content)->c, 0)));
 	plist = NULL;
 	i = 0;
 	while (list)

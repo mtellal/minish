@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/16 14:58:04 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/18 10:17:54 by mtellal          ###   ########.fr       */
+/*   Created: 2022/05/22 21:17:10 by mtellal           #+#    #+#             */
+/*   Updated: 2022/05/24 16:35:21 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "input.h"
 
 char	**tab_path(char **env)
 {
@@ -21,7 +21,7 @@ char	**tab_path(char **env)
 	while (env && *env && ft_strncmp("PATH", *env, 4) != 0)
 		env++;
 	if (!*env)
-		err("Error PATH problem", 0);
+		ft_putstr_fd("err PATH invalid\n", 2);	
 	tab = ft_split(*env + 5, ':');
 	return (tab);
 }
@@ -71,21 +71,4 @@ char	*is_valid_cmd(char *cmd, char **env)
 	return (s);
 }
 
-/*
-void	fill_commands(t_pip *s, int nbc)
-{
-	int	i;
 
-	i = 0;
-	while (i < nbc)
-	{
-		command(s->arg[i][0], s, i, s->data.env);
-		i++;
-	}
-	if (s->err.cmd)
-	{
-		close_files(s);
-		free_s(s, 1, 1, 1);
-		err("", 0);
-	}
-}*/

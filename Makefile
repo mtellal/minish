@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/19 16:55:46 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/24 16:31:18 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,13 +22,16 @@ NAME = minishell
 SOURCES =	main.c \
 	input.c \
 	lexer/lexer.c \
-	parser/parser.c parser/commands.c parser/commands_utils.c parser/layer2.c \
+	parser/parser.c\
+	parser/redirections/commands.c\
+	parser/separators/layer2.c\
 	parser/utils/parser_utils.c parser/utils/utils.c parser/utils/verify_separator.c \
-	parser/utils/list_utils.c parser/utils/order_clist.c \
-	parser/verif_quotes.c \
-	executer/verify_commands.c executer/executer.c executer/pipes.c
+	parser/quotes/verif_quotes.c parser/quotes/modify_quotes.c parser/quotes/quote_utils.c\
+	parser/quotes/expand_quotes.c \
+	executer/verify_commands.c executer/executer.c executer/pipes.c \
+	utils/tab_utils.c utils/string_utils.c utils/open_utils.c
 
-DEBUG = $(addprefix utils/debug/, lexer/debug_lexer.c parser/debug_parser.c)
+DEBUG = $(addprefix utils/debug/, lexer/debug_lexer.c parser/debug_parser.c parser/commands_utils.c)
 
 SRC = $(addprefix src/, $(SOURCES)) $(DEBUG) 
 
@@ -37,9 +40,7 @@ OBJ = $(SRC:.c=.o)
 
 #############		DIR		#################
 
-PDIR = utils/pipex
-
-LIBDIR = $(PDIR)/libft
+LIBDIR = utils/libft
 
 
 #############		HEADERS		###################	
@@ -51,7 +52,7 @@ HEADERS = -I $(HDIR) -I $(LIBDIR) -I $(PDIR)/includes
 
 ##############		LIBS		#################
 
-LIB = -lreadline -L $(LIBDIR) -lft -L $(PDIR) -lpipex
+LIB = -lreadline -L $(LIBDIR) -lft 
 
 
 #############		COMMANDS		##########
@@ -62,15 +63,15 @@ all: $(NAME)
 	$(GCC) $(CFLAGS) $(HEADERS) -o $@ -c $<   
 
 $(NAME): $(OBJ)
-	make -C $(PDIR)
+	make -C $(LIBDIR)
 	$(GCC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIB)
 
 clean:
-	make clean -C $(PDIR)
+	make clean -C $(LIBDIR)
 	rm -rf $(OBJ)
 
 fclean: clean
-	make fclean -C $(PDIR)
+	make fclean -C $(LIBDIR)
 	rm -rf $(NAME)
 
 re: fclean all

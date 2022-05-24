@@ -6,25 +6,11 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 09:54:08 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/15 11:19:13 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/24 16:16:13 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
-
-int     ft_belong(char *s, char c)
-{
-        int     i;
-
-        i = 0;
-        while (s[i])
-        {
-                if (s[i] == c)
-                        return (1);
-                i++;
-        }
-        return (0);
-}
 
 //      verifie si l char dans s sont bien c, utile pour << et >>
 

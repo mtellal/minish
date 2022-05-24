@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/19 11:44:08 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/22 21:35:57 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	execute(t_cmd *cmd, char **args, t_input *s)
 {
 		set_fds(cmd->fdi, cmd->fdo);
 		close_fds(s);
-		if (execve(cmd->p_cmd, args, s->env) == -1)
+		if (execve(cmd->cmd, args, s->env) == -1)
 		{
 			ft_putstr_fd("Error command not found: ", 2);
 			perror("");
@@ -57,7 +57,6 @@ void	execute(t_cmd *cmd, char **args, t_input *s)
 void	executer(t_list *list, t_input *s)
 {
 	t_cmd	*cmd;
-	char	**tab;
 	pid_t	f;
 	
 	set_pipes(list, s);
@@ -69,10 +68,10 @@ void	executer(t_list *list, t_input *s)
 			ft_putstr_fd("error fork\n", 2);
 		if (f == 0)
 		{
-			tab = ft_split(cmd->args, ' ');
-			cmd->p_cmd = is_valid_cmd(tab[0], s->env);
-			if (cmd->p_cmd)
-				execute (cmd, tab, s);
+			cmd->cmd_args = ft_split(cmd->args, ' ');
+			cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->env);
+			if (cmd->cmd)
+				execute (cmd, cmd->cmd_args, s);
 			else
 				ft_putstr_fd("bad p_cmd\n", 2);
 		}

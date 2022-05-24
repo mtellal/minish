@@ -6,42 +6,11 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 11:18:51 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/13 17:17:51 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/24 15:38:47 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
-
-/*
- *	renvoie le nb de char* dans un tab
- */
-
-int	ft_strlen_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
-}
-
-/*
- *	free chaque char* dans un tab, ainsi que tab
- */
-
-void	free_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-}
 
 int	only_space(char *s)
 {

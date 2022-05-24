@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/20 16:58:23 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/24 16:33:56 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 #define INPUT_H
 
 #include "libft.h"
-#include "pipex.h"
+
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/wait.h>
 
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -30,7 +34,6 @@ typedef struct s_list	t_list;
 enum s_type
 {
 	ALPHANUM,
-	EXPAND,
 	SEPARATOR,
 };
 
@@ -48,8 +51,8 @@ typedef struct s_cmd
 	char		*args;
 	int		fdi;
 	int		fdo;
-	enum s_options	option;
-	char		*p_cmd;
+	char		**cmd_args;
+	char		*cmd;
 
 }		t_cmd;
 
@@ -101,7 +104,6 @@ typedef struct s_input
 
 	int		nb_sep;
 	int		nb_cmd;
-	int		nb_expand;
 
 	int		nb_pipes;
 	int		**pipes;
@@ -143,8 +145,7 @@ int     number_of_groups(t_list *list);
 
 //////////	C O M M A N D S . C 		//////////
 
-t_cmd   *cmd(int fdi, int fdo, char *args, enum s_options OPTION, int id);
-enum s_options  sep_to_opt(char *s);
+t_cmd   *cmd(int fdi, int fdo, char *args, int id);
 char    *join_tab(char **tab, int j);
 void	command_table(t_list *list, t_input *s);
 
@@ -156,13 +157,32 @@ void    clear_cmd_list(t_list *list, t_input *s);
 t_cmd   *cmd_index(t_list *list, int index);
 void    layer2(t_list *list, t_input *s);
 
+
+
+//////////		Q U O T E S		//////////
+
+// > parser/quotes
+
 /////	V E R I F _ Q U O T E S . C 		/////
 
-char    *clear_quotes(char *s);
-int     err_quotes(t_list *list);
+int     index_quote(char *s, char c);
 int     wrong_number_quote(char *s);
+char    *clear_quotes(char *s);
+int     msg_err_quote(void);
+int     err_quotes(char *buffer, char **input);
 
+/////	M O D I F Y . Q U O T E S . C 		/////
 
+int     modify_quotes(t_list *list);
+
+/////	E X P A N D _ Q U O T E S . C 		/////
+
+char    *expand_quotes(char *s);
+
+/////	Q U O T E _ U T I L S . C 		/////
+
+int     last_quote_in_word(char *s, char quote);
+int     first_quote_in_word(char *s, int index, char quote);
 
 
 
@@ -195,11 +215,6 @@ int     nb_token_type(t_list *list, enum s_type type);
 void    clear_space(t_list *list, t_input *s);
 
 
-/////	O R D E R _ C L I S T . C	/////
-
-void    order_input(t_list *list, t_input *s);
-
-
 
 
 
@@ -217,15 +232,15 @@ void    order_input(t_list *list, t_input *s);
 
 void    executer(t_list *list, t_input *s);
 
-/////	C O M M A N D S . C 		/////
-
-char    *is_valid_cmd(char *cmd, char **env);
-
 /////	P I P E S . C			/////
 
 void    set_pipes(t_list *list, t_input *s);
 
+/////	V E R I F Y _ C O M M A N D S . C /////
 
+char    **tab_path(char **env);
+int     valid_cmd(char *path, char *cmd);
+char    *is_valid_cmd(char *cmd, char **env);
 
 
 
@@ -259,6 +274,24 @@ int     nb_token_type(t_list *list, enum s_type type);
 
 
 
+/////////////////////////////////////////////////////////
+//                      U T I L S                      //
+/////////////////////////////////////////////////////////
+
+/////	TAB_UTILS.C
+
+char    **add_tab(char **tab, char *s);
+char    *tab_to_s(char **tab);
+int     ft_strlen_tab(char **tab);
+void    free_tab(char **tab);
+
+/////	STRING_UTILS.C
+
+int     ft_belong(char *s, char c);
+
+/////	OPEN_UTILS.C
+
+int	ft_open(int *fd, char *file, int flags, mode_t mode);
 
 /////////////////////////////////////////////////////////
 //                      D E B U G                      //
