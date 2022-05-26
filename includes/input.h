@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/24 16:33:56 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/24 18:03:25 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,8 @@ char    *expand_quotes(char *s);
 
 /////	Q U O T E _ U T I L S . C 		/////
 
-int     last_quote_in_word(char *s, char quote);
-int     first_quote_in_word(char *s, int index, char quote);
+int     last_quote_in_word(char *s, char quote, char p_quote);
+int     first_quote_in_word(char *s, int index, char quote, char p_quote);
 
 
 

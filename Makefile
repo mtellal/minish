@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/24 16:31:18 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/26 10:27:56 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ SOURCES =	main.c \
 	parser/separators/layer2.c\
 	parser/utils/parser_utils.c parser/utils/utils.c parser/utils/verify_separator.c \
 	parser/quotes/verif_quotes.c parser/quotes/modify_quotes.c parser/quotes/quote_utils.c\
-	parser/quotes/expand_quotes.c \
 	executer/verify_commands.c executer/executer.c executer/pipes.c \
 	utils/tab_utils.c utils/string_utils.c utils/open_utils.c
 

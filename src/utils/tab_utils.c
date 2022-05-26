@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 15:35:22 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/24 15:38:59 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/25 12:10:35 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char    **add_tab(char **tab, char *s)
         int     i;
 
         i = 0;
+	if (!s || !*s)
+		return (NULL);
         ntab = ft_calloc(ft_strlen_tab(tab) + 2, sizeof(char*));
         while (tab && tab[i])
         {
@@ -28,7 +30,7 @@ char    **add_tab(char **tab, char *s)
         ntab[i++] = ft_strdup(s);
         ntab[i] = NULL;
         free(s);
-        return (ntab);
+	return (ntab);
 }
 
 char    *tab_to_s(char **tab)
@@ -37,12 +39,13 @@ char    *tab_to_s(char **tab)
         int     i;
 
         i = 0;
-        while (tab[i])
+        s = NULL;
+	while (tab[i])
         {
                 s = ft_strjoin_free(s, tab[i], 1, 1);
                 i++;
         }
-        free(tab);
+	free(tab);
         return (s);
 }
 

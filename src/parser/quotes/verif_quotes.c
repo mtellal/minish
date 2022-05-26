@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 16:22:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/24 10:00:58 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/25 19:27:33 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,40 +95,41 @@ int	len_rm_empty_quotes(char *s)
 char	*remove_empty_quotes(char *s)
 {
 	char	*ns;
-	int	i;
-	int	j;
+	int	f_quote;
+	int	l_quote;
 	char	quote;
+	int	i;
 
-	ns = ft_calloc(len_rm_empty_quotes(s) + 1, sizeof(char));
+	ns = NULL;
 	i = 0;
-	j = 0;
-	quote = 0;
-	while (s[i])
-        {
-                if (s[i] == '\'' || s[i] == '\"')
-                {
-                	if (!quote)
-                                quote = s[i];
-                        if (s[i] == quote && s[i + 1] && s[i + 1] == quote)
-                        {
-                                quote = 0;
-                                i += 2;
-                        }
-			else
-			{
-				ns[j] = s[i];
-				i++;
-				j++;
-			}
+	while (1)
+	{
+		f_quote = index_quote(s + i, 0);
+		if (f_quote == -1)
+		{
+			if (s[i])
+				ns = ft_strjoin_free(ns, ft_substr(s + i, 0, ft_strlen(s + i)), 1, 1);
+			return (ns);
 		}
-                else
-                {
-                        ns[j] = s[i];
-                        i++;
-			j++;
-                }
-        }
-	ns[j] = '\0';
+		quote = s[i + f_quote];
+		if (f_quote > 0)
+			ns = ft_strjoin_free(ns, ft_substr(s + i, 0, f_quote), 1, 1);
+		i += f_quote;
+		l_quote = index_quote(s + i + 1, quote);
+		if (l_quote == -1)
+		{
+			free(ns);
+			return (NULL);
+		}
+		if (l_quote == 0)
+			i += 2;
+		
+		else
+		{
+			ns = ft_strjoin_free(ns, ft_substr(s + i, 0, l_quote + 2), 1, 1);
+			i += l_quote + 2;
+		}
+	}
 	return (ns);
 }
 
@@ -144,7 +145,10 @@ int	err_quotes(char *buffer, char **input)
 	char	*s;
 
 	s = remove_empty_quotes(buffer);
-	if (index_quote(s, 0) != -1 && wrong_number_quote(s))
+	ft_putstr_fd("remove empty quotes ", 2);
+	ft_putstr_fd(s, 2);
+	ft_putstr_fd("\n", 2);
+	if (!s || (index_quote(buffer, 0) != -1  && wrong_number_quote(s)))
 			return (msg_err_quote());
 	free(*input);
 	*input = s;
