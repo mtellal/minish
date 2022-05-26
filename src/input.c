@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/24 16:25:25 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/26 21:02:06 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,14 @@ int	getInput(t_input *s)
 	clear_list = &clear_telement;
 	while ((buffer = readline(PROMPT)) != NULL)
 	{
-		//	!!!!!	>> a ne pas add dans l'histo	!!!!
-		//	verifier si d'autres execptions
-
 		if (*buffer)
 			add_history(buffer);
 		s->input = buffer;
 		s->llist = ft_strlen(buffer);
 		if (*buffer && err_quotes(buffer, &s->input) != -1)
 		{
-			ft_putstr_fd("input : ", 2);
-			ft_putstr_fd(s->input, 2);
-			ft_putstr_fd("\n", 2);
 			lexer(s);
 			parser(s);
-			//ft_lstclear(&s->tlist, clear_list);
 			ft_lstclear(&s->clist, clear_list);
 		}
 		i++;

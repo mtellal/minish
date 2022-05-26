@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 16:22:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/26 15:24:37 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/26 21:59:18 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ char	**tab_quotes(char *s)
 		else
                 {
 			if (ns)
-				tab = add_tab(tab, ns);
+				tab = add_tab(tab, ns, 0);
                         if (s[i])
-                                tab = add_tab(tab, ft_substr(s + i, 0, ft_strlen(s + i)));
+                                tab = add_tab(tab, ft_substr(s + i, 0, ft_strlen(s + i)), 0);
                         return (tab);
                 }
 		if (f_quote > 0 && n_sp < f_quote)
 		{
-			tab = add_tab(tab, ft_substr(s + i, 0, n_sp));
+			tab = add_tab(tab, ft_substr(s + i, 0, n_sp), 0);
 			i += n_sp;
 		}
 		else if (n_sp > f_quote)
@@ -80,7 +80,7 @@ char	**tab_quotes(char *s)
 		{
 			if (ns)
 			{
-				tab = add_tab(tab, ns);
+				tab = add_tab(tab, ns, 0);
 				ns = NULL;
 			}
 			i++;
@@ -148,52 +148,55 @@ char	*clear_word(char *s, int f_quote)
 }
 
 
-char	*clear_quotes(char *s)
+char	*clear_quotes(char *s, char ***args)
 {
 	char	**tab;
 	char	*ns;
 	int	f_quote;
 	int	i;
+	char	*c_word;
 
+	if (!s)
+	{
+		*args = NULL;
+		return (NULL);
+	}
 	i = 0;
 	tab = tab_quotes(s);
 	ns = NULL;
 	while (tab[i])
 	{
-		ft_putstr_fd("tab[i] ", 2);
-		ft_putstr_fd(tab[i], 2);
-		ft_putstr_fd("\n", 2);
-		ft_putstr_fd(" clear_word ", 2);
 		f_quote = index_quote(tab[i], 0);
 		if (f_quote != - 1)
 		{
-			ns = ft_strjoin_free(ns, ft_strjoin_free(" ", clear_word(tab[i], f_quote), 0, 1), 1, 1);
-			ft_putstr_fd(ns, 2);
+			c_word = clear_word(tab[i], f_quote);
+			*args = add_tab(*args, ft_substr(c_word, 1, ft_strlen(c_word + 1) - 1), 0);
+			ns = ft_strjoin_free(ns, ft_strjoin_free(" ", c_word, 0, 1), 1, 1);
 		}
 		else
+		{
+			*args = merge_tab(*args, ft_split(tab[i], ' '));
 			ns = ft_strjoin_free(ns, ft_strjoin_free(" ", tab[i], 0, 1), 1, 0);
-		ft_putstr_fd(ns, 2);
-		ft_putstr_fd("\n", 2);
+		}
 		i++;
 	}
 	return (ns);	
 }
 
 
-int	modify_quotes(t_list *list)
+int	fill_args(t_list *list, t_input *s)
 {
 	t_cmd	*cmd;
 
 	while (list)
 	{
 		cmd = list->content;
-		if (index_quote(cmd->args, '\'') != -1 || index_quote(cmd->args, '\"') != -1)
-		{
-			cmd->args = clear_quotes(cmd->args);
-		}
-		ft_putstr_fd("cmd : ", 2);
-		ft_putstr_fd(cmd->args, 2);
-		ft_putstr_fd("\n", 2);
+		//if (index_quote(cmd->args, '\'') != -1 || index_quote(cmd->args, '\"') != -1)
+		cmd->args = clear_quotes(cmd->args, &cmd->cmd_args);
+		if (cmd->cmd_args)
+			cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->env);
+		else
+			cmd->cmd = NULL;
 		list = list->next;
 	}
 	return (0);

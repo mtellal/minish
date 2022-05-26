@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:23:56 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/24 10:04:40 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/26 22:11:42 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,7 @@ void	layer2(t_list *list, t_input *s)
                         list = list->next;
                 }
         }
-       	//ft_putstr_fd("\n/////////////// L A Y E R 2 ////////////////\n", 2);
-        //show_command_table(s);
-        //show_cmd_list(s->cmd_list);
-	modify_quotes(s->cmd_list);
-	ft_putstr_fd("\n", 2);
+	// reorder la list ou fill_args selon l id + corriger l'ecoute en 0 sinon cat => oo
+	fill_args(s->cmd_list, s);
 	executer(s->cmd_list, s);
-	show_cmd_list(s->cmd_list);
 }

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/24 16:25:06 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/26 21:45:11 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,6 @@ void	parser(t_input *s)
 	{
 		next_group = next_index_group(s->tlist);
 		token = tokenize(next_group, s->tlist);
-		char *test = ft_strdup(token->c);
-		ft_putstr_fd(test, 2);
 		if (!s->clist)
 			s->clist = ft_lstnew(token);
 		else
@@ -152,6 +150,10 @@ void	parser(t_input *s)
 	clear_space(s->clist, s);
 	if (err_separator(s->clist, s))
 		return ;
-	command_table(s->clist, s);
+	if (index_separator(s->clist) == -1)
+                ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, 1, ((t_token*)s->clist->content)->c, 0)));
+	else
+		redirections(s->clist, s);
+	layer2(s->clist, s);
 	clear_cmd_list(s->cmd_list, s);
 }

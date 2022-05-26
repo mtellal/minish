@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/22 21:35:57 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/26 22:00:43 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,14 @@ void	executer(t_list *list, t_input *s)
 			ft_putstr_fd("error fork\n", 2);
 		if (f == 0)
 		{
-			cmd->cmd_args = ft_split(cmd->args, ' ');
-			cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->env);
+		//	cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->env);
 			if (cmd->cmd)
 				execute (cmd, cmd->cmd_args, s);
 			else
+			{
 				ft_putstr_fd("bad p_cmd\n", 2);
+				exit(0);
+			}
 		}
 		if (cmd->fdi > 2)
 			close(cmd->fdi);

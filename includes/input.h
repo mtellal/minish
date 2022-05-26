@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/24 18:03:25 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/26 21:46:40 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,14 +143,33 @@ char    *tlist_to_s(t_list      *list, int l);
 void    parser(t_input *s);
 int     number_of_groups(t_list *list);
 
-//////////	C O M M A N D S . C 		//////////
+
+
+
+//////////	R E D I R E C T I O N S 	//////////
+
+/////	R E D I R E C T I O N S 
 
 t_cmd   *cmd(int fdi, int fdo, char *args, int id);
+void	redirections(t_list *list, t_input *s);
+
+/////   O P E N _ U T I L S . C
+
+void    open_data(t_utils *data, char *r);
+void    open_n_close(t_utils *data, int flags, mode_t mode, char *r);
+void    open_n_close_hd(t_utils *data);
+
+/////   R E D I R E C T I O N _ U T I L S
+
 char    *join_tab(char **tab, int j);
-void	command_table(t_list *list, t_input *s);
+void    modify_redirection(t_utils *data, t_list *plist, t_list *nlist, char *rest_args, char *r);
+
 
 void    show_cmd_list(t_list *list);
 void    clear_cmd_list(t_list *list, t_input *s);
+
+
+
 
 //////////	L A Y E R 2 . C 		//////////
 
@@ -167,17 +186,18 @@ void    layer2(t_list *list, t_input *s);
 
 int     index_quote(char *s, char c);
 int     wrong_number_quote(char *s);
-char    *clear_quotes(char *s);
 int     msg_err_quote(void);
 int     err_quotes(char *buffer, char **input);
 
 /////	M O D I F Y . Q U O T E S . C 		/////
 
-int     modify_quotes(t_list *list);
+int     n_space(char *s);
+char    *clear_quotes(char *s, char ***args);
+int     fill_args(t_list *list, t_input *s);
 
-/////	E X P A N D _ Q U O T E S . C 		/////
+/////	Q U O T E S _ S P L I T . C 		/////
 
-char    *expand_quotes(char *s);
+char    **quote_split(char *s);
 
 /////	Q U O T E _ U T I L S . C 		/////
 
@@ -280,8 +300,9 @@ int     nb_token_type(t_list *list, enum s_type type);
 
 /////	TAB_UTILS.C
 
-char    **add_tab(char **tab, char *s);
-char    *tab_to_s(char **tab);
+char    **merge_tab(char **tab, char **tab2);
+char    **add_tab(char **tab, char *s, int i);
+char    *tab_to_s(char **tab, int f);
 int     ft_strlen_tab(char **tab);
 void    free_tab(char **tab);
 

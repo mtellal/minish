@@ -6,13 +6,41 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 15:35:22 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/25 12:10:35 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/26 18:43:55 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-char    **add_tab(char **tab, char *s)
+char	**merge_tab(char **tab, char **tab2)
+{
+	char	**final;
+	int	i;
+	int	j;
+
+	j = 0;
+	i = 0;
+	final = ft_calloc(ft_strlen_tab(tab) + ft_strlen_tab(tab2) + 1, sizeof(char*));
+	while (tab && tab[i])
+	{
+		final[i] = ft_strdup(tab[i]);
+		i++;
+	}
+	while (tab2 && tab2[j])
+	{
+		final[i] = ft_strdup(tab2[j]);
+		j++;
+		i++;
+	}
+	final[i] = NULL;
+	if (tab)
+		free_tab(tab);
+	if (tab2)
+		free_tab(tab2);
+	return (final);
+}
+
+char    **add_tab(char **tab, char *s, int f)
 {
         char    **ntab;
         int     i;
@@ -29,11 +57,14 @@ char    **add_tab(char **tab, char *s)
         }
         ntab[i++] = ft_strdup(s);
         ntab[i] = NULL;
-        free(s);
-	return (ntab);
+        if (s && f)
+		free(s);
+	/*if (tab)
+		free_tab(tab);
+	*/return (ntab);
 }
 
-char    *tab_to_s(char **tab)
+char    *tab_to_s(char **tab, int f)
 {
         char    *s;
         int     i;
@@ -45,7 +76,8 @@ char    *tab_to_s(char **tab)
                 s = ft_strjoin_free(s, tab[i], 1, 1);
                 i++;
         }
-	free(tab);
+	if (tab && f)
+		free(tab);
         return (s);
 }
 

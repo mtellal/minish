@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 16:22:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/25 19:27:33 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/26 20:15:25 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,6 @@ int	err_quotes(char *buffer, char **input)
 	char	*s;
 
 	s = remove_empty_quotes(buffer);
-	ft_putstr_fd("remove empty quotes ", 2);
-	ft_putstr_fd(s, 2);
-	ft_putstr_fd("\n", 2);
 	if (!s || (index_quote(buffer, 0) != -1  && wrong_number_quote(s)))
 			return (msg_err_quote());
 	free(*input);
