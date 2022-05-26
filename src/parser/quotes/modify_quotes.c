@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 16:22:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/26 11:06:17 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/26 15:24:37 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,60 @@ char	**tab_quotes(char *s)
 	 char    **tab;
         int     i;
         int     n_sp;
+	char	quote;
+	int	f_quote;
+	int	l_quote;
+	char	*ns;
 
         tab = NULL;
         i = 0;
-        while (1)
+	quote = 0;
+	l_quote = 0;
+        ns = NULL;
+	while (1)
         {
-                n_sp = n_space(s + i);
-                if (!n_sp)
+                f_quote = index_quote(s + i, 0);
+		n_sp = n_space(s + i);
+		if (f_quote != -1)
+		{
+			quote = s[f_quote + i];
+			l_quote = index_quote(s + i + f_quote + 1, quote);
+		}
+		else
                 {
+			if (ns)
+				tab = add_tab(tab, ns);
                         if (s[i])
                                 tab = add_tab(tab, ft_substr(s + i, 0, ft_strlen(s + i)));
                         return (tab);
                 }
-                tab = add_tab(tab, ft_substr(s + i, 0, n_space(s + i)));
-                i += n_sp;
-                while (s[i] == ' ')
-                        i++;
+		if (f_quote > 0 && n_sp < f_quote)
+		{
+			tab = add_tab(tab, ft_substr(s + i, 0, n_sp));
+			i += n_sp;
+		}
+		else if (n_sp > f_quote)
+                {
+			if (s[i + f_quote + l_quote + 2] && ft_belong("'\"", s[i + f_quote + l_quote + 2]))
+			{
+				ns = ft_strjoin_free(ns, ft_substr(s + i, 0, f_quote + l_quote + 2), 1, 1);
+				i += f_quote + l_quote + 2;
+			}
+			else
+			{
+				ns = ft_strjoin_free(ns, ft_substr(s + i , 0, f_quote + l_quote + 2 + n_space(s + i + f_quote + l_quote + 2)), 1, 1);
+				i += n_space(s + i + l_quote + f_quote + 2) + l_quote + f_quote + 2;
+			}
+		}
+		while (s[i] == ' ')
+		{
+			if (ns)
+			{
+				tab = add_tab(tab, ns);
+				ns = NULL;
+			}
+			i++;
+		}
         }
         return (NULL);
 
@@ -124,6 +162,7 @@ char	*clear_quotes(char *s)
 	{
 		ft_putstr_fd("tab[i] ", 2);
 		ft_putstr_fd(tab[i], 2);
+		ft_putstr_fd("\n", 2);
 		ft_putstr_fd(" clear_word ", 2);
 		f_quote = index_quote(tab[i], 0);
 		if (f_quote != - 1)
@@ -133,9 +172,11 @@ char	*clear_quotes(char *s)
 		}
 		else
 			ns = ft_strjoin_free(ns, ft_strjoin_free(" ", tab[i], 0, 1), 1, 0);
+		ft_putstr_fd(ns, 2);
+		ft_putstr_fd("\n", 2);
 		i++;
 	}
-	return (NULL);	
+	return (ns);	
 }
 
 
@@ -148,21 +189,11 @@ int	modify_quotes(t_list *list)
 		cmd = list->content;
 		if (index_quote(cmd->args, '\'') != -1 || index_quote(cmd->args, '\"') != -1)
 		{
-			ft_putstr_fd("\nclear_quote ", 2);
 			cmd->args = clear_quotes(cmd->args);
-			/*ft_putstr_fd(cmd->args, 2);
-			ft_putstr_fd("\n", 2);
-			ft_putstr_fd("\nexp_quote ", 2);
-			cmd->args = expand_quotes(cmd->args);
-			ft_putstr_fd(cmd->args, 2);
-			ft_putstr_fd("\n", 2);
-			*/
-			/*cmd->args = expand_quotes(clear_quotes(cmd->args));
-			ft_putstr_fd("src/parser/quotes/ ", 2);
-			ft_putstr_fd(cmd->args, 2);
-			ft_putstr_fd("\n", 2);
-			*/
 		}
+		ft_putstr_fd("cmd : ", 2);
+		ft_putstr_fd(cmd->args, 2);
+		ft_putstr_fd("\n", 2);
 		list = list->next;
 	}
 	return (0);
