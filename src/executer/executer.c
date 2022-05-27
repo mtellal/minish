@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/26 22:00:43 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/27 15:15:37 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,18 @@ void	executer(t_list *list, t_input *s)
 {
 	t_cmd	*cmd;
 	pid_t	f;
-	
+	int	i;
+
+	i = 0;	
 	set_pipes(list, s);
-	while (list)
+	while (i < s->nb_cmd)
 	{
-		cmd = list->content;
+		cmd = cmd_index(list, i);
 		f = fork();
 		if (f == -1)
 			ft_putstr_fd("error fork\n", 2);
 		if (f == 0)
 		{
-		//	cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->env);
 			if (cmd->cmd)
 				execute (cmd, cmd->cmd_args, s);
 			else
@@ -83,6 +84,6 @@ void	executer(t_list *list, t_input *s)
 			close(cmd->fdo);
 		if (waitpid(f, NULL, 0) == -1)
 			ft_putstr_fd("err waitpid", 2);
-		list = list->next;
+		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:23:56 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/26 22:11:42 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/27 15:03:55 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_cmd	*cmd_index(t_list *list, int index)
 {
 	t_cmd	*cmd;
 
-	if (!list)
+	if (!list || index < 0)
 		return (NULL);
 	while (list)
 	{
@@ -100,7 +100,4 @@ void	layer2(t_list *list, t_input *s)
                         list = list->next;
                 }
         }
-	// reorder la list ou fill_args selon l id + corriger l'ecoute en 0 sinon cat => oo
-	fill_args(s->cmd_list, s);
-	executer(s->cmd_list, s);
 }

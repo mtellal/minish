@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/26 21:53:35 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/27 16:39:58 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,27 @@ t_cmd	*cmd(int fdi, int fdo, char *args, int id)
 	return (cmd);	
 }
 
-void	cmd_n_redir(t_utils *data, char *rest_args, char *r, int index, t_list *nlist, t_list *plist, t_input *s)
+int	init_cmd_redir(t_utils *data, t_input *s, t_list *plist, t_list *nlist, int index, char *r)
 {
-	//      cmd < file args
-	//      cmd > file args
+	if (!nlist)
+		return (-1);
+	data->ntoken = nlist->content;
+	if (plist)
+		data->ptoken = plist->content;
+	data->cmd = cmd_index(s->cmd_list, index);
+	data->tab = ft_split(data->ntoken->c, ' ');
+	open_data(data, r);
+	return (0);
+}
 
-	rest_args = ft_strjoin_free(data->ptoken->c, rest_args, 0, 1);
+void	no_cmd(t_utils *data, t_input *s, t_list *plist, char **rest_args, int index, char *r)
+{
+	if (plist)
+		*rest_args = ft_strjoin_free(data->ptoken->c, *rest_args, 0, 1);
 	if (*r == '<')
-		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, index)));
+		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, *rest_args, index)));
 	if (*r == '>')
-		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, rest_args, index)));
-	data->ptoken->c = rest_args;
-	plist->next = nlist->next;
+		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, *rest_args, index)));
 }
 
 void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *r)
@@ -46,58 +55,28 @@ void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *
 	char	*rest_args;
 
 	data = ft_calloc(1, sizeof(t_utils));
-	if (!nlist)
+	if (init_cmd_redir(data, s, plist, nlist, index, r) == -1)
 		return ;
-	data->ntoken = nlist->content;
-	if (plist)
-		data->ptoken = plist->content;
-	data->cmd = NULL;
-	if (s->cmd_list && ft_lstsize(s->cmd_list) - 1 >= index)
-		data->cmd = (t_cmd*)list_index(s->cmd_list, index)->content;
-
-	data->tab = ft_split(data->ntoken->c, ' ');
-	
-	open_data(data, r);
-
 	rest_args = join_tab(data->tab, 1);
 	if (data->cmd)
 		modify_redirection(data, plist, nlist, rest_args, r);
 	if (!data->cmd)
 	{
+		no_cmd(data, s, plist, &rest_args, index, r);
 		if (!plist || (plist && data->ptoken->type == SEPARATOR))
                 {
-			//	< file cmd args   ||  | < file cmd args
-			//	> file cmd args   ||  | > file cmd args
-                        
-			if (*r == '<')
-				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args,index)));
-                        if (*r == '>')
-				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, rest_args, index)));
 			if (plist)
-                                plist->next = nlist;
-                        else
-                                s->clist = nlist;
-                        data->ntoken->c = rest_args;
-                }
+				plist->next = nlist;
+			else
+				s->clist = nlist;
+			data->ntoken->c = rest_args;
+		}
 		else if (plist)
 		{
-			cmd_n_redir(data, rest_args, r, index, nlist, plist, s);
-			// FAIRE DES TESTS AVANT DE RM 
-			// + AJOUTER << ET >> 
-			//	cmd < file args
-			//	cmd > file args
-
-			/*rest_args = ft_strjoin_free(data->ptoken->c, rest_args, 0, 1);
-			if (*r == '<')
-				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, rest_args, index)));
-			if (*r == '>')
-				ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, rest_args, index)));
 			data->ptoken->c = rest_args;
 			plist->next = nlist->next;
-			*/
 		}
 	}
-
 }
 
 /*

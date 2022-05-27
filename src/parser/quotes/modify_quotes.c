@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 16:22:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/26 21:59:18 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/27 14:52:26 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,18 +186,20 @@ char	*clear_quotes(char *s, char ***args)
 
 int	fill_args(t_list *list, t_input *s)
 {
+	int	i;
 	t_cmd	*cmd;
 
-	while (list)
+	i = 0;
+	while (i < s->nb_cmd)
 	{
-		cmd = list->content;
+		cmd = (cmd_index(list, i));
 		//if (index_quote(cmd->args, '\'') != -1 || index_quote(cmd->args, '\"') != -1)
 		cmd->args = clear_quotes(cmd->args, &cmd->cmd_args);
 		if (cmd->cmd_args)
 			cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->env);
 		else
 			cmd->cmd = NULL;
-		list = list->next;
+		i++;
 	}
 	return (0);
 }

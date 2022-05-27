@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/26 21:46:40 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/27 15:28:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,8 @@ void    open_n_close_hd(t_utils *data);
 
 char    *join_tab(char **tab, int j);
 void    modify_redirection(t_utils *data, t_list *plist, t_list *nlist, char *rest_args, char *r);
-
+void	cmd_n_redir(t_input *s, t_utils *data, char *rest_args, int index, t_list *plist, t_list *nlist, char *r);
+void    redir_n_cmd(t_input *s, t_utils *data, char *rest_args, int index, t_list *plist, t_list *nlist, char *r);
 
 void    show_cmd_list(t_list *list);
 void    clear_cmd_list(t_list *list, t_input *s);

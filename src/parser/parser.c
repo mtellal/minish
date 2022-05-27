@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/26 21:45:11 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/27 16:09:05 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,5 +155,10 @@ void	parser(t_input *s)
 	else
 		redirections(s->clist, s);
 	layer2(s->clist, s);
+	// reorder la list ou fill_args selon l id + corriger l'ecoute (genre cat) stdin  sinon cat => oo
+        s->nb_cmd = ft_lstsize(s->cmd_list);
+	// !!!!!!!! ne pas set les cmd direct => ls > file | wd ( ls > file) !!!!!!!!!!!
+	fill_args(s->cmd_list, s);
+        executer(s->cmd_list, s);
 	clear_cmd_list(s->cmd_list, s);
 }
