@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 16:22:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 11:37:14 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 18:15:52 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,36 +151,26 @@ char	*clear_word(char *s, int f_quote)
 void	clear_quotes(char *s, char ***args)
 {
 	char	**tab;
-	//char	*ns;
 	int	f_quote;
 	int	i;
 	char	*c_word;
 
 	if (!s)
-	{
 		*args = NULL;
-		//return (NULL);
-	}
 	i = 0;
 	tab = tab_quotes(s);
-	//ns = NULL;
 	while (tab[i])
 	{
 		f_quote = index_quote(tab[i], 0);
-		if (f_quote != - 1)
+		if ((ft_strlen(tab[i]) == 2 && tab[i][0] == tab[i][1]) || f_quote == -1)
+			*args = merge_tab(*args, ft_split(tab[i], ' ')); 
+		else if (f_quote != - 1)
 		{
 			c_word = clear_word(tab[i], f_quote);
 			*args = add_tab(*args, ft_substr(c_word, 1, ft_strlen(c_word + 1) - 1), 0);
-			//ns = ft_strjoin_free(ns, ft_strjoin_free(" ", c_word, 0, 1), 1, 1);
-		}
-		else
-		{
-			*args = merge_tab(*args, ft_split(tab[i], ' '));
-			//ns = ft_strjoin_free(ns, ft_strjoin_free(" ", tab[i], 0, 1), 1, 0);
 		}
 		i++;
 	}
-	//return (ns);	
 }
 
 
@@ -193,7 +183,6 @@ int	fill_args(t_list *list, t_input *s)
 	while (i < s->nb_cmd)
 	{
 		cmd = (cmd_index(list, i));
-		//if (index_quote(cmd->args, '\'') != -1 || index_quote(cmd->args, '\"') != -1)
 		clear_quotes(cmd->args, &cmd->cmd_args);
 		i++;
 	}

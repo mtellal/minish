@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/27 21:47:27 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 17:59:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	getInput(t_input *s)
 			add_history(buffer);
 		s->input = buffer;
 		s->llist = ft_strlen(buffer);
-		if (*buffer && err_quotes(buffer, &s->input) != -1)
+		if (*buffer)
 		{
 			lexer(s);
 			parser(s);

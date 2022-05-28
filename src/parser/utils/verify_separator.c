@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 09:54:08 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/24 16:16:13 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 17:47:29 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int     valid_separator(char    *s, int *err_sep)
         int     l;
         char    *tab;
 
-        tab = "|<>&;";
+        tab = "<>";
         l = ft_strlen(s);
         *err_sep = 0;
         if (l == 2)
@@ -65,8 +65,11 @@ int     msg_err_separator(char *s, int err_sep)
 int     err_separator(t_list *list, t_input *s)
 {
         t_token *token;
+	t_list	*plist;
+	t_list	*nlist;
         int     err_sep;
 
+	plist = NULL;
         while (list)
         {
                 token = list->content;
@@ -75,20 +78,20 @@ int     err_separator(t_list *list, t_input *s)
 			if (s->llist == 1)
 				return (msg_err_separator(token->c, 0));
 			//	si il y a bien '<' '<<' '>>' '>' '|' '&' ';'
-                        if (valid_separator(token->c, &err_sep) != -1)
+                        if (ft_belong("><", *token->c) && valid_separator(token->c, &err_sep) != -1)
                                 return (msg_err_separator(token->c, err_sep));
-			//	si il y a bien une commande apres le separateur (sauf pour ';')
-               		if (*token->c != ';' && !list->next)
-				return (msg_err_separator(token->c, 0));
 			//	s_clist = 'ls ' '|' ' ' ';' -> apres clear_space 'ls ' '|' ';' (2 sep colles)
-	       		if (list->next)
-			{
-				token = list->next->content;
-				if (token->type == SEPARATOR && (*token->c == ';' || *token->c == '&'))
-					return (msg_err_separator(token->c, 0));
-			}
+			if (*token->c == '|' && (!plist || ((t_token*)plist->content)->type != ALPHANUM))
+				return (msg_err_separator(token->c, 0));
+			if (*token->c == '|' && (!nlist || ((t_token*)nlist->content)->type != ALPHANUM))
+				return (msg_err_separator(token->c, 0));
+			if (*token->c == '|' && ft_strlen(token->c) > 1)
+				return (msg_err_separator(token->c, 1));
 		}
+		plist = list;
                 list = list->next;
-        }
+        	if (list)
+			nlist = list->next;
+	}
         return (0);
 }

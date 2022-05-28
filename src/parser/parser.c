@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 11:22:38 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 18:09:54 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,5 +170,8 @@ void	parser(t_input *s)
 	/*
 	 *	- verif_cmd =>dans le fork, les cmd precedentes doivents s'exe
 	 *	- executer les ./wdf et les chemins absolu
+	 *	- tester les separator dans les quotes '|<fw' | cat etc
+	 *	- tester les quotes encore
+	 *
 	 */
 }

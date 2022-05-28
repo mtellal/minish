@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:58:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/22 15:28:36 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 18:09:06 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	clear_telement(void	*s)
 
 enum s_type	type_token(char c)
 {
-	if (c == '|' || c == '<' || c == '>' || c == ';' || c == '&')
+	if (c == '|' || c == '<' || c == '>')
 		return (SEPARATOR);
 	return (ALPHANUM);
 }
@@ -43,13 +43,29 @@ enum s_type	type_token(char c)
 t_token	*token(char *c)
 {
 	t_token	*token;
+	static char	quote = 0;
+	static int	nb_quote = 0;
 
 	if (!c)
 		return (NULL);
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->type = type_token(*c);
+	if (quote && *c == quote)
+	{
+		nb_quote++;
+		if (nb_quote == 2)
+			nb_quote = 0;
+	}
+	if (!quote && (*c == '\'' || *c == '\"'))
+	{
+		quote = *c;
+		nb_quote++;
+	}
+	if (nb_quote > 0)
+		token->type = ALPHANUM;
+	else if (nb_quote == 0)
+		token->type = type_token(*c);
 	token->c = c; 
 	return (token);
 }

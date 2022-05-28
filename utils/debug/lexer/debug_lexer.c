@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 19:11:04 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/06 17:24:52 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 17:53:52 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void    show_token_list(t_input *s)
 {
+	int	len;
         t_list  *list;
         t_token *token;
         int            i;
@@ -23,7 +24,8 @@ void    show_token_list(t_input *s)
         token = list->content;
         i = 0;
         type = NULL;
-        while (i < s->llist)
+        len = ft_lstsize(s->tlist);
+	while (i < len)
         {
                 if (token->type == 0)
                         type = "ALPHANUMERIC";
