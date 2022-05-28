@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/26 21:02:06 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/27 21:47:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	getInput(t_input *s)
 			ft_lstclear(&s->clist, clear_list);
 		}
 		i++;
-		free(buffer);
+		//free(buffer);
 	}
 	return (0);
 }

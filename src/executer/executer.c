@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/27 15:15:37 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 12:44:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	set_fds(int fdi, int fdo)
 	}
 }
 
-void	close_fds(t_input *s)
+void	close_fds_execute(t_input *s)
 {
 	t_cmd	*cmd;
 	t_list	*list;
@@ -45,13 +45,14 @@ void	close_fds(t_input *s)
 
 void	execute(t_cmd *cmd, char **args, t_input *s)
 {
-		set_fds(cmd->fdi, cmd->fdo);
-		close_fds(s);
-		if (execve(cmd->cmd, args, s->env) == -1)
-		{
-			ft_putstr_fd("Error command not found: ", 2);
-			perror("");
-		}
+	cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->env);
+	set_fds(cmd->fdi, cmd->fdo);
+	close_fds_execute(s);
+	if (execve(cmd->cmd, args, s->env) == -1)
+	{
+		ft_putstr_fd("Error command not found: ", 2);
+		perror("");
+	}
 }
 
 void	executer(t_list *list, t_input *s)
@@ -62,6 +63,7 @@ void	executer(t_list *list, t_input *s)
 
 	i = 0;	
 	set_pipes(list, s);
+	//show_cmd_list(s->cmd_list);
 	while (i < s->nb_cmd)
 	{
 		cmd = cmd_index(list, i);
@@ -70,7 +72,7 @@ void	executer(t_list *list, t_input *s)
 			ft_putstr_fd("error fork\n", 2);
 		if (f == 0)
 		{
-			if (cmd->cmd)
+			if (cmd->cmd_args)
 				execute (cmd, cmd->cmd_args, s);
 			else
 			{

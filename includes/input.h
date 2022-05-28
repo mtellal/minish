@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/27 15:28:27 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 12:43:46 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ int     err_quotes(char *buffer, char **input);
 /////	M O D I F Y . Q U O T E S . C 		/////
 
 int     n_space(char *s);
-char    *clear_quotes(char *s, char ***args);
+void	clear_quotes(char *s, char ***args);
 int     fill_args(t_list *list, t_input *s);
 
 /////	Q U O T E S _ S P L I T . C 		/////

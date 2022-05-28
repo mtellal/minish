@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/27 16:39:58 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 11:03:49 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,30 +39,43 @@ int	init_cmd_redir(t_utils *data, t_input *s, t_list *plist, t_list *nlist, int 
 	return (0);
 }
 
-void	no_cmd(t_utils *data, t_input *s, t_list *plist, char **rest_args, int index, char *r)
+void	no_cmd(t_utils *data, t_input *s, t_list *plist, char **rest_args, char *r)
 {
+	int	id_cmd;
+
+	id_cmd = 0;
+	if (s->cmd_list)
+		id_cmd = ft_lstsize(s->cmd_list);
 	if (plist)
 		*rest_args = ft_strjoin_free(data->ptoken->c, *rest_args, 0, 1);
 	if (*r == '<')
-		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, *rest_args, index)));
+		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(data->file, 1, *rest_args, id_cmd)));
 	if (*r == '>')
-		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, *rest_args, index)));
+		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, *rest_args, id_cmd)));
 }
 
-void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *r)
+void	cmd_redirection(t_list *list, t_input *s, int i, int index)
 {
 	t_utils	*data;
+	t_list	*plist;
+	t_list *nlist;
 	char	*rest_args;
+	char	*r;
 
 	data = ft_calloc(1, sizeof(t_utils));
-	if (init_cmd_redir(data, s, plist, nlist, index, r) == -1)
+
+	r = ((t_token*)list->content)->c;
+	plist = list_index(s->clist, index - 1);	
+	nlist = list_index(s->clist, index + 1);
+	
+	if (init_cmd_redir(data, s, plist, nlist, i, r) == -1)
 		return ;
 	rest_args = join_tab(data->tab, 1);
 	if (data->cmd)
 		modify_redirection(data, plist, nlist, rest_args, r);
 	if (!data->cmd)
 	{
-		no_cmd(data, s, plist, &rest_args, index, r);
+		no_cmd(data, s, plist, &rest_args, r);
 		if (!plist || (plist && data->ptoken->type == SEPARATOR))
                 {
 			if (plist)
@@ -86,32 +99,33 @@ void	cmd_redirection(t_list *plist, t_list *nlist, t_input *s, int index, char *
 void	redirections(t_list *list, t_input *s)
 {
 	t_token	*token;
-	t_list	*plist;
+	int		index;
 	int		i;
 	int		reset;
 
-	plist = NULL;
 	i = 0;
+	index = 0;
 	while (list)
 	{
 		reset = 0;
 		token = list->content;
-		if (token->type == SEPARATOR)
+		if (token->type == SEPARATOR && list->next)
 		{
 			if (*token->c == '<' || *token->c == '>')
 			{
-				cmd_redirection(plist, list->next, s, i, token->c);
+				cmd_redirection(list, s, i, index);
 				list = s->clist;
 				i = 0;
 				reset = 1;
+				index = 0;
+				s->nb_sep--;
 			}
-		//	if (*token->c != '<' && *token->c != '>')
 			else
 				i++;
 		}
 		if (!reset)
 		{
-			plist = list;
+			index++;
 			list = list->next;
 		}
 	}

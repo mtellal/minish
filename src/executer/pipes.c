@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:12:38 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/18 17:57:29 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/27 21:56:24 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,46 @@ int     **create_pipes(t_input *s)
         return (p);
 }
 
+/*
+ *	a corriger 
+ */
+
 void    set_pipes(t_list *list, t_input *s)
 {
         t_cmd   *cmd;
-        int     i;
+	t_cmd	*pcmd;
         int     len;
         int     j;
+	int	i;
+	int	id;
 
         len = ft_lstsize(list);
         j = 0;
         i = 0;
-        s->pipes = create_pipes(s);
+	id = 0;
+	s->pipes = create_pipes(s);
         if (!s->pipes)
                 return ;
         while (j < len)
         {
                 cmd = cmd_index(list, j);
-                if (cmd && cmd->fdi == -2)
+		if (j > 0)
+			pcmd = cmd_index(list, j - 1); 
+		if (cmd && cmd->fdi == -2)
                 {
-                        cmd->fdi = s->pipes[i][0];
-                        i++;
-                }
+			if (pcmd && pcmd->fdo != s->pipes[id][1])
+				close(s->pipes[id][1]);
+                	cmd->fdi = s->pipes[id][0];
+                	i++;
+			if (i % 2 == 0)
+				id++;
+		}
                 if (cmd && cmd->fdo == -2)
-                        cmd->fdo = s->pipes[i][1];
-                j++;
+		{
+			i++;
+			cmd->fdo = s->pipes[id][1];
+		}
+		j++;
         }
 
 }

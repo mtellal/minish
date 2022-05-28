@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/27 16:09:05 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 11:22:38 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,8 @@ void	parser(t_input *s)
 	clear_space(s->clist, s);
 	if (err_separator(s->clist, s))
 		return ;
+	show_command_table(s);
+	ft_putstr_fd("\n", 2);
 	if (index_separator(s->clist) == -1)
                 ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, 1, ((t_token*)s->clist->content)->c, 0)));
 	else
@@ -157,8 +159,16 @@ void	parser(t_input *s)
 	layer2(s->clist, s);
 	// reorder la list ou fill_args selon l id + corriger l'ecoute (genre cat) stdin  sinon cat => oo
         s->nb_cmd = ft_lstsize(s->cmd_list);
+	/*
+	 *	VERIFICATION DE COMMANDE APRES 
+	 */
 	// !!!!!!!! ne pas set les cmd direct => ls > file | wd ( ls > file) !!!!!!!!!!!
 	fill_args(s->cmd_list, s);
         executer(s->cmd_list, s);
 	clear_cmd_list(s->cmd_list, s);
+
+	/*
+	 *	- verif_cmd =>dans le fork, les cmd precedentes doivents s'exe
+	 *	- executer les ./wdf et les chemins absolu
+	 */
 }

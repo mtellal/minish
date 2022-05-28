@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 14:47:42 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/24 16:13:48 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/27 18:11:20 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_list	*list_index(t_list *list, int l)
 	int	i;
 
 	i = 0;
-	if (!list)
+	if (!list || l < 0)
 		return (NULL);
 	while (list && i < l)
 	{
