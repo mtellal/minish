@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 21:17:10 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 12:44:09 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 22:02:16 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ int	valid_cmd(char *path, char *cmd)
 	{
 		if (access(s, X_OK) == -1)
 		{
-			perror("error:");
+			free(s);
+			perror("error");
 			exit(0);
 		}
 		free(s);
@@ -74,9 +75,9 @@ char	*wrap_bash(char *s)
 	char	*cmd;
 
 	cmd = NULL;
-	if (access(s, X_OK) == -1)
+	if (!ft_strncmp(s, "./", 2) && access(s, X_OK) == -1)
 	{
-		perror("error:");
+		perror("error");
 		exit(0);
 	}
 	cmd = ft_strdup(s);

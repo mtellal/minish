@@ -3,5 +3,6 @@ includes
 Makefile
 minishell
 out
+script
 src
 utils

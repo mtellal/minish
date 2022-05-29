@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 18:09:54 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/29 16:57:50 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ void	parser(t_input *s)
 	 *	- executer les ./wdf et les chemins absolu
 	 *	- tester les separator dans les quotes '|<fw' | cat etc
 	 *	- tester les quotes encore
-	 *
+	 *	- verifier s'il n'y a aps de douille avec les liens symboliques
+	 *	- tester avec env -i (sans env) => probleme ls | cat
 	 */
 }

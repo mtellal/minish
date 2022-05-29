@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 16:22:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 18:15:52 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/28 21:28:17 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int     n_space(char *s)
         int     i;
 
         i = 0;
-        while (s[i])
+        while (s && s[i])
         {
                 if (s[i] == ' ')
                         return (i);
@@ -156,7 +156,10 @@ void	clear_quotes(char *s, char ***args)
 	char	*c_word;
 
 	if (!s)
+	{
 		*args = NULL;
+		return ;
+	}
 	i = 0;
 	tab = tab_quotes(s);
 	while (tab[i])

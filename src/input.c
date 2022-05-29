@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 17:59:27 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/29 16:50:29 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_data_input(t_input *s, int argc, char **argv, char **env)
 {
 	s->argc = argc;
 	s->argv = argv;
-	s->env = env;
+	s->f_env = env;
 	s->input = NULL;
 	s->tlist = NULL;
 	s->llist = 0;
@@ -30,6 +30,10 @@ void	init_data_input(t_input *s, int argc, char **argv, char **env)
 	s->cmd_list = NULL;
 	s->nb_pipes = 0;
 	s->pipes = NULL;
+	s->env = NULL;
+	ft_init(s, env);
+	//show_env(s->env);
+	//print_tab_env(s->env);
 }
 
 /*

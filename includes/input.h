@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 12:43:46 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/29 16:51:57 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@
 #include <readline/history.h>
 
 #define PROMPT "minishell> "
-
+#define PATH_MAX 4096
 
 
 typedef struct s_list	t_list;
 
-//////////		L E X E R		//////////
+//////////		S _ L E X E R		//////////
 
 enum s_type
 {
@@ -43,7 +43,7 @@ typedef struct s_token
 	char		*c;
 }		t_token;
 
-//////////		P A R S E R		//////////
+//////////		S _ P A R S E R		//////////
 
 typedef struct s_cmd
 {
@@ -55,6 +55,19 @@ typedef struct s_cmd
 	char		*cmd;
 
 }		t_cmd;
+
+//////////		S _ E N V 			//////////
+
+typedef struct s_env
+{
+	char	*var;
+	char	*content;
+	int		len;
+	struct s_env	*next;
+
+}		t_env;
+
+//////////		S _ U T I L S 		//////////
 
 typedef struct s_utils
 {
@@ -85,7 +98,7 @@ typedef struct s_input
 {
 	int	argc;
 	char	**argv;
-	char	**env;
+	char	**f_env;
 
 	char	*input;
 
@@ -108,6 +121,9 @@ typedef struct s_input
 	int		nb_pipes;
 	int		**pipes;
 	int		hd;
+
+	struct s_env	*env;
+
 }		t_input;
 
 
@@ -238,8 +254,27 @@ void    clear_space(t_list *list, t_input *s);
 
 
 
+/////////////////////////////////////////////////////////
+//               	E N V . C                      //
+/////////////////////////////////////////////////////////
 
+/////	B U I L T I N S . C 
 
+void	ft_printenv(t_input *s);
+void	ft_export(t_input *s, char *str);
+void	ft_pwd(void);
+void	ft_unset(t_input *s, char *str);
+
+/////	E N V . C
+
+void	ft_init(t_input *s, char **env);
+void	ft_lstadd_back_env(t_env **s, t_env *env);
+int	equal_index(char *env);
+t_env   *str_to_env(char *str);
+void    show_env(t_env  *env);
+
+char    **env_to_tab(t_env *env);
+void    print_tab_env(t_env *env);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 12:44:27 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/29 17:04:02 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,37 @@ void	close_fds_execute(t_input *s)
 	}
 }
 
+int	is_builtin(char *cmd)
+{
+	if (!ft_strcmp(cmd, "export"))
+		return (1);
+	if (!ft_strcmp(cmd, "echo"))
+		return (1);
+	if (!ft_strcmp(cmd, "pwd"))
+		return (1);
+	if (!ft_strcmp(cmd, "export"))
+		return (1);
+	if (!ft_strcmp(cmd, "unset"))
+		return (1);
+	if (!ft_strcmp(cmd, "env"))
+		return (1);
+	if (!ft_strcmp(cmd, "exit"))
+		return (1);
+}	
+
 void	execute(t_cmd *cmd, char **args, t_input *s)
 {
-	cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->env);
+	cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->f_env);
 	set_fds(cmd->fdi, cmd->fdo);
 	close_fds_execute(s);
-	if (execve(cmd->cmd, args, s->env) == -1)
+	if (is_builtin(cmd->cmd))
+		
+	if (execve(cmd->cmd, args, env_to_tab(s->env)) == -1)
 	{
 		ft_putstr_fd("Error command not found: ", 2);
-		perror("");
+		ft_putstr_fd(cmd->cmd_args[0], 2);
+		ft_putstr_fd("\n", 2);
+		//perror("");
 	}
 }
 
