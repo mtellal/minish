@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/29 17:04:02 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/29 22:44:07 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,37 @@ int	is_builtin(char *cmd)
 		return (1);
 	if (!ft_strcmp(cmd, "exit"))
 		return (1);
+	return (0);
 }	
+
+/*
+ *	ne pas oublier les signaux + free la commande
+ */
+
+void	builtin(t_cmd *cmd, t_input *s)
+{
+	char	*scmd;
+
+	scmd = cmd->cmd_args[0];
+	if (!ft_strcmp(scmd, "env"))
+		ft_env(s->env);
+	if (!ft_strcmp(scmd, "pwd"))
+		ft_pwd();
+	if (!ft_strcmp(scmd, "exit"))
+		exit(EXIT_SUCCESS);
+	if (!ft_strcmp(scmd, "echo"))
+		ft_echo(cmd->cmd_args);
+	if (!ft_strcmp(scmd, "export"))
+		ft_export(cmd->cmd_args, s);
+}
 
 void	execute(t_cmd *cmd, char **args, t_input *s)
 {
-	cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->f_env);
 	set_fds(cmd->fdi, cmd->fdo);
 	close_fds_execute(s);
-	if (is_builtin(cmd->cmd))
-		
+	if (is_builtin(cmd->cmd_args[0]))
+		builtin(cmd, s);
+	cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->f_env);
 	if (execve(cmd->cmd, args, env_to_tab(s->env)) == -1)
 	{
 		ft_putstr_fd("Error command not found: ", 2);
@@ -76,6 +98,10 @@ void	execute(t_cmd *cmd, char **args, t_input *s)
 		//perror("");
 	}
 }
+
+/*
+ *	ft_export => envoyer s->env dans une pipe
+ */
 
 void	executer(t_list *list, t_input *s)
 {
@@ -89,6 +115,7 @@ void	executer(t_list *list, t_input *s)
 	while (i < s->nb_cmd)
 	{
 		cmd = cmd_index(list, i);
+		ft_export(cmd->cmd_args, s);
 		f = fork();
 		if (f == -1)
 			ft_putstr_fd("error fork\n", 2);

@@ -6,16 +6,17 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/29 16:44:19 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/29 22:23:46 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+.SILENT:
 
 GCC = gcc
 
 CFLAGS = -Wall -Wextra -Werror -g
 
 NAME = minishell
-
 
 #############		MINISH 		#################
 	
@@ -30,7 +31,8 @@ SOURCES =	main.c \
 	parser/quotes/verif_quotes.c parser/quotes/modify_quotes.c parser/quotes/quote_utils.c \
 	executer/verify_commands.c executer/executer.c executer/pipes.c \
 	utils/tab_utils.c utils/string_utils.c utils/open_utils.c \
-	env/env_init.c env/env_utils.c
+	env/env_init.c env/env_utils.c \
+	builtin/env.c builtin/pwd.c builtin/echo.c builtin/export.c
 
 DEBUG = $(addprefix utils/debug/, lexer/debug_lexer.c parser/debug_parser.c parser/commands_utils.c)
 
@@ -58,7 +60,13 @@ LIB = -lreadline -L $(LIBDIR) -lft
 
 #############		COMMANDS		##########
 
-all: $(NAME)
+all: compiling $(NAME) succeed
+
+succeed:
+	@echo "\033[0;32msucceed"
+
+compiling:
+	@echo "\033[0;32mcompiling"
 
 %.o:%.c
 	$(GCC) $(CFLAGS) $(HEADERS) -o $@ -c $<   

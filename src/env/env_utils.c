@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 16:54:37 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/29 16:54:42 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/29 22:39:21 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,18 @@ void    print_tab_env(t_env *env)
 		printf("%s\n", tab[i]);
 		i++;
 	}
+}
+
+t_env	*ft_lstlast_env(t_input *s)
+{
+	t_env	*r;
+	t_env	*l;
+
+	r = s->env;
+	while (s->env->next)
+		s->env = s->env->next;
+	l = s->env;
+	s->env = r;
+	return (l);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/29 16:51:57 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/29 22:39:37 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,9 +260,11 @@ void    clear_space(t_list *list, t_input *s);
 
 /////	B U I L T I N S . C 
 
+void	ft_env(t_env *env);
 void	ft_printenv(t_input *s);
-void	ft_export(t_input *s, char *str);
+void	ft_export(char **args, t_input *s);
 void	ft_pwd(void);
+void	ft_echo(char **args);
 void	ft_unset(t_input *s, char *str);
 
 /////	E N V . C
@@ -275,7 +277,7 @@ void    show_env(t_env  *env);
 
 char    **env_to_tab(t_env *env);
 void    print_tab_env(t_env *env);
-
+t_env   *ft_lstlast_env(t_input *s);
 
 
 
