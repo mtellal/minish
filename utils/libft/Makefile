@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/06 10:01:48 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/29 22:01:38 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/30 16:57:47 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ all: $(NAME)
 
 %.o: %.c
 	$(CC) -g -o $@ -c $< $(CFLAGS)
+	echo -n "."
 
 $(NAME): $(OBJ)
 	ar rc $(NAME) $(OBJ)

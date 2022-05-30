@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/29 22:39:37 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/30 16:19:20 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ typedef struct s_input
 	int		hd;
 
 	struct s_env	*env;
+
+	int		*p_env;
 
 }		t_input;
 
@@ -275,11 +277,14 @@ int	equal_index(char *env);
 t_env   *str_to_env(char *str);
 void    show_env(t_env  *env);
 
+void    free_env(t_input *s);
 char    **env_to_tab(t_env *env);
 void    print_tab_env(t_env *env);
 t_env   *ft_lstlast_env(t_input *s);
 
+// export_utils.c
 
+void	modify_env(t_input *s);
 
 
 /////////////////////////////////////////////////////////

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/29 22:44:07 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/30 16:18:30 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,6 @@ void	close_fds_execute(t_input *s)
 	}
 }
 
-int	is_builtin(char *cmd)
-{
-	if (!ft_strcmp(cmd, "export"))
-		return (1);
-	if (!ft_strcmp(cmd, "echo"))
-		return (1);
-	if (!ft_strcmp(cmd, "pwd"))
-		return (1);
-	if (!ft_strcmp(cmd, "export"))
-		return (1);
-	if (!ft_strcmp(cmd, "unset"))
-		return (1);
-	if (!ft_strcmp(cmd, "env"))
-		return (1);
-	if (!ft_strcmp(cmd, "exit"))
-		return (1);
-	return (0);
-}	
-
 /*
  *	ne pas oublier les signaux + free la commande
  */
@@ -87,8 +68,7 @@ void	execute(t_cmd *cmd, char **args, t_input *s)
 {
 	set_fds(cmd->fdi, cmd->fdo);
 	close_fds_execute(s);
-	if (is_builtin(cmd->cmd_args[0]))
-		builtin(cmd, s);
+	builtin(cmd, s);
 	cmd->cmd = is_valid_cmd(cmd->cmd_args[0], s->f_env);
 	if (execve(cmd->cmd, args, env_to_tab(s->env)) == -1)
 	{
@@ -97,6 +77,22 @@ void	execute(t_cmd *cmd, char **args, t_input *s)
 		ft_putstr_fd("\n", 2);
 		//perror("");
 	}
+}
+
+int	*pipe_env(t_cmd *cmd)
+{
+	int	*p;
+	char	*scmd;
+
+	p = NULL;
+	scmd = cmd->cmd_args[0];
+	if (!ft_strcmp(scmd, "export") || !ft_strcmp(scmd, "unset"))
+	{
+		p = ft_calloc(2, sizeof(int));
+		if (pipe(p) == -1)
+			return (NULL);
+	}
+	return (p);
 }
 
 /*
@@ -115,7 +111,7 @@ void	executer(t_list *list, t_input *s)
 	while (i < s->nb_cmd)
 	{
 		cmd = cmd_index(list, i);
-		ft_export(cmd->cmd_args, s);
+		s->p_env = pipe_env(cmd);
 		f = fork();
 		if (f == -1)
 			ft_putstr_fd("error fork\n", 2);
@@ -129,6 +125,11 @@ void	executer(t_list *list, t_input *s)
 				exit(0);
 			}
 		}
+		if (s->p_env)
+		{
+			if (!ft_strcmp(cmd->cmd_args[0], "export"))
+				modify_env(s);
+		}	
 		if (cmd->fdi > 2)
 			close(cmd->fdi);
 		if (cmd->fdo > 2)

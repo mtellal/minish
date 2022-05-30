@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 20:31:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/29 22:26:05 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/30 16:40:23 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,35 @@ int ft_str_valid(char *str)
 	return (1);
 }
 
+void	env_to_pipe(t_env *env, int pipe)
+{
+	while (env)
+	{
+		write(pipe, env->var, ft_strlen(env->var));
+		write(pipe, "=", 1);
+		write(pipe, env->content, ft_strlen(env->content));
+		write(pipe, "\n", 1);
+		env = env->next;
+	}
+}
+
+t_env	*already_exists(t_env *n, t_env *env)
+{
+	t_env	*r;
+
+	r = env;
+	while (env)
+	{
+		if (!ft_strcmp(env->var, n->var))
+			return (env);
+		env = env->next;
+	}
+	env = r;
+	return (NULL);
+}
+
 void    ft_export(char **args, t_input *s)
 {
-	ft_putstr_fd("/////////////// export ///////////////\n", 2);
 	int	i;
 	t_env	*n;
 	t_env	*r;
@@ -71,9 +97,13 @@ void    ft_export(char **args, t_input *s)
 		{
 			ft_putstr_fd("declare -x ", 1);
 			ft_putstr_fd(s->env->var, 1);
-			ft_putstr_fd("=\"", 1);
-			ft_putstr_fd(s->env->content, 1);
-			ft_putstr_fd("\"\n", 1);
+			if (s->env->content && s->env->content[0])
+			{
+				ft_putstr_fd("=\"", 1);
+				ft_putstr_fd(s->env->content, 1);
+				ft_putstr_fd("\"", 1);
+			}
+			ft_putstr_fd("\n", 1);
 			s->env = s->env->next;
 		}
 	}
@@ -81,12 +111,23 @@ void    ft_export(char **args, t_input *s)
 	{
 		if (ft_str_valid(args[i]))
 		{
+			close(s->p_env[0]);
 			n = str_to_env(args[i]);
-			ft_lstadd_back_env(&s->env, n);
+			t_env	*e = already_exists(n, s->env);
+			if (!e)
+				ft_lstadd_back_env(&s->env, n);
+			else
+			{
+				e->content = ft_strdup(n->content);
+				free(n->var);
+				free(n->content);
+				free(n);
+			}
 		}
 		i++;
 	}
 	s->env = r;
+	env_to_pipe(s->env, s->p_env[1]);
 	exit(EXIT_SUCCESS);
 }
 
