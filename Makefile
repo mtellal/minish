@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/30 17:03:24 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/30 18:41:03 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ SOURCES =	main.c \
 	executer/verify_commands.c executer/executer.c executer/pipes.c \
 	utils/tab_utils.c utils/string_utils.c utils/open_utils.c \
 	env/env_init.c env/env_utils.c \
-	builtin/env.c builtin/pwd.c builtin/echo.c builtin/export.c builtin/export_utils.c
+	builtin/env.c builtin/pwd.c builtin/echo.c builtin/export.c builtin/export_utils.c \
+	builtin/unset.c
 
 DEBUG = $(addprefix utils/debug/, lexer/debug_lexer.c parser/debug_parser.c parser/commands_utils.c)
 
@@ -66,8 +67,7 @@ succeed:
 	@echo "succeed\033[0;37m"
 
 compiling:
-	@echo -n "\033[0;32mcompiling"
-
+	@echo -n "\033[1;32mcompiling"
 
 %.o:%.c
 	$(GCC) $(CFLAGS) $(HEADERS) -o $@ -c $<   

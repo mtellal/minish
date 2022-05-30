@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/30 16:18:30 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/30 19:13:46 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	builtin(t_cmd *cmd, t_input *s)
 		ft_echo(cmd->cmd_args);
 	if (!ft_strcmp(scmd, "export"))
 		ft_export(cmd->cmd_args, s);
+	if (!ft_strcmp(scmd, "unset"))
+		ft_unset(cmd->cmd_args, s);
 }
 
 void	execute(t_cmd *cmd, char **args, t_input *s)
@@ -128,6 +130,8 @@ void	executer(t_list *list, t_input *s)
 		if (s->p_env)
 		{
 			if (!ft_strcmp(cmd->cmd_args[0], "export"))
+				modify_env(s);
+			if (!ft_strcmp(cmd->cmd_args[0], "unset"))
 				modify_env(s);
 		}	
 		if (cmd->fdi > 2)
