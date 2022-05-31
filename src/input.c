@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/30 10:29:32 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/31 17:49:06 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	init_data_input(t_input *s, int argc, char **argv, char **env)
 }
 
 /*
- *	recupere l'input avec la readline lib
  *	si l'input != NULL => lexer et parser appele
  */
 
@@ -46,22 +45,27 @@ int	getInput(t_input *s)
 {
 	char	*buffer;
 	int	i;
-	void	(*clear_list)(void *s);
 
 	i = 0;
 	s->argv++;
-	clear_list = &clear_telement;
-	while ((buffer = readline(PROMPT)) != NULL)
+	while (1)
 	{
-		if (*buffer)
-			add_history(buffer);
+		signal(SIGINT, &sig_int);
+		buffer = readline(PROMPT);
+		if (!buffer)
+		{
+			ft_putstr_fd("ctrl-d triggered\n", 1);
+			exit(0);
+		}
+
+		add_history(buffer);
 		s->input = buffer;
 		s->llist = ft_strlen(buffer);
 		if (*buffer)
 		{
 			lexer(s);
 			parser(s);
-			ft_lstclear(&s->clist, clear_list);
+			ft_lstclear(&s->clist, &clear_telement);
 		}
 		i++;
 		//free(buffer);
@@ -69,10 +73,17 @@ int	getInput(t_input *s)
 	return (0);
 }
 
-int	input(t_input *si, int argc, char **argv, char **env)
+int	input(t_input *s, int argc, char **argv, char **env)
 {
-	init_data_input(si, argc, argv, env);
-	getInput(si);
+	signal(SIGQUIT, SIG_IGN);
+	if (!isatty(STDIN_FILENO))
+	{
+		ft_putstr_fd("error tty stdin invalid\n", 2);
+		exit(0);
+	}
+	signal(SIGINT, &sig_int);
+	init_data_input(s, argc, argv, env);
+	getInput(s);
 	
 	return (0);
 }

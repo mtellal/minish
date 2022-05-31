@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/30 19:05:47 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/31 19:22:19 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+
+#include <signal.h>
 
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -255,6 +257,14 @@ void    clear_space(t_list *list, t_input *s);
 
 
 
+
+
+
+//////////	S I G N A L S . C		//////////
+
+void    redisplay(int n);
+void    sig_int(int n);
+void    sig_quit(int n);
 
 /////////////////////////////////////////////////////////
 //               	E N V . C                      //

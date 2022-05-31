@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 21:17:10 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 22:02:16 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/31 14:55:06 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,9 @@ char	*is_valid_cmd(char *cmd, char **env)
 		}
 		else
 		{
-			write(2, "Error: command not found: ", 26);
-			write(2, cmd, ft_strlen(cmd));
-			write(2, "\n", 1);
+			ft_putstr_fd("error: command not found: ", 2);
+			ft_putstr_fd(cmd, 2);
+			ft_putstr_fd("\n", 2);
 			exit(0);
 		}
 		free_tab(p);

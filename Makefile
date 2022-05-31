@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/30 18:41:03 by mtellal          ###   ########.fr        #
+#    Updated: 2022/05/31 17:49:58 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ NAME = minishell
 	
 SOURCES =	main.c \
 	input.c \
+	signals.c \
 	lexer/lexer.c \
 	parser/parser.c\
 	parser/redirections/redirections.c parser/redirections/redirections_utils.c \
@@ -64,7 +65,7 @@ LIB = -lreadline -L $(LIBDIR) -lft
 all: compiling $(NAME) succeed
 
 succeed:
-	@echo "succeed\033[0;37m"
+	@echo "succeed\033[0m"
 
 compiling:
 	@echo -n "\033[1;32mcompiling"

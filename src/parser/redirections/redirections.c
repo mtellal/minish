@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 11:03:49 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/31 16:11:41 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,8 @@ int	init_cmd_redir(t_utils *data, t_input *s, t_list *plist, t_list *nlist, int 
 	return (0);
 }
 
-void	no_cmd(t_utils *data, t_input *s, t_list *plist, char **rest_args, char *r)
+void	no_cmd(t_utils *data, t_input *s, t_list *plist, char **rest_args, char *r, int id_cmd)
 {
-	int	id_cmd;
-
-	id_cmd = 0;
 	if (s->cmd_list)
 		id_cmd = ft_lstsize(s->cmd_list);
 	if (plist)
@@ -75,7 +72,7 @@ void	cmd_redirection(t_list *list, t_input *s, int i, int index)
 		modify_redirection(data, plist, nlist, rest_args, r);
 	if (!data->cmd)
 	{
-		no_cmd(data, s, plist, &rest_args, r);
+		no_cmd(data, s, plist, &rest_args, r, i);
 		if (!plist || (plist && data->ptoken->type == SEPARATOR))
                 {
 			if (plist)

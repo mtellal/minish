@@ -1,8 +1,5 @@
-file
-includes
-Makefile
-minishell
-out
-script
-src
-utils
+
+Error: command not found: wdf
+
+Error: command not found: wf
+

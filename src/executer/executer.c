@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/30 19:13:46 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/31 19:21:56 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,20 +104,21 @@ int	*pipe_env(t_cmd *cmd)
 void	executer(t_list *list, t_input *s)
 {
 	t_cmd	*cmd;
-	pid_t	f;
+	pid_t	*f;
 	int	i;
 
 	i = 0;	
 	set_pipes(list, s);
 	//show_cmd_list(s->cmd_list);
+	f = ft_calloc(s->nb_cmd, sizeof(pid_t));
 	while (i < s->nb_cmd)
 	{
 		cmd = cmd_index(list, i);
 		s->p_env = pipe_env(cmd);
-		f = fork();
-		if (f == -1)
+		f[i] = fork();
+		if (f[i] == -1)
 			ft_putstr_fd("error fork\n", 2);
-		if (f == 0)
+		if (f[i] == 0)
 		{
 			if (cmd->cmd_args)
 				execute (cmd, cmd->cmd_args, s);
@@ -127,19 +128,27 @@ void	executer(t_list *list, t_input *s)
 				exit(0);
 			}
 		}
+		signal(SIGINT, &redisplay);
 		if (s->p_env)
 		{
 			if (!ft_strcmp(cmd->cmd_args[0], "export"))
 				modify_env(s);
 			if (!ft_strcmp(cmd->cmd_args[0], "unset"))
 				modify_env(s);
-		}	
+		}
 		if (cmd->fdi > 2)
 			close(cmd->fdi);
 		if (cmd->fdo > 2)
 			close(cmd->fdo);
-		if (waitpid(f, NULL, 0) == -1)
-			ft_putstr_fd("err waitpid", 2);
+		//if (waitpid(f, NULL, 0) == -1)
+		//	ft_putstr_fd("err waitpid", 2);
 		i++;
 	}
+	i = 0;
+	while (i < s->nb_cmd)
+	{
+		waitpid(f[i], NULL, 0);
+		i++;
+	}
+	free(f);
 }

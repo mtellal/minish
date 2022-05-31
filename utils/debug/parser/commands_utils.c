@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:21:09 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/26 18:44:54 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/31 17:01:37 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,18 @@ void	clear_cmd_list(t_list *list, t_input *s)
 	while (list)
 	{
 		cmd = list->content;
-		if (cmd->fdi > 2)
-			close(cmd->fdi);
-		if (cmd->fdo > 2)
-			close(cmd->fdo);
-		if (cmd->args)
-			free(cmd->args);
-		free(cmd);
+		if (cmd)
+		{
+			if (cmd->args)
+				free(cmd->args);
+			if (cmd->cmd_args)
+				free_tab(cmd->cmd_args);
+			if (cmd->fdi > 2)
+				close(cmd->fdi);
+			if (cmd->fdo > 2)
+				close(cmd->fdo);
+			free(cmd);
+		}
 		l = list;
 		list = list->next;
 		free(l);
@@ -45,11 +50,12 @@ void	show_cmd_list(t_list *list)
 
 	i = 0;
 	l = list;
-	while (l)
+	while (list)
 	{
-		cmd = l->content;
+		cmd = list->content;
 		printf("id: %i   |   FDI:'%i'   |   FDO:'%i'	|   ARGS:' %s '  | cmd:' %s ' | cmd_args:' %s '\n", cmd->id, cmd->fdi, cmd->fdo, cmd->args, cmd->cmd, tab_to_s(cmd->cmd_args, 0));
-		l = l->next;
+		list = list->next;
 		i++;
 	}
+	list = l;
 }

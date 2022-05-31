@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/29 17:36:11 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/05/31 15:44:50 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,5 +175,11 @@ void	parser(t_input *s)
 	 *	- verifier s'il n'y a aps de douille avec les liens symboliques
 	 *	- tester avec env -i (sans env) => probleme ls | cat
 	 *	- env sans arg ni option ( mais env xxx => fonctionne) laisser ou coriger et err si args ou option ? 
+	 *	- gerer les redirections 2>&1 ou 2>
+	 *	- faire un tableau de pid et exe tous les fork, + ne pas faire de fork pour les buitlins
+	 *	- export s+=x aq gerer
+	 *	- heredoc a supprimer
+	 *	- shlvl a incrementer lors d'un ./minish 
+	 *
 	 */
 }
