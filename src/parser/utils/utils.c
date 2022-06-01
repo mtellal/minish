@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 11:18:51 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/24 15:38:47 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 22:23:44 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,6 @@ int	only_space(char *s)
 	return (1);
 }
 
-
-/*
- *	verifie s'il y a un separateur dans une liste
- *	et renvoie son index
- *	utile pour isoler les cmd
- */
-
 int	index_separator(t_list *list)
 {
 	int	i;
@@ -49,10 +42,6 @@ int	index_separator(t_list *list)
 	}
 	return (-1);
 }
-
-/*
- *	renvoie le nombre de token du type 'type' dans la liste
- */
 
 int     nb_token_type(t_list *list, enum s_type type)
 {

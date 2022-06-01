@@ -6,13 +6,11 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 09:54:08 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 17:47:29 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 22:26:24 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
-
-//      verifie si l char dans s sont bien c, utile pour << et >>
 
 int     same_char(char *s, char c, int l)
 {
@@ -25,8 +23,6 @@ int     same_char(char *s, char c, int l)
                 return (-1);
         return (i);
 }
-
-//      verifie si les separateurs (| > < >> << & ;) sont bien respectes
 
 int     valid_separator(char    *s, int *err_sep)
 {

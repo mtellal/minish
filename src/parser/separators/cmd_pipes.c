@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   layer2.c                                           :+:      :+:    :+:   */
+/*   cmd_pipes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:23:56 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/29 10:17:26 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 21:20:49 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void    cmd_pipe(t_list *plist, t_list *nlist, t_input *s, int index)
         plist->next = nlist;
 }
 
-void	layer2(t_list *list, t_input *s)
+void	cmd_pipes(t_list *list, t_input *s)
 {
 	t_token	*token;
 	t_list *plist;

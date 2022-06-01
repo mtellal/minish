@@ -6,13 +6,11 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 14:47:42 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/27 18:11:20 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 22:23:25 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
-
-//	clear tous les tokens avec un seul espace
 
 void	clear_space(t_list *list, t_input *s)
 {
@@ -39,10 +37,6 @@ void	clear_space(t_list *list, t_input *s)
 		list = list->next;
 	}
 }
-
-/*
- *	retourne le maillon a la l-eme place 
- */
 
 t_list	*list_index(t_list *list, int l)
 {

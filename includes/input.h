@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 21:07:39 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 22:30:12 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,114 +132,106 @@ typedef struct s_input
 }		t_input;
 
 
-//////////		I N P U T . C		//////////
+/////	minish.c
 
-int	launch(t_input *s, int argc, char **argv, char **env);
-int	input(t_input *s);
 void	init_data(t_input *s, int argc, char **argv, char **env);
+void	minishell(t_input *s);
+int	input(t_input *s);
+int	launch(t_input *s, int argc, char **argv, char **env);
 
 
-/////////////////////////////////////////////////////////
-//			L E X E R		       //
-/////////////////////////////////////////////////////////
+/////	lexer.c
 
-//////////		L E X E R . C		//////////
-
-void    clear_telement(void     *s);
-t_token *token(char *c);
-enum s_type     type_token(char c);
+void	clear_telement(void     *s);
+enum s_type	type_token(char c);
+t_token		*token(char *c);
 void	lexer(t_input *s);
-void	clear_telement(void *s);
 
 
+/////////////////////////////////////////////////////////
+//                    B U I L T I N                    //
+/////////////////////////////////////////////////////////
 
+void	ft_echo(char **args, t_input *s);
+void	ft_env(t_env *env);
+
+void    ft_export(char **args, t_input *s);
+void	modify_env(t_input *s);
+
+void    ft_pwd(void);
+void	ft_unset(char **args, t_input *s);
 
 /////////////////////////////////////////////////////////
 //                      P A R S E R                    //
 /////////////////////////////////////////////////////////
 
-//////////		P A R S E R . C		//////////
+/////	parser.c
 
 char    *tlist_to_s(t_list      *list, int l);
 void    parser(t_input *s);
 int     number_of_groups(t_list *list);
 
 
+//////////		Q U O T E S		//////////
+
+/////	verif_quotes.c
+
+int     index_quote(char *s, char c);
+int     msg_err_quote(void);
+int     verif_pair_of_quotes(char *s);
+
+/////	fill_args.c
+
+int     n_space(char *s);
+void    clear_quotes(char *s, char ***args);
+int     fill_args(t_list *list, t_input *s);
 
 
-//////////	R E D I R E C T I O N S 	//////////
+//////////	R E D I R E C T I O N S		////////// 	
 
-/////	R E D I R E C T I O N S 
+/////	cmd_redirections.c
 
 t_cmd   *cmd(int fdi, int fdo, char *args, int id);
-void	redirections(t_list *list, t_input *s);
+void	cmd_redirections(t_list *list, t_input *s);
 
-/////   O P E N _ U T I L S . C
+/////	open_utils.c
 
 void    open_data(t_utils *data, char *r);
 void    open_n_close(t_utils *data, int flags, mode_t mode, char *r);
 void    open_n_close_hd(t_utils *data);
 
-/////   R E D I R E C T I O N _ U T I L S
+/////	redirections_utils.c
 
 char    *join_tab(char **tab, int j);
 void    modify_redirection(t_utils *data, t_list *plist, t_list *nlist, char *rest_args, char *r);
-void	cmd_n_redir(t_input *s, t_utils *data, char *rest_args, int index, t_list *plist, t_list *nlist, char *r);
-void    redir_n_cmd(t_input *s, t_utils *data, char *rest_args, int index, t_list *plist, t_list *nlist, char *r);
 
 void    show_cmd_list(t_list *list);
 void    clear_cmd_list(t_list *list, t_input *s);
 
 
+//////////	S E P A R A T O R S 		//////////
 
-
-//////////	L A Y E R 2 . C 		//////////
+//////	cmd_pipes.c
 
 t_cmd   *cmd_index(t_list *list, int index);
-void    layer2(t_list *list, t_input *s);
-
-
-
-//////////		Q U O T E S		//////////
-
-// > parser/quotes
-
-/////	V E R I F _ Q U O T E S . C 		/////
-
-int     index_quote(char *s, char c);
-int     wrong_number_quote(char *s);
-int     msg_err_quote(void);
-int     err_quotes(char *buffer, char **input);
-int	verif_pair_of_quotes(char *s);
-
-/////	M O D I F Y . Q U O T E S . C 		/////
-
-int     n_space(char *s);
-void	clear_quotes(char *s, char ***args);
-int     fill_args(t_list *list, t_input *s);
-
-/////	Q U O T E S _ S P L I T . C 		/////
-
-char    **quote_split(char *s);
-
-/////	Q U O T E _ U T I L S . C 		/////
-
-int     last_quote_in_word(char *s, char quote, char p_quote);
-int     first_quote_in_word(char *s, int index, char quote, char p_quote);
-
-
-
+void    cmd_pipes(t_list *list, t_input *s);
 
 
 //////////		U T I L S 		//////////
 
-/////	P A R S E R _ U T I L S .C 	/////
+/////	parser_utils.c
 
+void	clear_space(t_list *list, t_input *s);
 t_list	*list_index(t_list *list, int l);
 
-/////	V E R I F Y _ S E P A R T O R . C 	/////
+/////	utils.c
 
-int     ft_belong(char *s, char c);
+int	only_space(char *s);
+int	index_separator(t_list *list);
+int     nb_token_type(t_list *list, enum s_type type);
+
+/////	verify_separator.c
+
 int     same_char(char *s, char c, int l);
 int     valid_separator(char    *s, int *err_sep);
 int     msg_err_separator(char *s, int err_sep);
@@ -253,9 +245,6 @@ int	only_space(char *s);
 int	index_separator(t_list *list);
 int     nb_token_type(t_list *list, enum s_type type);
 
-/////	L I S T _ U T I L S . C 	/////
-
-void    clear_space(t_list *list, t_input *s);
 
 
 

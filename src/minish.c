@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
+/*   minish.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 21:17:36 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 22:30:53 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ void	minishell(t_input *s)
 	clear_space(s->clist, s);
         if (err_separator(s->clist, s))
                 return ;
-        show_command_table(s);
-        ft_putstr_fd("\n", 2);
+        //show_command_table(s);
+        //ft_putstr_fd("\n", 2);
         if (index_separator(s->clist) == -1)
                 ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, 1, ((t_token*)s->clist->content)->c, 0)));
         else
-                redirections(s->clist, s);
-        layer2(s->clist, s);
+                cmd_redirections(s->clist, s);
+        cmd_pipes(s->clist, s);
         s->nb_cmd = ft_lstsize(s->cmd_list);
         fill_args(s->cmd_list, s);
         executer(s->cmd_list, s);
@@ -73,6 +73,8 @@ void	minishell(t_input *s)
          *      - exe des commandes avec des dossiers genre ls "./srx"
 	 *      - cat ctrl-c / ctl-d => exit status 130 / 0
 	 *      - rm le heredoc (unlink)
+	 *      - rm pipes ( erro: syntax token '|')
+	 *      - !!!!!!!!!!!!!!!!!! FAIRE CD !!!!!!!!!!!!!!!
          */
 }
 

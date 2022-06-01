@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections.c                                     :+:      :+:    :+:   */
+/*   cmd_redirections.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 09:26:28 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 22:14:03 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	no_cmd(t_utils *data, t_input *s, t_list *plist, char **rest_args, char *r,
 		ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, data->file, *rest_args, id_cmd)));
 }
 
-void	cmd_redirection(t_list *list, t_input *s, int i, int index)
+void	modify_cmd(t_list *list, t_input *s, int i, int index)
 {
 	t_utils	*data;
 	t_list	*plist;
@@ -93,7 +93,7 @@ void	cmd_redirection(t_list *list, t_input *s, int i, int index)
  *	degrouper les separator => err lorsque < x |> out	|> ou |< a separer
  */
 
-void	redirections(t_list *list, t_input *s)
+void	cmd_redirections(t_list *list, t_input *s)
 {
 	t_token	*token;
 	int		index;
@@ -110,7 +110,7 @@ void	redirections(t_list *list, t_input *s)
 		{
 			if (*token->c == '<' || *token->c == '>')
 			{
-				cmd_redirection(list, s, i, index);
+				modify_cmd(list, s, i, index);
 				list = s->clist;
 				i = 0;
 				reset = 1;
