@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 16:54:37 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/30 15:55:04 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 20:39:58 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,16 @@ void	free_env(t_input *s)
 {
 	t_env	*sub;
 
+	sub = NULL;
 	while (s->env)
 	{
 		if (s->env->var)
 			free(s->env->var);
 		if (s->env->content)
 			free(s->env->content);
-		sub = s->env;
-		s->env = s->env->next;
-		free(sub);
+		sub = s->env->next;
+		free(s->env);
+		s->env = sub;
 	}
 	s->env = NULL;
 }

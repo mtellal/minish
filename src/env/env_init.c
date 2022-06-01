@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 16:54:13 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/29 17:24:22 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 20:38:19 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	ft_lstadd_back_env(t_env **lst, t_env *n)
 		while ((*lst)->next)
 			*lst = (*lst)->next;
 		(*lst)->next = n;
+		*lst = r;
 	}
-	*lst = r;	
 }
 
 int	equal_index(char *env)

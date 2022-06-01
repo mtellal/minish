@@ -6,26 +6,16 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:58:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 18:09:06 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 20:49:52 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-/*
- *	free pointer de void
- *	utilise pour clear la liste chainee
- */
-
 void	clear_telement(void	*s)
 {
 	free(s);
 }
-
-/*
- *	determine un s_type selon un char
- *	utilise pour les s_token par le lexer + parser
- */
 
 enum s_type	type_token(char c)
 {
@@ -33,12 +23,6 @@ enum s_type	type_token(char c)
 		return (SEPARATOR);
 	return (ALPHANUM);
 }
-
-/*
- *	retourne un token malloce
- *	selon son type et son char 
- *	token = c => char / type => enum s_type
- */
 
 t_token	*token(char *c)
 {
@@ -57,7 +41,7 @@ t_token	*token(char *c)
 		if (nb_quote == 2)
 			nb_quote = 0;
 	}
-	if (!quote && (*c == '\'' || *c == '\"'))
+	if (!quote && ft_belong("'\'''\"'", *c))
 	{
 		quote = *c;
 		nb_quote++;
@@ -71,12 +55,6 @@ t_token	*token(char *c)
 }
 
 
-/*
- *	transforme chaque caractere en un token (type,char)
- *	et l'ajoute a la liste chainee tlist (tokelist)
- *	(show_tokens_lists montre les differents tokens + situee dans /utils/debug/lexer)
- */
-
 void	lexer(t_input	*s)
 {
 	int	i;
@@ -84,12 +62,8 @@ void	lexer(t_input	*s)
 	i = 0;
 	while (s->input && s->input[i])
 	{
-		if (!s->tlist)
-			s->tlist = ft_lstnew(token(&s->input[i]));
-		else
-			ft_lstadd_back(&s->tlist, ft_lstnew(token(&s->input[i])));
+		ft_lstadd_back(&s->tlist, ft_lstnew(token(&s->input[i])));
 		i++;
 	}
 	//show_token_list(s);
-	//printf("number of groups: %i\n",number_of_groups(s->tlist));
 }

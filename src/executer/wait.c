@@ -1,27 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   string_utils.c                                     :+:      :+:    :+:   */
+/*   wait.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/24 16:16:50 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 11:05:40 by mtellal          ###   ########.fr       */
+/*   Created: 2022/06/01 09:25:47 by mtellal           #+#    #+#             */
+/*   Updated: 2022/06/01 15:06:31 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-int     ft_belong(char *s, char c)
-{
-        int     i;
+//	verifier si d'autres singaux a prendre en compte ou d'autres options pour &status
 
-        i = 0;
-        while (s && s[i])
-        {
-                if (s[i] == c)
-                        return (1);
-                i++;
-        }
-        return (0);
+void	wait_all(t_input *s, pid_t *f)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i < s->nb_cmd)
+	{
+		waitpid(f[i], &status, 0);
+		if (WIFEXITED(status))
+			s->lstatus = WEXITSTATUS(status);
+		else
+		{
+			if (WIFSIGNALED(status))
+				s->lstatus = WTERMSIG(status);
+		}
+		i++;
+	}
+	free(f);
 }

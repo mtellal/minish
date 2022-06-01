@@ -6,11 +6,18 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:35:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/31 19:22:43 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 20:10:39 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
+
+void	ctrl_d(t_input *s)
+{
+	free_env(s);
+	ft_putstr_fd("\nexit\n", 1);
+	exit(EXIT_SUCCESS);
+}
 
 void	redisplay(int n)
 {

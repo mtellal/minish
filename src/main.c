@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 10:38:28 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/24 16:23:38 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 21:06:33 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 int main(int argc, char **argv, char **env)
 {
-	// static declaration of structs
-	t_input		i;
+	t_input		s;
 
 	if (argc == 1)
 	{
-		//pipex(argc, argv, env, 1);
-		input(&i, argc, argv, env);
+		launch(&s, argc, argv, env);
 	}
 	else
 		ft_putstr_fd("Wrong number of arguments\n", 1);

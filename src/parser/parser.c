@@ -6,18 +6,11 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/31 15:44:50 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 20:55:54 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
-
-/*
- *	transforme les l premiers tokens en une string 
- *	string qui va etre le contenu d'un nouveau token dans clist (commandlist)
- *	utilise pour transformer un groupe de token tlist en un seul token clist
- *	(token : a | b | c | /// d => token : abcd avec le meme )
- */
 
 char	*tlist_to_s(t_list	*list, int l)
 {
@@ -42,11 +35,6 @@ char	*tlist_to_s(t_list	*list, int l)
 	return (tab);
 }
 
-/*
- *	renvoie l'index du prochain type different 
- *	et donc l'index du prochain groupe de type (s_type->type) similaire
- */
-
 int	next_index_group(t_list	*list)
 {
 	int	i;
@@ -68,11 +56,6 @@ int	next_index_group(t_list	*list)
 	 }
 	 return (i);
 }
-
-/*
- *	determine le nombre de groupes dans tlist (lexer)
- *	afin de determine le nombre de token pour la clist (commandlist)
- */
 
 int	number_of_groups(t_list	*list)
 {
@@ -99,11 +82,6 @@ int	number_of_groups(t_list	*list)
 	return (i);
 }
 
-/*
- *	transforme une string, correspondant a plusieurs tokens de la tlist (lexer)
- *	en contenu du nouveau token dans clist (parser)
- */
-
 t_token	*tokenize(int	next_group, t_list *list)
 {
 	t_token	*t;
@@ -117,12 +95,6 @@ t_token	*tokenize(int	next_group, t_list *list)
 	t->type = type_token(*s);
 	return (t);
 }
-
-/*
- *	remplie la liste chainee
- *	determine le nombre de groupe de type different = nb de token pour clist
- *	creer les tokens dans clist en regroupant les tokens (tlist) selon leurs types similaire 
- */
 
 void	parser(t_input *s)
 {
@@ -147,39 +119,4 @@ void	parser(t_input *s)
 	}
 	s->nb_cmd = nb_token_type(s->clist, ALPHANUM);
 	s->nb_sep = nb_token_type(s->clist, SEPARATOR);
-	clear_space(s->clist, s);
-	if (err_separator(s->clist, s))
-		return ;
-	show_command_table(s);
-	ft_putstr_fd("\n", 2);
-	if (index_separator(s->clist) == -1)
-                ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, 1, ((t_token*)s->clist->content)->c, 0)));
-	else
-		redirections(s->clist, s);
-	layer2(s->clist, s);
-	// reorder la list ou fill_args selon l id + corriger l'ecoute (genre cat) stdin  sinon cat => oo
-        s->nb_cmd = ft_lstsize(s->cmd_list);
-	/*
-	 *	VERIFICATION DE COMMANDE APRES 
-	 */
-	// !!!!!!!! ne pas set les cmd direct => ls > file | wd ( ls > file) !!!!!!!!!!!
-	fill_args(s->cmd_list, s);
-        executer(s->cmd_list, s);
-	clear_cmd_list(s->cmd_list, s);
-
-	/*
-	 *	- verif_cmd =>dans le fork, les cmd precedentes doivents s'exe
-	 *	- executer les ./wdf et les chemins absolu
-	 *	- tester les separator dans les quotes '|<fw' | cat etc
-	 *	- tester les quotes encore
-	 *	- verifier s'il n'y a aps de douille avec les liens symboliques
-	 *	- tester avec env -i (sans env) => probleme ls | cat
-	 *	- env sans arg ni option ( mais env xxx => fonctionne) laisser ou coriger et err si args ou option ? 
-	 *	- gerer les redirections 2>&1 ou 2>
-	 *	- faire un tableau de pid et exe tous les fork, + ne pas faire de fork pour les buitlins
-	 *	- export s+=x aq gerer
-	 *	- heredoc a supprimer
-	 *	- shlvl a incrementer lors d'un ./minish 
-	 *
-	 */
 }

@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/05/31 17:49:58 by mtellal          ###   ########.fr        #
+#    Updated: 2022/06/01 18:52:00 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,9 @@ SOURCES =	main.c \
 	parser/separators/layer2.c\
 	parser/utils/parser_utils.c parser/utils/utils.c parser/utils/verify_separator.c \
 	parser/quotes/verif_quotes.c parser/quotes/modify_quotes.c parser/quotes/quote_utils.c \
-	executer/verify_commands.c executer/executer.c executer/pipes.c \
+	executer/verify_commands.c executer/executer.c executer/pipes.c executer/wait.c \
 	utils/tab_utils.c utils/string_utils.c utils/open_utils.c \
-	env/env_init.c env/env_utils.c \
+	env/env_init.c env/env_utils.c env/env_var.c \
 	builtin/env.c builtin/pwd.c builtin/echo.c builtin/export.c builtin/export_utils.c \
 	builtin/unset.c
 
@@ -65,7 +65,7 @@ LIB = -lreadline -L $(LIBDIR) -lft
 all: compiling $(NAME) succeed
 
 succeed:
-	@echo "succeed\033[0m"
+	@echo "ready\033[0m"
 
 compiling:
 	@echo -n "\033[1;32mcompiling"

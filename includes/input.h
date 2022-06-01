@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/31 19:22:19 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/01 21:07:39 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,15 +127,16 @@ typedef struct s_input
 	struct s_env	*env;
 
 	int		*p_env;
+	int		lstatus;
 
 }		t_input;
 
 
 //////////		I N P U T . C		//////////
 
-int	input(t_input *s, int argc, char **argv, char **env);
-int	getInput(t_input *s);
-void	init_sinput(t_input *s, int argc, char **argv, char **env);
+int	launch(t_input *s, int argc, char **argv, char **env);
+int	input(t_input *s);
+void	init_data(t_input *s, int argc, char **argv, char **env);
 
 
 /////////////////////////////////////////////////////////
@@ -209,6 +210,7 @@ int     index_quote(char *s, char c);
 int     wrong_number_quote(char *s);
 int     msg_err_quote(void);
 int     err_quotes(char *buffer, char **input);
+int	verif_pair_of_quotes(char *s);
 
 /////	M O D I F Y . Q U O T E S . C 		/////
 
@@ -262,6 +264,7 @@ void    clear_space(t_list *list, t_input *s);
 
 //////////	S I G N A L S . C		//////////
 
+void    ctrl_d(t_input *s);
 void    redisplay(int n);
 void    sig_int(int n);
 void    sig_quit(int n);
@@ -276,7 +279,7 @@ void	ft_env(t_env *env);
 void	ft_printenv(t_input *s);
 void	ft_export(char **args, t_input *s);
 void	ft_pwd(void);
-void	ft_echo(char **args);
+void	ft_echo(char **args, t_input *s);
 void	ft_unset(char **args, t_input *s);
 
 // export_utils.c
@@ -298,7 +301,7 @@ char    **env_to_tab(t_env *env);
 void    print_tab_env(t_env *env);
 t_env   *ft_lstlast_env(t_input *s);
 
-
+char    *var_env(char *str, t_input *s);
 
 /////////////////////////////////////////////////////////
 //               E X E C U T E R  . C                  //
@@ -318,7 +321,9 @@ char    **tab_path(char **env);
 int     valid_cmd(char *path, char *cmd);
 char    *is_valid_cmd(char *cmd, char **env);
 
+/////	W A I T . C 			/////
 
+void	wait_all(t_input *s, pid_t *f);
 
 
 
