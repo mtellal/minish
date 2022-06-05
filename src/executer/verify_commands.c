@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 21:17:10 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/31 20:43:43 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/02 11:18:25 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	**tab_path(char **env)
 	while (env && *env && ft_strncmp("PATH", *env, 4) != 0)
 		env++;
 	if (!*env)
-		ft_putstr_fd("err PATH invalid\n", 2);	
+		ft_putstr_fd("err PATH invalid\n", 2);
 	tab = ft_split(*env + 5, ':');
 	return (tab);
 }
@@ -51,12 +51,12 @@ int	valid_cmd(char *path, char *cmd)
 char	**add_tab_first(char *s, char **tab)
 {
 	char	**f;
-	int	i;
+	int		i;
 
 	i = 0;
 	if (!s)
 		return (tab);
-	f = ft_calloc(ft_strlen_tab(tab) + 2, sizeof(char*));
+	f = ft_calloc(ft_strlen_tab(tab) + 2, sizeof(char *));
 	f[0] = ft_strdup(s);
 	while (tab && tab[i])
 	{
@@ -64,24 +64,7 @@ char	**add_tab_first(char *s, char **tab)
 		i++;
 	}
 	f[i + 1] = NULL;
-	//if (tab)
-	//	free_tab(tab);
-	//free(s);
 	return (f);
-}
-
-char	*wrap_bash(char *s)
-{
-	char	*cmd;
-
-	cmd = NULL;
-	if (!ft_strncmp(s, "./", 2) && access(s, X_OK) == -1)
-	{
-		perror("error");
-		exit(0);
-	}
-	cmd = ft_strdup(s);
-	return (cmd);
 }
 
 char	*is_valid_cmd(char *cmd, char **env)
@@ -107,15 +90,8 @@ char	*is_valid_cmd(char *cmd, char **env)
 			s = ft_strjoin_free(s, cmd, 1, 0);
 		}
 		else
-		{
-			ft_putstr_fd("error: command not found: ", 2);
-			ft_putstr_fd(cmd, 2);
-			ft_putstr_fd("\n", 2);
-			exit(127);
-		}
+			err_msg_invalid_cmd(cmd);
 		free_tab(p);
 	}
 	return (s);
 }
-
-

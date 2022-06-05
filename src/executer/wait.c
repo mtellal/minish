@@ -6,13 +6,14 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 09:25:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 15:06:31 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/04 17:46:56 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-//	verifier si d'autres singaux a prendre en compte ou d'autres options pour &status
+//	verifier si d'autres singaux a prendre en compte 
+//	ou d'autres options pour &status
 
 void	wait_all(t_input *s, pid_t *f)
 {

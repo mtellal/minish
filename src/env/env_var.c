@@ -6,58 +6,62 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 10:11:27 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 16:10:11 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/02 20:08:08 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-int	end_index_var(char *s)
+void	var_match(int *i, char *s, char *final, t_input *ss)
 {
-	int	i;
+	char	*value;
 
-	i = 0;
-	while (s && s[i])
+	value = NULL;
+	*i += 1;
+	if (s[*i] && s[*i] == '?')
 	{
-		if (ft_belong("|<> ?'\"'", s[i]))
-			return (i);
-		i++;
+		final = ft_strjoin_free(final, ft_itoa(ss->lstatus), 1, 0);
+		s += *i + 1;
 	}
-	return (i);
+	else
+	{
+		if (!s[*i])
+			final = ft_strjoin_free(final, ft_substr(s + *i, 0, *i + 1), 1, 1);
+		else
+		{
+			value = var_value(s + *i, ss);
+			if (value)
+				final = ft_strjoin_free(final, value, 1, 0);
+			s += end_index_var(s + *i) + *i;
+		}
+	}
+	*i = 0;
 }
 
-char	*value_attr(char *attr, t_input *s)
+void	quote_match(int *i, int *quote, char **final, char **s)
 {
-	t_env	*r;
-
-	r = s->env;
-	while (r)
-	{
-		if (!ft_strcmp(attr, r->var))
-			return (r->content);
-		r = r->next;	
-	}
-	return (NULL);
+	if (quote)
+		quote = 0;
+	else
+		quote++;
+	*final = ft_strjoin_free(*final, ft_substr(*s, 0, *i + 1), 1, 1);
+	*s += *i + 1;
+	*i = 0;
 }
 
-char	*var_value(char *s, t_input *ss)
+char	*null_match(int i, char *final, char *s)
 {
-	int	i;
-	char	*attr;
-
-	i = 0;
-	attr = ft_substr(s + i, 0, end_index_var(s + i));
-	if (attr)
-		return (value_attr(attr, ss));	
-	return (NULL);
+	if (!final)
+		return (ft_substr(s, 0, i));
+	else
+		return (ft_strjoin_free(final, ft_substr(s, 0, i), 1, 1));
 }
 
 char	*var_env(char *s, t_input *ss)
 {
-	int	i;
+	int		i;
+	int		quote;
 	char	*final;
-	char	*value;
-	int	quote;
 
 	i = 0;
 	final = NULL;
@@ -67,43 +71,13 @@ char	*var_env(char *s, t_input *ss)
 		while (s && s[i] && !ft_belong("$'\''", s[i]))
 			i++;
 		if (!s[i])
-		{
-			if (!final)
-				return (ft_substr(s, 0, i));
-			else
-				return (ft_strjoin_free(final, ft_substr(s, 0, i), 1, 1));	
-		}
+			return (null_match(i, final, s));
 		if (s[i] == '\'')
-		{
-			if (quote)
-				quote = 0;
-			else
-				quote++;
-			final = ft_strjoin_free(final, ft_substr(s, 0, i + 1), 1, 1);
-			s += i + 1;
-			i = 0;
-		}
+			quote_match(&i, &quote, &final, &s);
 		else
-			final = ft_strjoin_free(final , ft_substr(s, 0, i), 1, 1);
+			final = ft_strjoin_free(final, ft_substr(s, 0, i), 1, 1);
 		if (s[i] == '$' && !quote)
-		{
-			i++;
-			if (s[i] && s[i] == '?')
-			{
-				final = ft_strjoin_free(final, ft_itoa(ss->lstatus), 1, 0);
-				s += i + 1;
-			}
-			else
-			{
-				value = var_value(s + i, ss);
-				if (!s[i])
-					return (ft_strjoin_free(final, ft_substr(s + i, 0, i + 1), 1, 1));
-				if (value)
-					final = ft_strjoin_free(final, value, 1, 0);
-				s += end_index_var(s + i) + i;
-			}
-			i = 0;
-		}
+			var_match(&i, s, final, ss);
 		if (s[i] == '$' && quote)
 			i++;
 	}

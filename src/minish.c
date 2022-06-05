@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 22:30:53 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/04 17:29:12 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,43 @@ void	minishell(t_input *s)
 {
 	lexer(s);
 	parser(s);
-	clear_space(s->clist, s);
-        if (err_separator(s->clist, s))
-                return ;
-        //show_command_table(s);
-        //ft_putstr_fd("\n", 2);
+	clear_space(s->clist);
+	if (err_separator(s->clist, s))
+	{
+		ft_lstclear_lexer(&s->tlist);
+		ft_lstclear_token(&s->clist);
+		return ;
+	}
+	show_command_table(s);
         if (index_separator(s->clist) == -1)
-                ft_lstadd_back(&s->cmd_list, ft_lstnew(cmd(0, 1, ((t_token*)s->clist->content)->c, 0)));
-        else
-                cmd_redirections(s->clist, s);
-        cmd_pipes(s->clist, s);
-        s->nb_cmd = ft_lstsize(s->cmd_list);
+		       ft_lstaddb_cmd(&s->cmd_list, cmd(0, 1, s->clist->c, 0));
+	else if (cmd_redirections(s->clist, s) == -1)
+		return ; 
+	cmd_pipes(s->clist, s);
+        s->nb_cmd = ft_lstsize_cmd(s->cmd_list);
         fill_args(s->cmd_list, s);
-        executer(s->cmd_list, s);
-        clear_cmd_list(s->cmd_list, s);
-	ft_lstclear(&s->clist, &clear_telement);
-        
+	executer(s->cmd_list, s);
+	ft_lstclear_lexer(&s->tlist);
+	ft_lstclear_token(&s->clist);
+	clear_cmd_list(&s->cmd_list);
 	/*
+	 * 	- TESTER:
+	 * 	- 0 env, verifier toutes le cmd une a une + les douilles sur le discord 
+	 * 	- 1 signaux avec et sans commandes
+	 * 	- 2 status avec le $?
+	 *
+	 * 	- 3 les quotes, tout type de test possible, avec sans sep
+	 * 	- 4 les redirections, avec sans quotes, en granc nombre, etc..
+	 * 	- 5 les pipes, beaucoup de pipe, quotes, sep, commande tricky sleep etc
+	 * 	- 6 les cmd, script, absolu relatif, avec erreurs, awk etc  
+	 *
+	 * 	- gere les parentheses () priorites ?
          *      - verif_cmd =>dans le fork, les cmd precedentes doivents s'exe
          *      - executer les ./wdf et les chemins absolu
          *      - tester les separator dans les quotes '|<fw' | cat etc
          *      - tester les quotes encore
          *      - verifier s'il n'y a aps de douille avec les liens symboliques
-         *      - tester avec env -i (sans env) => probleme ls | cat
+         *      - tester avec env -i (sans env) => probleme ls | cat (err dup2)
          *      - env sans arg ni option ( mais env xxx => fonctionne) laisser ou coriger et err si args ou option ?
          *      - faire un tableau de pid et exe tous les fork, + ne pas faire de fork pour les buitlins
          *      - export s+=x aq gerer
@@ -75,6 +89,8 @@ void	minishell(t_input *s)
 	 *      - rm le heredoc (unlink)
 	 *      - rm pipes ( erro: syntax token '|')
 	 *      - !!!!!!!!!!!!!!!!!! FAIRE CD !!!!!!!!!!!!!!!
+	 *      - ls | ' ' => err
+	 *      - + de test sur les separateurs => || <<<| etc 
          */
 }
 
@@ -93,7 +109,7 @@ int	input(t_input *s)
 		{
 			s->input = var_env(buffer, s);
 			s->llist = ft_strlen(s->input);
-			if (*buffer)
+			if (s->input && *s->input)
 				minishell(s);
 		}
 		free(buffer);

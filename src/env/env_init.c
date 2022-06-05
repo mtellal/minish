@@ -6,25 +6,25 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 16:54:13 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 20:38:19 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/02 10:09:22 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-void   ft_init(t_input *s, char **envp)
+void	ft_init(t_input *s, char **envp)
 {
-    t_env   *n;
-    int i;
+	t_env	*n;
+	int		i;
 
-    i = 0;
-    n = NULL;
-    while (envp && envp[i])
-    {
-        n = str_to_env(envp[i]);
-        ft_lstadd_back_env(&s->env, n);
-        i++;
-    }
+	i = 0;
+	n = NULL;
+	while (envp && envp[i])
+	{
+		n = str_to_env(envp[i]);
+		ft_lstadd_back_env(&s->env, n);
+		i++;
+	}
 }
 
 void	ft_lstadd_back_env(t_env **lst, t_env *n)
@@ -47,20 +47,18 @@ void	ft_lstadd_back_env(t_env **lst, t_env *n)
 
 int	equal_index(char *env)
 {
-    int i;
-    
-    i = 0;
-    while (env && env[i] && env[i] != '=')
-    {
-        i++;
-    }
-    return (i);
+	int	i;
+
+	i = 0;
+	while (env && env[i] && env[i] != '=')
+		i++;
+	return (i);
 }
 
 t_env	*str_to_env(char *str)
 {
 	t_env	*n;
-	int	equal;
+	int		equal;
 
 	if (!str)
 		return (NULL);
@@ -95,4 +93,3 @@ void	show_env(t_env	*env)
 	}
 	env = r;
 }
-

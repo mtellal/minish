@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 11:18:51 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 22:23:44 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/02 18:14:50 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,35 +26,37 @@ int	only_space(char *s)
 	return (1);
 }
 
-int	index_separator(t_list *list)
+int	index_separator(t_token *list)
 {
 	int	i;
-	t_token	*token;
+	t_token	*r;
 
 	i = 0;
+	r = list;
 	while (list)
 	{
-		token = list->content;
-		if (token->type == SEPARATOR && !only_space(token->c))
+		if (list->type == SEPARATOR && !only_space(list->c))
 			return (i);
 		list = list->next;
 		i++;
 	}
+	list = r;
 	return (-1);
 }
 
-int     nb_token_type(t_list *list, enum s_type type)
+int     nb_token_type(t_token *list, enum s_type type)
 {
         int     i;
-        t_token *token;
+        t_token *r;
 
         i = 0;
+	r = list;
         while (list)
         {
-                token = list->content;
-                if (token->type == type)
+                if (list->type == type)
                         i++;
                 list = list->next;
         }
+	list = r;
         return (i);
 }

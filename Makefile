@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/06/01 22:08:58 by mtellal          ###   ########.fr        #
+#    Updated: 2022/06/04 14:08:53 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,33 +19,42 @@ CFLAGS = -Wall -Wextra -Werror -g
 NAME = minishell
 
 #############		MINISH 		#################
-	
-SOURCES =	main.c \
-	minish.c \
-	signals.c \
-	lexer/lexer.c \
-	parser/parser.c\
-	parser/redirections/cmd_redirections.c parser/redirections/redirections_utils.c \
-	parser/redirections/open_utils.c \
-	parser/separators/cmd_pipes.c\
-	parser/utils/parser_utils.c parser/utils/utils.c parser/utils/verify_separator.c \
-	parser/quotes/verif_quotes.c parser/quotes/fill_args.c  \
-	executer/verify_commands.c executer/executer.c executer/pipes.c executer/wait.c \
-	utils/tab_utils.c utils/string_utils.c utils/open_utils.c \
-	env/env_init.c env/env_utils.c env/env_var.c \
-	builtin/env.c builtin/pwd.c builtin/echo.c builtin/export.c builtin/export_utils.c \
-	builtin/unset.c
 
-DEBUG = $(addprefix utils/debug/, lexer/debug_lexer.c parser/debug_parser.c parser/commands_utils.c)
+BUILTIN = $(addprefix builtin/, echo.c env.c export.c export_utils.c pwd.c unset.c)
 
-SRC = $(addprefix src/, $(SOURCES)) $(DEBUG) 
+ENV = $(addprefix env/, env_init.c env_utils.c env_var.c env_var_utils.c)
+
+EXECUTER = $(addprefix executer/, executer.c executer_utils.c pipes.c verify_commands.c verify_commands_utils.c wait.c)
+
+
+#####	PARSER
+
+PUTILS = $(addprefix utils/, utils.c parser_utils.c verify_separator.c)
+
+QUOTES = $(addprefix quotes/, clear_word.c fill_args.c tab_quotes.c verif_quotes.c)
+
+REDIRECTIONS = $(addprefix redirections/, cmd_redirections.c  open_redirections.c redirections_utils.c)
+
+SEPARATORS = $(addprefix separators/, cmd_pipes.c)
+
+PARSER = $(addprefix parser/, parser.c $(PUTILS) $(QUOTES) $(REDIRECTIONS) $(SEPARATORS))
+
+#####	UTILS
+
+DEBUG = $(addprefix debug/, debug_lexer.c debug_parser.c commands_utils.c)
+
+UTILS = $(addprefix utils/, list_token_utils.c list_cmd_utils.c open_utils.c string_utils.c tab_utils.c $(DEBUG))
+
+SOURCES = main.c minish.c lexer/lexer.c signals.c \
+
+SRC = $(addprefix src/, $(SOURCES) $(BUILTIN) $(ENV) $(EXECUTER) $(PARSER) $(UTILS)) 
 
 OBJ = $(SRC:.c=.o)
 
 
 #############		DIR		#################
 
-LIBDIR = utils/libft
+LIBDIR = ./libft
 
 
 #############		HEADERS		###################	

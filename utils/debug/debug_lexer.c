@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 19:11:04 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/28 17:53:52 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/02 17:57:48 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,17 @@
 
 void    show_token_list(t_input *s)
 {
-	int	len;
-        t_list  *list;
         t_token *token;
-        int            i;
+        t_token	*r;
+	int            i;
         char            *type;
 
-        list = s->tlist;
-        token = list->content;
         i = 0;
+	r = s->tlist;
         type = NULL;
-        len = ft_lstsize(s->tlist);
-	while (i < len)
+	while (s->tlist)
         {
+		token = s->tlist;
                 if (token->type == 0)
                         type = "ALPHANUMERIC";
                 if (token->type == 1)
@@ -46,9 +44,8 @@ void    show_token_list(t_input *s)
                 if (token->type == 8)
                         type = "OTHER";
                 printf("%c      %s\n",*(char*)(token->c), type );
-                list = list->next;
-                if (list)
-                        token = list->content;
-                i++;
+                s->tlist = s->tlist->next;
+		i++;
         }
+	s->tlist = r;
 }

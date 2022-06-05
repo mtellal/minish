@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 09:54:08 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 22:26:24 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/03 21:34:38 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,37 +57,62 @@ int     msg_err_separator(char *s, int err_sep)
                 return (1);
 }
 
-
-int     err_separator(t_list *list, t_input *s)
+int	err_redi(t_token *list, t_token *nlist)
 {
-        t_token *token;
-	t_list	*plist;
-	t_list	*nlist;
-        int     err_sep;
+	int	err_sep;
+
+	err_sep = 0;
+	if (valid_separator(list->c, &err_sep) != -1)
+		return (msg_err_separator(list->c, err_sep));
+	if (!nlist || nlist->type == SEPARATOR)
+		return (msg_err_separator(list->c, 0));
+	return (0);
+}
+
+int	err_pipe(t_token *list, t_token *plist, t_token *nlist)
+{
+	int	err;
+
+	err = 0;
+	if (!plist || plist->type != ALPHANUM)
+		err = 1;
+	if (!nlist)
+		err = 1;
+	if (ft_strlen(list->c) > 1)
+		err = 1;
+	if (err)
+		return (msg_err_separator(list->c, 0));
+	return (0);
+}
+
+
+int     err_separator(t_token *list, t_input *s)
+{
+	int	err;
+        t_token *r;
+	t_token	*plist;
+	t_token	*nlist;
 
 	plist = NULL;
-        while (list)
+        r = list;
+	err = 0;
+	while (list)
         {
-                token = list->content;
-                if (token->type == SEPARATOR)
+		nlist = list->next;
+                if (list->type == SEPARATOR)
                 {
 			if (s->llist == 1)
-				return (msg_err_separator(token->c, 0));
-			//	si il y a bien '<' '<<' '>>' '>' '|' '&' ';'
-                        if (ft_belong("><", *token->c) && valid_separator(token->c, &err_sep) != -1)
-                                return (msg_err_separator(token->c, err_sep));
-			//	s_clist = 'ls ' '|' ' ' ';' -> apres clear_space 'ls ' '|' ';' (2 sep colles)
-			if (*token->c == '|' && (!plist || ((t_token*)plist->content)->type != ALPHANUM))
-				return (msg_err_separator(token->c, 0));
-			if (*token->c == '|' && (!nlist || ((t_token*)nlist->content)->type != ALPHANUM))
-				return (msg_err_separator(token->c, 0));
-			if (*token->c == '|' && ft_strlen(token->c) > 1)
-				return (msg_err_separator(token->c, 1));
+				return (msg_err_separator(list->c, 0));
+                        if (ft_belong("><", *list->c))
+				err = err_redi(list, nlist);
+			if (*list->c == '|' )
+				err = err_pipe(list, plist, nlist);
+			if (err)
+				return (err);
 		}
 		plist = list;
                 list = list->next;
-        	if (list)
-			nlist = list->next;
 	}
+	list = r;
         return (0);
 }

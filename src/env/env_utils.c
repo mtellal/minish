@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 16:54:37 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 20:39:58 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/04 14:34:26 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,32 @@ void	free_env(t_input *s)
 	s->env = NULL;
 }
 
-char	**env_to_tab(t_env *env)
+char	**env_to_tab(t_env *list)
 {
-	t_env	*r;
+	t_env	*env;
 	char	**tab;
 	char	*s;
 
-	r = env;
+	env = list;
 	tab = NULL;
 	s = NULL;
 	while (env)
 	{
 		s = ft_strdup(env->var);
+		free(env->var);
 		s = ft_strjoin_free(s, "=", 1, 0);
 		s = ft_strjoin_free(s, env->content, 1, 1);
 		tab = add_tab(tab, s, 1);
 		s = NULL;
 		env = env->next;
 	}
-	env = r;
 	return (tab);
 }
 
-void    print_tab_env(t_env *env)
+void	print_tab_env(t_env *env)
 {
 	char	**tab;
-	int i;
+	int		i;
 
 	i = 0;
 	tab = env_to_tab(env);
@@ -79,4 +79,3 @@ t_env	*ft_lstlast_env(t_input *s)
 	s->env = r;
 	return (l);
 }
-

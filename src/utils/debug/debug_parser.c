@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   debug_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/02 09:41:52 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/02 09:41:55 by mtellal          ###   ########.fr       */
+/*   Created: 2022/05/06 14:01:36 by mtellal           #+#    #+#             */
+/*   Updated: 2022/06/02 18:37:04 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-void	ft_env(t_env *env)
+/*
+ *	affiche chaque token dans la tlist
+ *	char c + type
+ */
+
+void	show_command_table(t_input *s)
 {
-	while (env)
+	t_token	*r;
+
+	r = s->clist;
+	while (s->clist)
 	{
-		ft_putstr_fd(env->var, 1);
-		ft_putstr_fd("=", 1);
-		ft_putstr_fd(env->content, 1);
-		ft_putstr_fd("\n", 1);
-		env = env->next;
+		printf(" '%s' ", s->clist->c);
+		s->clist = s->clist->next;
 	}
-	exit(EXIT_SUCCESS);
+	s->clist = r;
+	printf("\n");
 }

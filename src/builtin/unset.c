@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 17:04:46 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/30 19:21:37 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/02 10:35:59 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,20 @@ int	lst_size_env(t_env *env)
 	return (i);
 }
 
-/*
- *	attribut = alphnum ou '_'
- */
+void	free_tenv(t_env *e)
+{
+	if (!e)
+		return ;
+	if (e->var)
+		free(e->var);
+	if (e->content)
+		free(e->content);
+	free(e);
+}
 
 void	ft_unset(char **args, t_input *s)
 {
-	int	i;
+	int		i;
 	t_env	*n;
 	t_env	*pe;
 	t_env	*sub;
@@ -56,7 +63,7 @@ void	ft_unset(char **args, t_input *s)
 	pe = NULL;
 	r = s->env;
 	i = 1;
-	while(args && args[i])
+	while (args && args[i])
 	{
 		n = str_to_env(args[i]);
 		pe = previous_already_exists(n, s->env);
@@ -64,15 +71,11 @@ void	ft_unset(char **args, t_input *s)
 		{
 			sub = n->next;
 			pe->next = sub;
-			if (n->var)
-				free(n->var);
-			if (n->content)
-				free(n->content);
-			free(n);
+			free_tenv(n);
 		}
 		i++;
 	}
 	s->env = r;
-	env_to_pipe(s->env, s->p_env[1]);
+	env_to_pipe(s->env, s->p_env);
 	exit(EXIT_SUCCESS);
 }

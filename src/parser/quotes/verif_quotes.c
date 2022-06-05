@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 16:22:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 18:49:55 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/02 15:22:48 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,23 @@ int	index_quote(char *s, char c)
 	return (-1);
 }
 
-int     msg_err_quote(void)
+int	msg_err_quote(void)
 {
-        ft_putstr_fd("error: unclosed quotes\n", 2);
-        return (-1);
+	ft_putstr_fd("error: unclosed quotes\n", 2);
+	return (-1);
+}
+
+void	set_quote_nquote(char *quote, int *nquote, char vquote, int vnquote)
+{
+	*quote = vquote;
+	*nquote = vnquote;
 }
 
 int	verif_pair_of_quotes(char *s)
 {
-	int	i;
+	int		i;
+	int		nquote;
 	char	quote;
-	int	nquote;
 
 	i = 0;
 	quote = 0;
@@ -51,15 +57,9 @@ int	verif_pair_of_quotes(char *s)
 		if (ft_belong("'\'''\"'", s[i]))
 		{
 			if (!nquote)
-			{
-				nquote++;
-				quote = s[i];
-			}
+				set_quote_nquote(&quote, &nquote, s[i], nquote + 1);
 			else if (quote == s[i])
-			{
-				quote = 0;
-				nquote--;
-			}
+				set_quote_nquote(&quote, &nquote, 0, nquote - 1);
 		}
 		i++;
 	}

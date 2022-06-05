@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 15:35:22 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/27 19:11:24 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/04 11:37:03 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ char    *tab_to_s(char **tab, int f)
         s = NULL;
 	while (tab && tab[i])
         {
-                s = ft_strjoin_free(s, tab[i], 1, 1);
+                s = ft_strjoin_free(s, tab[i], 1, 0);
                 i++;
         }
 	if (tab && f)
-		free(tab);
+		free_tab(tab);
         return (s);
 }
 

@@ -6,21 +6,18 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:21:09 by mtellal           #+#    #+#             */
-/*   Updated: 2022/05/31 17:01:37 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/03 10:36:13 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-void	clear_cmd_list(t_list *list, t_input *s)
+void	clear_cmd_list(t_cmd *cmd, t_input *s)
 {
-	t_list	*l;
-	t_cmd	*cmd;
+	t_cmd	*free_c;
 
-	l = list;
-	while (list)
+	while (cmd)
 	{
-		cmd = list->content;
 		if (cmd)
 		{
 			if (cmd->args)
@@ -33,29 +30,27 @@ void	clear_cmd_list(t_list *list, t_input *s)
 				close(cmd->fdo);
 			free(cmd);
 		}
-		l = list;
-		list = list->next;
-		free(l);
+		free_c = cmd;
+		cmd = cmd->next;
+		free(free_c);
 	}
 	s->cmd_list = NULL;
 }
 
 
 
-void	show_cmd_list(t_list *list)
+void	show_cmd_list(t_cmd *cmd)
 {
 	int	i;
-	t_cmd *cmd;
-	t_list	*l;
+	t_cmd *r;
 
 	i = 0;
-	l = list;
-	while (list)
+	r = cmd;
+	while (cmd)
 	{
-		cmd = list->content;
 		printf("id: %i   |   FDI:'%i'   |   FDO:'%i'	|   ARGS:' %s '  | cmd:' %s ' | cmd_args:' %s '\n", cmd->id, cmd->fdi, cmd->fdo, cmd->args, cmd->cmd, tab_to_s(cmd->cmd_args, 0));
-		list = list->next;
+		cmd = cmd->next;
 		i++;
 	}
-	list = l;
+	cmd = r;
 }
