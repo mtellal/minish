@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 15:35:22 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/04 11:37:03 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/07 16:02:15 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	**merge_tab(char **tab, char **tab2)
 	return (final);
 }
 
-char    **add_tab(char **tab, char *s, int f)
+char    **add_tab(char **tab, char *s, int ftab, int fs)
 {
         char    **ntab;
         int     i;
@@ -52,16 +52,15 @@ char    **add_tab(char **tab, char *s, int f)
         while (tab && tab[i])
         {
                 ntab[i] = ft_strdup(tab[i]);
-                free(tab[i]);
                 i++;
         }
         ntab[i++] = ft_strdup(s);
         ntab[i] = NULL;
-        if (s && f)
+        if (s && fs)
 		free(s);
-	/*if (tab)
+	if (tab && ftab)
 		free_tab(tab);
-	*/return (ntab);
+	return (ntab);
 }
 
 char    *tab_to_s(char **tab, int f)

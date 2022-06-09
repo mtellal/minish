@@ -6,25 +6,25 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 14:39:26 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/09 11:15:30 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/02 15:24:53 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-void	set_first_char(int f_quote, char **ns, char *s, int i)
+void	set_first_char(int f_quote, char *ns, char *s, int i)
 {
 	if (!i && s[i] != s[f_quote])
 	{
 		if (s[i + f_quote] == '\'')
-			*ns = ft_strjoin_free("'", ft_substr(s + i, 0, f_quote), 0, 1);
+			ns = ft_strjoin_free("'", ft_substr(s + i, 0, f_quote), 0, 1);
 		else
-			*ns = ft_strjoin_free("\"", ft_substr(s + i, 0, f_quote), 0, 1);
+			ns = ft_strjoin_free("\"", ft_substr(s + i, 0, f_quote), 0, 1);
 	}
 	else if (!i)
-		*ns = ft_strjoin_free(*ns, ft_substr(s + i, 0, f_quote + 1), 1, 1);
+		ns = ft_strjoin_free(ns, ft_substr(s + i, 0, f_quote + 1), 1, 1);
 	else if (f_quote != -1)
-		*ns = ft_strjoin_free(*ns, ft_substr(s + i, 0, f_quote), 1, 1);
+		ns = ft_strjoin_free(ns, ft_substr(s + i, 0, f_quote), 1, 1);
 }
 
 void	set_i_fquote(int *i, int *fquote, int vi, int vfquote)

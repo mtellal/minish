@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/09 11:21:46 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/04 15:00:32 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,9 @@ int	modify_io_cmd(t_token *list, t_input *s, int i_cmd, int i_list)
 	r = list->c;
 	data->i_cmd = i_cmd;
 	data->i_list = i_list;
-	init_cmd_redir(data, s, r);
-	rest_args = join_tab(data->tab, 1, 0);
+	if (init_cmd_redir(data, s, r) == -1)
+		return (-1);
+	rest_args = join_tab(data->tab, 1);
 	if (data->cmd)
 		modify_redirection(data, rest_args, r);
 	if (!data->cmd)

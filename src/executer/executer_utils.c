@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 10:26:30 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/04 13:59:54 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/07 21:34:38 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,6 @@ void	need_update_env(t_cmd *cmd, t_input *s)
 	}
 }
 
-void	close_fd_cmd(t_cmd *cmd)
-{
-	if (cmd->fdi > 2)
-		close(cmd->fdi);
-	if (cmd->fdo > 2)
-		close(cmd->fdo);
-}
-
 int	*pipe_env(t_cmd *cmd)
 {
 	int		*p;
@@ -42,6 +34,7 @@ int	*pipe_env(t_cmd *cmd)
 	scmd = cmd->cmd_args[0];
 	if (!ft_strcmp(scmd, "export") || !ft_strcmp(scmd, "unset"))
 	{
+		ft_putstr_fd("pipe_env\n", 2);
 		p = ft_calloc(2, sizeof(int));
 		if (pipe(p) == -1)
 			return (NULL);

@@ -6,30 +6,28 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 21:03:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/09 11:31:03 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/04 16:52:07 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-void	err_msg_redirection(char *err)
-{
-	ft_putstr_fd("error :", 2);
-	ft_putstr_fd(err, 2);
-	ft_putstr_fd("\n", 2);
-}
-
-void	init_cmd_redir(t_utils *data, t_input *s, char *r)
+int	init_cmd_redir(t_utils *data, t_input *s, char *r)
 {
 	data->ptoken = list_index_token(s->clist, data->i_list - 1);
 	data->ntoken = list_index_token(s->clist, data->i_list + 1);
-	if (data->ntoken)
+	if (!data->ntoken)
+		return (-1);
+	data->cmd = cmd_index(s->cmd_list, data->i_cmd);
+	data->tab = ft_split(data->ntoken->c, ' ');
+	if (open_data(data, r) == -1)
 	{
-		data->cmd = cmd_index(s->cmd_list, data->i_cmd);
-		data->tab = ft_split(data->ntoken->c, ' ');
-		if (!data->cmd->err_redir && open_data(data, r) == -1)
-			data->err_redir = strerror(errno);
+		perror("error");
+		ft_lstclear_lexer(&s->tlist);
+		ft_lstclear_token(&s->clist);
+		return (-1);
 	}
+	return (0);
 }
 
 void	add_cmd(t_utils *data, t_input *s, char **rest_args, char *r)
@@ -52,7 +50,7 @@ void	add_cmd(t_utils *data, t_input *s, char **rest_args, char *r)
 	progress_list(data, s, *rest_args);	
 }
 
-char	*join_tab(char **tab, int j, int ftab)
+char	*join_tab(char **tab, int j)
 {
 	char	*t;
 
@@ -66,16 +64,15 @@ char	*join_tab(char **tab, int j, int ftab)
 		t = ft_strjoin_free(t, " ", 1, 0);
 		j++;
 	}
-	if (tab && ftab)
-		free_tab(tab);
+	free_tab(tab);
 	return (t);
 }
 
 void	modify_redirection(t_utils *data, char *rest_args, char *r)
 {
-	if (*r == '<' && !data->cmd->err_redir)
+	if (*r == '<')
 		data->cmd->fdi = data->file;
-	if (*r == '>' && !data->cmd->err_redir)
+	if (*r == '>')
 		data->cmd->fdo = data->file;
 	if (data->ntoken)
 		data->ptoken->next = data->ntoken->next;

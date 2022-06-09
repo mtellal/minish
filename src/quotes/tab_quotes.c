@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 13:38:32 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/09 11:20:45 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/04 16:07:51 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,19 @@ int	n_space(char *s)
 char	**return_tab(char **tab, char *ns, char *s, int i)
 {
 	if (ns)
-		tab = add_tab(tab, ns, 0, 1);
+		tab = add_tab(tab, ns, 0);
 	if (s[i])
-		tab = add_tab(tab, ft_substr(s + i, 0, ft_strlen(s + i)), 0, 1);
+		tab = add_tab(tab, ft_substr(s + i, 0, ft_strlen(s + i)), 0);
 	return (tab);
 }
 
-void	progress_next_word(char ***tab, char *s, char **ns, int *i)
+void	progress_next_word(char **tab, char *s, char **ns, int *i)
 {
 	while (s[*i] == ' ')
 	{
-		if (*ns)
+		if (ns)
 		{
-			*tab = add_tab(*tab, *ns, 0, 1);
+			tab = add_tab(tab, *ns, 0);
 			*ns = NULL;
 		}
 		*i += 1;

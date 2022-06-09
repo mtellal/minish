@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/04 17:29:12 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/09 10:16:15 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	init_data(t_input *s, int argc, char **argv, char **env)
 
 void	minishell(t_input *s)
 {
+	if (!ft_strcmp(s->input, "exit"))
+		exit(EXIT_SUCCESS);
 	lexer(s);
 	parser(s);
 	clear_space(s->clist);
@@ -45,18 +47,16 @@ void	minishell(t_input *s)
 		ft_lstclear_token(&s->clist);
 		return ;
 	}
-	show_command_table(s);
         if (index_separator(s->clist) == -1)
 		       ft_lstaddb_cmd(&s->cmd_list, cmd(0, 1, s->clist->c, 0));
 	else if (cmd_redirections(s->clist, s) == -1)
 		return ; 
 	cmd_pipes(s->clist, s);
-        s->nb_cmd = ft_lstsize_cmd(s->cmd_list);
-        fill_args(s->cmd_list, s);
+	s->nb_cmd = ft_lstsize_cmd(s->cmd_list);
+	expander(s->cmd_list, s);
+        fill_args(s->cmd_list, s);	
 	executer(s->cmd_list, s);
-	ft_lstclear_lexer(&s->tlist);
-	ft_lstclear_token(&s->clist);
-	clear_cmd_list(&s->cmd_list);
+	free_all(s);
 	/*
 	 * 	- TESTER:
 	 * 	- 0 env, verifier toutes le cmd une a une + les douilles sur le discord 
@@ -68,7 +68,6 @@ void	minishell(t_input *s)
 	 * 	- 5 les pipes, beaucoup de pipe, quotes, sep, commande tricky sleep etc
 	 * 	- 6 les cmd, script, absolu relatif, avec erreurs, awk etc  
 	 *
-	 * 	- gere les parentheses () priorites ?
          *      - verif_cmd =>dans le fork, les cmd precedentes doivents s'exe
          *      - executer les ./wdf et les chemins absolu
          *      - tester les separator dans les quotes '|<fw' | cat etc
@@ -77,7 +76,7 @@ void	minishell(t_input *s)
          *      - tester avec env -i (sans env) => probleme ls | cat (err dup2)
          *      - env sans arg ni option ( mais env xxx => fonctionne) laisser ou coriger et err si args ou option ?
          *      - faire un tableau de pid et exe tous les fork, + ne pas faire de fork pour les buitlins
-         *      - export s+=x aq gerer
+         *      - export s+=x a gerer
          *      - heredoc a supprimer
          *      - shlvl a incrementer lors d'un ./minish
          *      - echo $dws $d | cat -e -> aucun espace
@@ -91,7 +90,10 @@ void	minishell(t_input *s)
 	 *      - !!!!!!!!!!!!!!!!!! FAIRE CD !!!!!!!!!!!!!!!
 	 *      - ls | ' ' => err
 	 *      - + de test sur les separateurs => || <<<| etc 
-         */
+         *	- verification des fichiers lors dans chaque process
+	 *	- probleme superposition de *char (stdin et stdout) genre -> ls | cat < dw | pwd
+	 *	- wdf^C => buffer non reset (wdf toujour la)
+	 */
 }
 
 int	input(t_input *s)
@@ -107,7 +109,7 @@ int	input(t_input *s)
 		add_history(buffer);
 		if (verif_pair_of_quotes(buffer) != -1) 
 		{
-			s->input = var_env(buffer, s);
+			s->input = ft_strdup(buffer);
 			s->llist = ft_strlen(s->input);
 			if (s->input && *s->input)
 				minishell(s);

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:21:09 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/03 11:02:43 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/06 21:01:30 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,12 @@ void	clear_cmd_list(t_cmd **cmd)
 			free((*cmd)->args);
 		if ((*cmd)->cmd_args)
 			free_tab((*cmd)->cmd_args);
-		if ((*cmd)->fdi > 2)
-			close((*cmd)->fdi);
-		if ((*cmd)->fdo > 2)
-			close((*cmd)->fdo);
 		free_c = *cmd;
 		*cmd = (*cmd)->next;
 		free(free_c);
 	}
 	*cmd = NULL;
 }
-
-
 
 void	show_cmd_list(t_cmd *lcmd)
 {
@@ -44,7 +38,9 @@ void	show_cmd_list(t_cmd *lcmd)
 	cmd = lcmd;
 	while (cmd)
 	{
-		printf("id: %i   |   FDI:'%i'   |   FDO:'%i'	|   ARGS:' %s '  | cmd:' %s ' | cmd_args:' %s '\n", cmd->id, cmd->fdi, cmd->fdo, cmd->args, cmd->cmd, tab_to_s(cmd->cmd_args, 0));
+		cmd = cmd_index(lcmd, i);
+		printf("id: %i   |   FDI:%i   |   FDO:%i  ", cmd->id, cmd->fdi, cmd->fdo);
+		printf("ARGS:' %s '  | cmd:' %s ' | cmd_args:' %s '\n", cmd->args, cmd->cmd, tab_to_s(cmd->cmd_args, 0));
 		cmd = cmd->next;
 		i++;
 	}	

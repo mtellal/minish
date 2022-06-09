@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/04 17:28:37 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/08 22:07:39 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <errno.h>
+#include <string.h>
 
 #include <signal.h>
 
@@ -54,6 +56,7 @@ typedef struct s_cmd
 	int		fdo;
 	char		**cmd_args;
 	char		*cmd;
+	char		*err_redir;
 	struct s_cmd	*next;
 }		t_cmd;
 
@@ -78,6 +81,7 @@ typedef struct s_utils
 	int	i_cmd;
 	int	file;
 	char	**tab;
+	char	*err_redir;
 	t_token	*token;
 	t_token	*ptoken;
 	t_token	*ntoken;
@@ -160,16 +164,25 @@ char	**env_to_tab(t_env *env);
 void    print_tab_env(t_env *env);
 t_env	*ft_lstlast_env(t_input *s);
 
-/////	env_var.c
-int	end_index_var(char *s);
-char	*value_attr(char *attr, t_input *s);
-char	*var_value(char *s, t_input *ss);
-char	*var_env(char *s, t_input *ss);
 
-/////	env_var_utils.c
+/////////////////////////////////////////////////////////
+//                   E X P A N D E R                   //
+/////////////////////////////////////////////////////////
+
+/////	expander.c
+void	expander(t_cmd *lcmd, t_input *s);
+
+/////   env_var.c
 int     end_index_var(char *s);
 char    *value_attr(char *attr, t_input *s);
 char    *var_value(char *s, t_input *ss);
+char    *var_env(char *s, t_input *ss);
+
+/////   env_var_utils.c
+int     end_index_var(char *s);
+char    *value_attr(char *attr, t_input *s);
+char    *var_value(char *s, t_input *ss);
+
 
 /////////////////////////////////////////////////////////
 //               E X E C U T E R  . C                  //
@@ -183,12 +196,11 @@ void    executer(t_cmd *list, t_input *s);
 
 /////	executer_utils.c
 void	need_update_env(t_cmd *cmd, t_input *s);
-void	close_fd_cmd(t_cmd *cmd);
 int	*pipe_env(t_cmd *cmd);
 void	builtin(t_cmd *cmd, t_input *s);
 
 /////	pipes.c
-int     **create_pipes(t_input *s);
+int	**create_pipes(int nb_pipes);
 void    set_pipes(t_cmd *list, t_input *s);
 
 /////	verify_commands.c
@@ -205,7 +217,14 @@ void	err_msg_invalid_cmd(char *cmd);
 /////	wait.c
 void    wait_all(t_input *s, pid_t *f);
 
+/////	close_utils.c
+void    set_fds(t_cmd *cmd);
+void    close_fds(t_input *s);
+void    close_pipes(int **pipes);
 
+/////	err.c
+void    err_msg_cmd(char *cmd);
+void    err_cmd(t_cmd *cmd, t_input *s, int msg);
 
 ///////////////		L E X E R 		//////////
 
@@ -253,12 +272,12 @@ int     fill_args(t_cmd *list, t_input *s);
 /////	tab_quotes.c
 int     n_space(char *s);
 char    **return_tab(char **tab, char *ns, char *s, int i);
-void    progress_next_word(char **tab, char *s, char **ns, int *i);
+void    progress_next_word(char ***tab, char *s, char **ns, int *i);
 void    nspace_in_quotes(int lfquote, char *s, char **ns, int *i);
 void    init_tab_quotes(t_quote *q, int *i, char ***tab, char **ns);
 
 /////	clear_word.c
-void	set_first_char(int f_quote, char *ns, char *s, int i);
+void	set_first_char(int f_quote, char **ns, char *s, int i);
 void	set_i_fquote(int *i, int *fquote, int vi, int vfquote);
 char	*no_more_quotes(char *ms, char *s, int i, char _quote);
 void    init_clear_word(int *i, char *quote, char **ns);
@@ -276,9 +295,10 @@ int	open_n_close(t_utils *data, int flags, mode_t mode, char *r);
 int	open_n_close_hd(t_utils *data);
 
 /////	redirections_utils.c
-int     init_cmd_redir(t_utils *data, t_input *s, char *r);
+void    err_msg_redirection(char *err);
+void     init_cmd_redir(t_utils *data, t_input *s, char *r);
 void    add_cmd(t_utils *data, t_input *s, char **rest_args, char *r);
-char    *join_tab(char **tab, int j);
+char    *join_tab(char **tab, int j, int ftab);
 void    modify_redirection(t_utils *data, char *rest_args, char *r);
 
 void    show_cmd_list(t_cmd *list);
@@ -328,7 +348,7 @@ void    sig_quit(int n);
 
 /////   tab_utils.c
 char    **merge_tab(char **tab, char **tab2);
-char    **add_tab(char **tab, char *s, int i);
+char    **add_tab(char **tab, char *s, int fs, int ftab);
 char    *tab_to_s(char **tab, int f);
 int     ft_strlen_tab(char **tab);
 void    free_tab(char **tab);
@@ -352,6 +372,9 @@ void    free_cmd(t_cmd *cmd);
 void    ft_lstaddb_cmd(t_cmd **lst, t_cmd *n);
 void    ft_lstclear_cmd(t_cmd **list);
 t_cmd *list_index_cmd(t_cmd *list, int l);
+
+/////	free_utils.c
+void	free_all(t_input *s);
 
 /////////////////////////////////////////////////////////
 //                      D E B U G                      //

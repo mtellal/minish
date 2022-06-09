@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 20:31:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/02 09:56:34 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/07 21:20:41 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ void	ft_export(char **args, t_input *s)
 	}
 	s->env = r;
 	env_to_pipe(s->env, s->p_env);
+	ft_putstr_fd("////////// export /////////\n", 2);
 	exit(EXIT_SUCCESS);
 }
