@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/09 10:16:15 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/09 17:31:15 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ void	minishell(t_input *s)
 		ft_lstclear_token(&s->clist);
 		return ;
 	}
-        if (index_separator(s->clist) == -1)
+	if (index_separator(s->clist) == -1)
 		       ft_lstaddb_cmd(&s->cmd_list, cmd(0, 1, s->clist->c, 0));
-	else if (cmd_redirections(s->clist, s) == -1)
-		return ; 
+	else 
+		cmd_redirections(s->clist, s);
 	cmd_pipes(s->clist, s);
 	s->nb_cmd = ft_lstsize_cmd(s->cmd_list);
 	expander(s->cmd_list, s);
-        fill_args(s->cmd_list, s);	
+	fill_args(s->cmd_list, s);	
 	executer(s->cmd_list, s);
 	free_all(s);
 	/*
@@ -93,6 +93,7 @@ void	minishell(t_input *s)
          *	- verification des fichiers lors dans chaque process
 	 *	- probleme superposition de *char (stdin et stdout) genre -> ls | cat < dw | pwd
 	 *	- wdf^C => buffer non reset (wdf toujour la)
+	 *	- termios et signals
 	 */
 }
 
@@ -127,7 +128,6 @@ int	launch(t_input *s, int argc, char **argv, char **env)
 		ft_putstr_fd("error tty stdin invalid\n", 2);
 		exit(0);
 	}
-	signal(SIGINT, &sig_int);
 	init_data(s, argc, argv, env);
 	input(s);
 	

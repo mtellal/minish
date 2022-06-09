@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/08 22:07:39 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/09 17:31:00 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,7 +287,7 @@ void    init_clear_word(int *i, char *quote, char **ns);
 /////	cmd_redirections.c
 t_cmd   *cmd(int fdi, int fdo, char *args, int id);
 void    progress_list(t_utils *data, t_input *s, char *rest_args);
-int	cmd_redirections(t_token *list, t_input *s);
+void	cmd_redirections(t_token *list, t_input *s);
 
 /////	open_utils.c
 int	open_data(t_utils *data, char *r);

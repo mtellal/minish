@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/09 11:21:46 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/09 17:30:52 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	progress_list(t_utils *data, t_input *s, char *rest_args)
 	}
 }
 
-int	modify_io_cmd(t_token *list, t_input *s, int i_cmd, int i_list)
+void	modify_io_cmd(t_token *list, t_input *s, int i_cmd, int i_list)
 {
 	t_utils	*data;
 	char	*rest_args;
@@ -60,15 +60,13 @@ int	modify_io_cmd(t_token *list, t_input *s, int i_cmd, int i_list)
 		modify_redirection(data, rest_args, r);
 	if (!data->cmd)
 		add_cmd(data, s, &rest_args, r);
-	return (0);
 }
 
-int	redir_match(t_coor *c, t_input *s, t_token **list, int *reset)
+void	redir_match(t_coor *c, t_input *s, t_token **list, int *reset)
 {
 	if (ft_belong("<>", *((*list)->c)))
 	{
-		if (modify_io_cmd(*list, s, c->i, c->j) == -1)
-			return (-1);
+		modify_io_cmd(*list, s, c->i, c->j);
 		*list = s->clist;
 		c->i = 0;
 		*reset = 1;
@@ -77,10 +75,9 @@ int	redir_match(t_coor *c, t_input *s, t_token **list, int *reset)
 	}
 	else
 		c->i++;
-	return (0);
 }
 
-int	cmd_redirections(t_token *token, t_input *s)
+void	cmd_redirections(t_token *token, t_input *s)
 {
 	t_token	*list;
 	t_coor	c;
@@ -93,15 +90,11 @@ int	cmd_redirections(t_token *token, t_input *s)
 	{
 		reset = 0;
 		if (list->type == SEPARATOR && list->next)
-		{
-			if (redir_match(&c, s, &list, &reset) == -1)
-				return (-1);
-		}
+			redir_match(&c, s, &list, &reset);
 		if (!reset)
 		{
 			c.j++;
 			list = list->next;
 		}
 	}
-	return (0);
 }
