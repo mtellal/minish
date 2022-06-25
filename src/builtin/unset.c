@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 17:04:46 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/02 10:35:59 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/23 17:09:55 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,34 @@ void	free_tenv(t_env *e)
 	free(e);
 }
 
+int	msg_err_unset(char *tab)
+{
+	ft_putstr_fd("error: unset: << ", 2);
+	ft_putstr_fd(tab, 2);
+	ft_putstr_fd(" >> : invalid id\n", 2);
+	return (-1);
+}
+
+int	verif_args(char **tab)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (tab && tab[i])
+	{
+		j = 0;
+		while (tab[i][j])
+		{
+			if (!isalnum(tab[i][j]))
+				return (msg_err_unset(tab[i]));
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 void	ft_unset(char **args, t_input *s)
 {
 	int		i;
@@ -63,17 +91,20 @@ void	ft_unset(char **args, t_input *s)
 	pe = NULL;
 	r = s->env;
 	i = 1;
-	while (args && args[i])
+	if (verif_args(args) != -1)
 	{
-		n = str_to_env(args[i]);
-		pe = previous_already_exists(n, s->env);
-		if (pe)
+		while (args && args[i])
 		{
-			sub = n->next;
-			pe->next = sub;
-			free_tenv(n);
+			n = str_to_env(args[i]);
+			pe = previous_already_exists(n, s->env);
+			if (pe)
+			{
+				sub = n->next;
+				pe->next = sub;
+				free_tenv(n);
+			}
+			i++;
 		}
-		i++;
 	}
 	s->env = r;
 	env_to_pipe(s->env, s->p_env);

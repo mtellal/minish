@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 16:54:13 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/02 10:09:22 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/24 16:33:40 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,22 +74,4 @@ t_env	*str_to_env(char *str)
 		n->content = ft_strdup("");
 	n->next = NULL;
 	return (n);
-}
-
-void	show_env(t_env	*env)
-{
-	t_env	*r;
-
-	r = env;
-	if (!env)
-		return ;
-	while (env)
-	{
-		ft_putstr_fd(env->var, 2);
-		ft_putstr_fd("=", 2);
-		ft_putstr_fd(env->content, 2);
-		ft_putstr_fd("\n", 2);
-		env = env->next;
-	}
-	env = r;
 }

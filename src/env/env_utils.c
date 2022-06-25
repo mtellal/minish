@@ -6,11 +6,51 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 16:54:37 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/06 18:12:00 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/24 16:32:39 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
+
+/*
+ *	return pointer to value of a var if she exists
+ */
+
+t_env   *var_exists(char *var, t_env *lenv)
+{
+        t_env   *env;
+
+        env = lenv;
+        while (env)
+        {
+                if (!ft_strcmp(env->var, var))
+                        return (env);
+                env = env->next;
+        }
+        return (NULL);
+}
+
+char	*get_var_value(char *var, t_input *s)
+{
+	t_env	*e;
+
+	e = var_exists(var, s->env);
+	if (e)
+		return (e->content);
+	return (NULL);	
+}
+
+void	set_var_value(char *var, char *value, t_input *s)
+{
+	t_env	*e;
+
+	e = var_exists(var, s->env);
+	if (e)
+	{
+		free(e->content);
+		e->content = value;
+	}
+}
 
 void	free_env(t_input *s)
 {
@@ -42,29 +82,13 @@ char	**env_to_tab(t_env *list)
 	while (env)
 	{
 		s = ft_strdup(env->var);
-		free(env->var);
-		s = ft_strjoin_free(s, "=", 1, 0);
-		s = ft_strjoin_free(s, env->content, 1, 1);
-		tab = add_tab(tab, s, 1, 1);
+		s = ft_strjoin(s, "=");
+		s = ft_strjoin(s, env->content);
+		tab = add_tab(tab, s, 1, 0);
 		s = NULL;
 		env = env->next;
 	}
 	return (tab);
-}
-
-void	print_tab_env(t_env *env)
-{
-	char	**tab;
-	int		i;
-
-	i = 0;
-	tab = env_to_tab(env);
-	ft_putstr_fd("////////////////// env to tab //////////////\n", 2);
-	while (tab[i])
-	{
-		printf("%s\n", tab[i]);
-		i++;
-	}
 }
 
 t_env	*ft_lstlast_env(t_input *s)

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 16:22:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/09 11:19:07 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/09 18:08:51 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ char	*clear_word(char *s, int f_quote)
 			set_i_fquote(&i, &f_quote, l_quote + 2, -1);
 		else
 			set_i_fquote(&i, &f_quote, l_quote + 1, 0);
-		if (f_quote == -1)
-			return (no_more_quotes(ns, s, i, _quote));
 		f_quote = index_quote(s + i, 0);
+		if (f_quote == -1 || !s[i + l_quote + 1])
+			return (no_more_quotes(ns, s, i, _quote));
 	}
 	return (NULL);
 }

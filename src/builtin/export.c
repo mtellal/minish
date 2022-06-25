@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 20:31:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/07 21:20:41 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/24 16:06:23 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,24 @@
 
 //	identifier valide = alnum ou '_'
 
-t_env	*already_exists(t_env *n, t_env *env)
+void	set_env_var(char *args, t_input *s)
 {
-	t_env	*r;
+	t_env	*e;
+	t_env	*n;
 
-	r = env;
-	while (env)
+	n = str_to_env(args);
+	e = var_exists(n->var, s->env);
+	if (e)
 	{
-		if (!ft_strcmp(env->var, n->var))
-			return (env);
-		env = env->next;
+		e->content = ft_strdup(n->content);
+		if (n->var)
+			free(n->var);
+		if (n->content)
+			free(n->content);
+		free(n);
 	}
-	env = r;
-	return (NULL);
-}
-
-void	modify_content(t_env *e, t_env *n)
-{
-	e->content = ft_strdup(n->content);
-	if (n->var)
-		free(n->var);
-	if (n->content)
-		free(n->content);
-	free(n);
+	else if (n)
+		ft_lstadd_back_env(&s->env, n);
 }
 
 void	export_declare(t_input *s)
@@ -59,9 +54,7 @@ void	export_declare(t_input *s)
 void	ft_export(char **args, t_input *s)
 {
 	int		i;
-	t_env	*n;
 	t_env	*r;
-	t_env	*e;
 
 	r = s->env;
 	i = 1;
@@ -70,18 +63,10 @@ void	ft_export(char **args, t_input *s)
 	while (args && args[i])
 	{
 		if (ft_str_valid(args[i]))
-		{
-			n = str_to_env(args[i]);
-			e = already_exists(n, s->env);
-			if (!e)
-				ft_lstadd_back_env(&s->env, n);
-			else
-				modify_content(e, n);
-		}
+			set_env_var(args[i], s);
 		i++;
 	}
 	s->env = r;
 	env_to_pipe(s->env, s->p_env);
-	ft_putstr_fd("////////// export /////////\n", 2);
 	exit(EXIT_SUCCESS);
 }

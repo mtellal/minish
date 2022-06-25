@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/06/09 11:39:13 by mtellal          ###   ########.fr        #
+#    Updated: 2022/06/24 16:57:25 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ NAME = minishell
 
 #####	FILES	#####
 
-SOURCES = main.c minish.c lexer/lexer.c signals.c \
+SOURCES = main.c minish.c signals.c launch.c \
 
 FBUILTIN = echo.c env.c export.c export_utils.c pwd.c unset.c exit.c
 
@@ -44,8 +44,8 @@ FSEPARATORS = cmd_pipes.c
 
 #####	UTILS	#####
 
-FUTILS = list_token_utils.c list_cmd_utils.c string_utils.c open_utils.c tab_utils.c free_utils.c \
-	 debug_lexer.c debug_parser.c commands_utils.c
+FUTILS = list_token_utils.c list_cmd_utils.c string_utils.c open_utils.c tab_utils.c tab_utils2.c \
+	 free_utils.c debug_lexer.c debug_parser.c commands_utils.c env_utils.c
 
 
 
@@ -59,8 +59,7 @@ EXECUTER = $(addprefix executer/, $(FEXECUTER) )
 
 EXPANDER = $(addprefix expander/, env_var.c env_var_utils.c expander.c)
 
-
-PARSER = $(addprefix parser/, parser.c $(addprefix utils/, $(FPUTILS)) $(addprefix quotes/, $(FQUOTES)) $(addprefix redirections/, $(FREDIRECTIONS)) $(addprefix separators/, $(FSEPARATORS)))
+PARSER = $(addprefix parser/, parser.c lexer.c $(addprefix utils/, $(FPUTILS)) $(addprefix quotes/, $(FQUOTES)) $(addprefix redirections/, $(FREDIRECTIONS)) $(addprefix separators/, $(FSEPARATORS)))
 
 UTILS = $(addprefix utils/, $(FUTILS))
 

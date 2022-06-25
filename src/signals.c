@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:35:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/09 17:06:39 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/21 16:05:45 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,9 @@ void    sig_int(int n)
 {
         if (n == SIGINT)
         {
-                ft_putstr_fd("\n", 1);
-                ft_putstr_fd(PROMPT, 1);
 		rl_replace_line("", 0);
+		ft_putstr_fd("\n", 1);
+		rl_on_new_line();
+		rl_redisplay();
 	}
 }
-
-void    sig_quit(int n)
-{
-        if (n == SIGQUIT)
-                exit(EXIT_SUCCESS);
-}
-

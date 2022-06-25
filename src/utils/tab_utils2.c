@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug_parser.c                                     :+:      :+:    :+:   */
+/*   tab_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/06 14:01:36 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/02 18:37:04 by mtellal          ###   ########.fr       */
+/*   Created: 2022/06/23 15:42:51 by mtellal           #+#    #+#             */
+/*   Updated: 2022/06/23 15:45:00 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-/*
- *	affiche chaque token dans la tlist
- *	char c + type
- */
-
-void	show_command_table(t_input *s)
+void	 print_tab(char **tab)
 {
-	t_token	*r;
+	int	i;
 
-	r = s->clist;
-	while (s->clist)
+	i = 0;
+	while (tab && tab[i])
 	{
-		printf(" '%s' ", s->clist->c);
-		s->clist = s->clist->next;
+		ft_putstr_fd(tab[i], 1);
+		i++;
 	}
-	s->clist = r;
-	printf("\n");
 }

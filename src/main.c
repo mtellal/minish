@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 10:38:28 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/01 21:06:33 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/24 18:07:23 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ int main(int argc, char **argv, char **env)
 {
 	t_input		s;
 
+	(void)argv;
 	if (argc == 1)
 	{
-		launch(&s, argc, argv, env);
+		init(&s, argc, env);
+		launch_minishell(&s);
 	}
 	else
 		ft_putstr_fd("Wrong number of arguments\n", 1);

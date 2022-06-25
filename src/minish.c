@@ -6,17 +6,72 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/09 17:31:15 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/25 18:08:03 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-void	init_data(t_input *s, int argc, char **argv, char **env)
+	/*
+         *      - TESTER:
+         *      - 0 env, verifier toutes le cmd une a une + les douilles sur le discord
+         *      - 1 signaux avec et sans commandes
+         *      - 2 status avec le $?
+         *
+         *      - 3 les quotes, tout type de test possible, avec sans sep
+         *      - 4 les redirections, avec sans quotes, en granc nombre, etc..
+         *      - 5 les pipes, beaucoup de pipe, quotes, sep, commande tricky sleep etc
+         *      - 6 les cmd, script, absolu relatif, avec erreurs, awk etc
+         *
+	 * 	- unset s=5 => ne marche pas, param unset alphanum normalament 
+         *      - QUOTES => echo "echo \"coucou\"lala"
+	 *      - modif les var d'envs => ne pas les modif si pipes genre ls | export d=5 (export fait rien)
+	 *      - verif_cmd =>dans le fork, les cmd precedentes doivents s'exe
+         *      - executer les ./wdf et les chemins absolu
+         *      - tester les separator dans les quotes '|<fw' | cat etc
+         *      - tester les quotes encore
+         *      - verifier s'il n'y a aps de douille avec les liens symboliques
+         *      - tester avec env -i (sans env) => probleme ls | cat (err dup2)
+         *      - env sans arg ni option ( mais env xxx => fonctionne) laisser ou coriger et err si args ou option ?
+         *      - faire un tableau de pid et exe tous les fork, + ne pas faire de fork pour les buitlins
+         *      - export s+=x a gerer
+         *      - heredoc a supprimer
+         *      - shlvl a incrementer lors d'un ./minish
+         *      - echo $dws $d | cat -e -> aucun espace
+         *      - ft_exit => exit(0) a faire
+         *      - segfault '$d $d' s->input vide apres le clear_space
+         *      - fonction verifier paire de quote
+         *      - exe des commandes avec des dossiers genre ls "./srx"
+         *      - cat ctrl-c / ctl-d => exit status 130 / 0
+         *      - rm le heredoc (unlink)
+         *      - rm pipes ( erro: syntax token '|')
+         *      - !!!!!!!!!!!!!!!!!! FAIRE CD !!!!!!!!!!!!!!!
+         *      - ls | ' ' => err
+         *      - + de test sur les separateurs => || <<<| etc
+         *      - verification des fichiers lors dans chaque process
+         *      - probleme superposition de *char (stdin et stdout) genre -> ls | cat < dw | pwd
+         *      - wdf^C => buffer non reset (wdf toujour la)
+         *      - termios et signals
+         *	
+	 *	CONDITIONS D'ARRET :
+	 *	- exit
+	 *	- ctrl-D 
+	 *
+	 *	FREE :
+	 *	- input
+	 *	- t_list
+	 *	- clist
+	 *	- cmd_list
+	 *	- **pipes
+	 *	- *p_env (situationnel) 
+	 *	- env
+	 *
+	 *
+	 */
+
+void	init_data(t_input *s, int argc, char **env)
 {
 	s->argc = argc;
-	s->argv = argv;
-	s->f_env = env;
 	s->input = NULL;
 	s->tlist = NULL;
 	s->llist = 0;
@@ -36,68 +91,17 @@ void	init_data(t_input *s, int argc, char **argv, char **env)
 
 void	minishell(t_input *s)
 {
-	if (!ft_strcmp(s->input, "exit"))
-		exit(EXIT_SUCCESS);
-	lexer(s);
-	parser(s);
-	clear_space(s->clist);
-	if (err_separator(s->clist, s))
+	launch_parser(s);
+	if (!err_separator(s->clist, s))
 	{
-		ft_lstclear_lexer(&s->tlist);
-		ft_lstclear_token(&s->clist);
-		return ;
+		launch_separators(s);
+		expander(s->cmd_list, s);
+		launch_executer(s);
 	}
-	if (index_separator(s->clist) == -1)
-		       ft_lstaddb_cmd(&s->cmd_list, cmd(0, 1, s->clist->c, 0));
-	else 
-		cmd_redirections(s->clist, s);
-	cmd_pipes(s->clist, s);
-	s->nb_cmd = ft_lstsize_cmd(s->cmd_list);
-	expander(s->cmd_list, s);
-	fill_args(s->cmd_list, s);	
-	executer(s->cmd_list, s);
 	free_all(s);
-	/*
-	 * 	- TESTER:
-	 * 	- 0 env, verifier toutes le cmd une a une + les douilles sur le discord 
-	 * 	- 1 signaux avec et sans commandes
-	 * 	- 2 status avec le $?
-	 *
-	 * 	- 3 les quotes, tout type de test possible, avec sans sep
-	 * 	- 4 les redirections, avec sans quotes, en granc nombre, etc..
-	 * 	- 5 les pipes, beaucoup de pipe, quotes, sep, commande tricky sleep etc
-	 * 	- 6 les cmd, script, absolu relatif, avec erreurs, awk etc  
-	 *
-         *      - verif_cmd =>dans le fork, les cmd precedentes doivents s'exe
-         *      - executer les ./wdf et les chemins absolu
-         *      - tester les separator dans les quotes '|<fw' | cat etc
-         *      - tester les quotes encore
-         *      - verifier s'il n'y a aps de douille avec les liens symboliques
-         *      - tester avec env -i (sans env) => probleme ls | cat (err dup2)
-         *      - env sans arg ni option ( mais env xxx => fonctionne) laisser ou coriger et err si args ou option ?
-         *      - faire un tableau de pid et exe tous les fork, + ne pas faire de fork pour les buitlins
-         *      - export s+=x a gerer
-         *      - heredoc a supprimer
-         *      - shlvl a incrementer lors d'un ./minish
-         *      - echo $dws $d | cat -e -> aucun espace
-         *      - ft_exit => exit(0) a faire
-         *      - segfault '$d $d' s->input vide apres le clear_space
-         *      - fonction verifier paire de quote
-         *      - exe des commandes avec des dossiers genre ls "./srx"
-	 *      - cat ctrl-c / ctl-d => exit status 130 / 0
-	 *      - rm le heredoc (unlink)
-	 *      - rm pipes ( erro: syntax token '|')
-	 *      - !!!!!!!!!!!!!!!!!! FAIRE CD !!!!!!!!!!!!!!!
-	 *      - ls | ' ' => err
-	 *      - + de test sur les separateurs => || <<<| etc 
-         *	- verification des fichiers lors dans chaque process
-	 *	- probleme superposition de *char (stdin et stdout) genre -> ls | cat < dw | pwd
-	 *	- wdf^C => buffer non reset (wdf toujour la)
-	 *	- termios et signals
-	 */
 }
 
-int	input(t_input *s)
+int	launch_minishell(t_input *s)
 {
 	char	*buffer;
 
@@ -120,7 +124,7 @@ int	input(t_input *s)
 	return (0);
 }
 
-int	launch(t_input *s, int argc, char **argv, char **env)
+int	init(t_input *s, int argc, char **env)
 {
 	signal(SIGQUIT, SIG_IGN);
 	if (!isatty(STDIN_FILENO))
@@ -128,8 +132,6 @@ int	launch(t_input *s, int argc, char **argv, char **env)
 		ft_putstr_fd("error tty stdin invalid\n", 2);
 		exit(0);
 	}
-	init_data(s, argc, argv, env);
-	input(s);
-	
+	init_data(s, argc, env);
 	return (0);
 }

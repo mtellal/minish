@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 21:03:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/09 11:59:47 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/24 17:10:31 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	err_msg_redirection(char *err)
 {
 	if (err)
 	{
-		ft_putstr_fd("error :", 2);
+		ft_putstr_fd("error: ", 2);
 		ft_putstr_fd(err, 2);
 		ft_putstr_fd("\n", 2);
 	}
@@ -32,7 +32,10 @@ void	init_cmd_redir(t_utils *data, t_input *s, char *r)
 		data->cmd = cmd_index(s->cmd_list, data->i_cmd);
 		data->tab = ft_split(data->ntoken->c, ' ');
 		if (open_data(data, r) == -1)
-			data->err_redir = ft_strjoin_free(data->tab[0], strerror(errno), 0, 0);
+		{
+			data->err_redir = ft_strjoin(data->tab[0], " :");
+		       	data->err_redir = ft_strjoin_free(data->err_redir, strerror(errno), 1, 0);
+		}
 	}
 }
 

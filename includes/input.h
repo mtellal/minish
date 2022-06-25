@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/09 17:31:00 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/24 18:06:59 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,12 @@
 #define PROMPT "minishell> "
 #define PATH_MAX 4096
 
-/////	type_token
 enum s_type
 {
 	ALPHANUM,
 	SEPARATOR,
 };
 
-
-/////	token
 typedef struct s_token
 {
 	enum s_type	type;
@@ -46,8 +43,6 @@ typedef struct s_token
 	struct s_token	*next;
 }		t_token;
 
-
-/////	command
 typedef struct s_cmd
 {
 	int		id;
@@ -60,8 +55,6 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }		t_cmd;
 
-
-/////	env
 typedef struct s_env
 {
 	char	*var;
@@ -71,8 +64,6 @@ typedef struct s_env
 
 }		t_env;
 
-
-/////	utils
 typedef struct s_utils
 {
 	int	fdi;
@@ -102,33 +93,37 @@ typedef struct s_coor
 	int	j;
 }		t_coor;
 
-
-/////	input (main struct)
 typedef struct s_input
 {
-	int	argc;
-	char	**argv;
-	char	**f_env;
-	char	*input;
+	int		argc;
 	int		llist;
-	struct s_token	*tlist;
-	struct s_token	*clist;
-
-	struct s_cmd	*cmd_list;
-
 	int		nb_sep;
 	int		nb_cmd;
-
 	int		nb_pipes;
 	int		**pipes;
 	int		hd;
-
-	struct s_env	*env;
-
 	int		*p_env;
 	int		lstatus;
+	char	*input;
+	struct s_token	*tlist;
+	struct s_token	*clist;
+	struct s_cmd	*cmd_list;
+	struct s_env	*env;
 
 }		t_input;
+
+
+/////   minish.c
+void    init_data(t_input *s, int argc, char **env);
+void    minishell(t_input *s);
+int     launch_minishell(t_input *s);
+int     init(t_input *s, int argc, char **env);
+
+/////   launch.c
+void    launch_parser(t_input *s);
+void    launch_separators(t_input *s);
+void    launch_executer(t_input *s);
+
 
 /////////////////////////////////////////////////////////
 //                    B U I L T I N                    //
@@ -136,13 +131,14 @@ typedef struct s_input
 
 void	ft_echo(char **args, t_input *s);
 void	ft_env(t_env *env);
+void	ft_exit(t_cmd *cmd, t_input *s);
 
 /////	export_utils.c
 void    ft_export(char **args, t_input *s);
 void	env_to_pipe(t_env *env, int *pipe);
 void	update_env(t_input *s);
-int     ft_str_valid(char *str);
 
+int     ft_str_valid(char *str);
 void    ft_pwd(void);
 void	ft_unset(char **args, t_input *s);
 
@@ -156,12 +152,13 @@ void   ft_init(t_input *s, char **envp);
 void	ft_lstadd_back_env(t_env **lst, t_env *n);
 int	equal_index(char *env);
 t_env	*str_to_env(char *str);
-void	show_env(t_env	*env);
 
 /////	env_utils.c
+t_env	*var_exists(char *var, t_env *lenv);
+char	*get_var_value(char *var, t_input *s);
+void	set_var_value(char *var, char *value, t_input *s);
 void	free_env(t_input *s);
 char	**env_to_tab(t_env *env);
-void    print_tab_env(t_env *env);
 t_env	*ft_lstlast_env(t_input *s);
 
 
@@ -196,7 +193,7 @@ void    executer(t_cmd *list, t_input *s);
 
 /////	executer_utils.c
 void	need_update_env(t_cmd *cmd, t_input *s);
-int	*pipe_env(t_cmd *cmd);
+int	*pipe_env(t_cmd *cmd, int nb_cmd);
 void	builtin(t_cmd *cmd, t_input *s);
 
 /////	pipes.c
@@ -226,36 +223,21 @@ void    close_pipes(int **pipes);
 void    err_msg_cmd(char *cmd);
 void    err_cmd(t_cmd *cmd, t_input *s, int msg);
 
-///////////////		L E X E R 		//////////
-
-//////	lexer.c
-void    clear_telement(void     *s);
-enum s_type     type_token(char c);
-t_token         *token(char *c);
-void    lexer(t_input *s);
-
-/////	lexer_utils.c
-void    ft_lstaddb_token(t_token **lst, t_token *n);
-
-//////////	   	M I N I S H		//////////
-
-/////	minish.c
-void    init_data(t_input *s, int argc, char **argv, char **env);
-void    minishell(t_input *s);
-int     input(t_input *s);
-int     launch(t_input *s, int argc, char **argv, char **env);
-
-
 
 /////////////////////////////////////////////////////////
 //                      P A R S E R                    //
 /////////////////////////////////////////////////////////
 
+/////	lexer.c
+void    clear_telement(void     *s);
+enum s_type     type_token(char c);
+t_token         *token(char *c);
+void    lexer(t_input *s);
+
 /////	parser.c
 char    *tlist_to_s(t_token *list, int l);
 void    parser(t_input *s);
 int     number_of_groups(t_token *list);
-
 
 //////////		Q U O T E S		//////////
 
@@ -353,6 +335,9 @@ char    *tab_to_s(char **tab, int f);
 int     ft_strlen_tab(char **tab);
 void    free_tab(char **tab);
 
+/////	tab_utils2.c
+void	print_tab(char **tab);
+
 /////   string_utils.c
 int     ft_belong(char *s, char c);
 
@@ -375,6 +360,11 @@ t_cmd *list_index_cmd(t_cmd *list, int l);
 
 /////	free_utils.c
 void	free_all(t_input *s);
+
+/////	env_utils.c
+void	show_env(t_env *env);
+void	print_tab_env(t_env *env);
+
 
 /////////////////////////////////////////////////////////
 //                      D E B U G                      //

@@ -1,17 +1,1 @@
-total 312
-drwxrwxr-x  7 user42 user42   4096 juin   4 20:51 .
-drwxr-xr-x 20 user42 user42   4096 juin   1 22:10 ..
--rw-rw-r--  1 user42 user42      0 juin   4 20:55 file
-drwxrwxr-x  8 user42 user42   4096 juin   1 22:33 .git
--rw-rw-r--  1 user42 user42      5 juin   3 17:59 .heredoc
-drwxrwxr-x  2 user42 user42   4096 juin   4 17:28 includes
-drwxrwxr-x  2 user42 user42   4096 juin   4 19:40 libft
--rw-rw-r--  1 user42 user42   2755 juin   4 14:09 Makefile
--rwxrwxr-x  1 user42 user42 271768 juin   4 19:40 minishell
--rw-rw-r--  1 user42 user42     17 juin   4 19:41 out
--rw-rw-r--  1 user42 user42     23 mai   31 19:25 script
-drwxrwxr-x  8 user42 user42   4096 juin   4 19:40 src
--rw-rw-r--  1 user42 user42      0 juin   4 21:06 teste
-drwxrwxr-x  3 user42 user42   4096 juin   3 10:38 utils
--rw-rw-r--  1 user42 user42      0 juin   4 14:49 wdf
--rw-rw-r--  1 user42 user42      0 juin   4 17:49 wdfw
+

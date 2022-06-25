@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 10:26:30 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/07 21:34:38 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/25 18:13:13 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,41 @@
 
 void	need_update_env(t_cmd *cmd, t_input *s)
 {
-	if (s->p_env)
+	char	*ccmd;
+
+	ccmd = cmd->cmd_args[0];
+	if (s->p_env && s->nb_cmd == 1)
 	{
-		if (!ft_strcmp(cmd->cmd_args[0], "export"))
-			update_env(s);
-		if (!ft_strcmp(cmd->cmd_args[0], "unset"))
+		if (!ft_strcmp(ccmd, "export") || !ft_strcmp(ccmd, "unset"))
 			update_env(s);
 	}
 }
 
-int	*pipe_env(t_cmd *cmd)
+void	update_shlvl(t_input *s)
+{
+	t_env	*e;
+	int	value;
+
+	e = var_exists("SHLVL", s->env);
+	if (e)
+	{
+		ft_putstr_fd("SHLVL\n", 1);
+		value = ft_atoi(get_var_value("SHLVL", s));
+		set_var_value("SHLVL", ft_itoa(value + 1), s);
+	}
+}
+
+int	*pipe_env(t_cmd *cmd, int nb_cmd)
 {
 	int		*p;
 	char	*scmd;
 
 	p = NULL;
-	if (!cmd->args)
+	if (!cmd->args || nb_cmd != 1)
 		return (NULL);
 	scmd = cmd->cmd_args[0];
 	if (!ft_strcmp(scmd, "export") || !ft_strcmp(scmd, "unset"))
 	{
-		ft_putstr_fd("pipe_env\n", 2);
 		p = ft_calloc(2, sizeof(int));
 		if (pipe(p) == -1)
 			return (NULL);
@@ -47,6 +61,8 @@ void	builtin(t_cmd *cmd, t_input *s)
 	char	*scmd;
 
 	scmd = cmd->cmd_args[0];
+	if (!ft_strcmp(scmd, "exit"))
+		ft_exit(cmd, s);
 	if (!ft_strcmp(scmd, "env"))
 		ft_env(s->env);
 	if (!ft_strcmp(scmd, "pwd"))
@@ -59,4 +75,6 @@ void	builtin(t_cmd *cmd, t_input *s)
 		ft_export(cmd->cmd_args, s);
 	if (!ft_strcmp(scmd, "unset"))
 		ft_unset(cmd->cmd_args, s);
+	if (!ft_strcmp(scmd, "./minishell"))
+		update_shlvl(s);
 }
