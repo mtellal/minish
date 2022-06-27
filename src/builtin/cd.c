@@ -6,19 +6,11 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:09:34 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 14:31:07 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/27 15:22:55 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
-
-void	return_status(int status, t_input *s)
-{
-	if (s->nb_cmd > 1)
-		exit(status);
-	else
-		s->lstatus = status;
-}
 
 char	*verif_paths(char *args, t_input *s)
 {
@@ -33,7 +25,7 @@ char	*verif_paths(char *args, t_input *s)
 			return (NULL);
 		}
 	}
-	if (args[0] == '-' && !args[1])
+	else if (args[0] == '-' && !args[1])
 	{
 		var = get_var_value("OLDPWD", s);
 		if (!var || !*var)
@@ -71,8 +63,7 @@ void	ft_cd(char **args, t_input *s)
 {
 	char	*var;
 
-	ft_putstr_fd("cd called\n", 2);
-	if (args[2])
+	if (ft_strlen_tab(args) > 2)
 	{
 		ft_putstr_fd("error: cd: too many arguments\n", 2);
 		return (return_status(EXIT_FAILURE, s));

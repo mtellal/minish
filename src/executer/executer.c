@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 14:31:23 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/27 14:49:20 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	process_recursion(t_cmd *list, t_input *s, int i, pid_t *f)
 
 void	exe_builtin(t_cmd *cmd, t_input *s)
 {
-	ft_putstr_fd("in builint\n", 2);
 	builtin(cmd, s);
 	close_fds(s);
 	err_msg_redirection(cmd->err_redir);

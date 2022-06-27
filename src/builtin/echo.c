@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 17:59:54 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/02 09:41:14 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/27 15:24:19 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,5 @@ void	ft_echo(char **args, t_input *s)
 	}
 	if (sl)
 		ft_putstr_fd("\n", 1);
-	exit(EXIT_SUCCESS);
+	return (return_status(EXIT_SUCCESS, s));
 }

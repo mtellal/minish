@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 09:41:52 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 10:36:36 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/27 15:24:42 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,5 @@ void	ft_env(t_env *lenv, t_input *s)
 		ft_putstr_fd("\n", 1);
 		env = env->next;
 	}
-	if (s->nb_cmd > 1)
-		exit(EXIT_SUCCESS);
+	return (return_status(EXIT_SUCCESS, s));
 }

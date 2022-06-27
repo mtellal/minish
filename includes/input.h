@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 11:25:57 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/27 17:08:48 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ int     ft_str_valid(char *str);
 void    ft_pwd(int i, t_input *s);
 void	ft_unset(char **args, t_input *s);
 
+void	return_status(int status, t_input *s);
 
 /////////////////////////////////////////////////////////
 //                       E N V	                       //
@@ -361,7 +362,7 @@ void    ft_lstclear_cmd(t_cmd **list);
 t_cmd *list_index_cmd(t_cmd *list, int l);
 
 /////	free_utils.c
-void	free_all(t_input *s);
+void	free_all(t_input *s, int env);
 
 /////	env_utils.c
 void	show_env(t_env *env);

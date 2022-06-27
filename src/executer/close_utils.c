@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:16:30 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/07 17:32:29 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/27 17:05:49 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	close_pipes(int **pipes)
 	{
 		close(pipes[i][0]);
 		close(pipes[i][1]);
-		free(pipes[i]);
 		i++;
 	}
 }
