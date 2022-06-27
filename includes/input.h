@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/24 18:06:59 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/27 11:25:57 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,9 @@ void    launch_executer(t_input *s);
 /////////////////////////////////////////////////////////
 
 void	ft_echo(char **args, t_input *s);
-void	ft_env(t_env *env);
+void	ft_env(t_env *env, t_input *s);
 void	ft_exit(t_cmd *cmd, t_input *s);
+void	ft_cd(char **args, t_input *s);
 
 /////	export_utils.c
 void    ft_export(char **args, t_input *s);
@@ -139,7 +140,7 @@ void	env_to_pipe(t_env *env, int *pipe);
 void	update_env(t_input *s);
 
 int     ft_str_valid(char *str);
-void    ft_pwd(void);
+void    ft_pwd(int i, t_input *s);
 void	ft_unset(char **args, t_input *s);
 
 
@@ -195,6 +196,7 @@ void    executer(t_cmd *list, t_input *s);
 void	need_update_env(t_cmd *cmd, t_input *s);
 int	*pipe_env(t_cmd *cmd, int nb_cmd);
 void	builtin(t_cmd *cmd, t_input *s);
+int	is_builtin(char *args);
 
 /////	pipes.c
 int	**create_pipes(int nb_pipes);

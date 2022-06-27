@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 16:54:37 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/24 16:32:39 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/27 11:42:20 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	set_var_value(char *var, char *value, t_input *s)
 	if (e)
 	{
 		free(e->content);
-		e->content = value;
+		e->content = ft_strdup(value);
 	}
 }
 

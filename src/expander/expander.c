@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:33:41 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/08 15:05:20 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/25 20:28:47 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@ void    expander(t_cmd *lcmd, t_input *s)
         cmd = lcmd;
         while (cmd)
         {
-                if (cmd->args && *cmd->args)
-                        cmd->args = var_env(cmd->args, s);
-                if (!*cmd->args)
-			cmd->args = NULL;
+		if (cmd->args)
+		{
+                	if (*cmd->args)
+                        	cmd->args = var_env(cmd->args, s);
+                	else
+				cmd->args = NULL;
+		}
 		cmd = cmd->next;
         }
 }

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 10:26:30 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/25 18:13:13 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/27 11:34:01 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void	builtin(t_cmd *cmd, t_input *s)
 	if (!ft_strcmp(scmd, "exit"))
 		ft_exit(cmd, s);
 	if (!ft_strcmp(scmd, "env"))
-		ft_env(s->env);
+		ft_env(s->env, s);
 	if (!ft_strcmp(scmd, "pwd"))
-		ft_pwd();
+		ft_pwd(0, s);
 	if (!ft_strcmp(scmd, "exit"))
 		exit(EXIT_SUCCESS);
 	if (!ft_strcmp(scmd, "echo"))
@@ -77,4 +77,29 @@ void	builtin(t_cmd *cmd, t_input *s)
 		ft_unset(cmd->cmd_args, s);
 	if (!ft_strcmp(scmd, "./minishell"))
 		update_shlvl(s);
+	if (!ft_strcmp(scmd, "cd"))
+		ft_cd(cmd->cmd_args, s);
+}
+
+int	is_builtin(char *args)
+{
+	int			i;
+	static char	*tab[7] = {
+		"echo",
+		"cd",
+		"pwd",
+		"export",
+		"unset",
+		"env",
+		"exit"
+	};
+
+	i = 0;
+	while (i < 7)
+	{
+		if (!ft_strcmp(tab[i], args))
+			return (1);
+		i++;
+	}
+	return (0);
 }

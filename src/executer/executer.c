@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/25 18:09:22 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/27 14:31:23 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,14 @@ void	process_recursion(t_cmd *list, t_input *s, int i, pid_t *f)
 	}
 }
 
+void	exe_builtin(t_cmd *cmd, t_input *s)
+{
+	ft_putstr_fd("in builint\n", 2);
+	builtin(cmd, s);
+	close_fds(s);
+	err_msg_redirection(cmd->err_redir);
+}
+
 void	executer(t_cmd *list, t_input *s)
 {
 	pid_t	*f;
@@ -57,11 +65,16 @@ void	executer(t_cmd *list, t_input *s)
 	signal(SIGINT, &redisplay);
 	set_pipes(list, s);
 	
-	show_cmd_list(s->cmd_list);
-	ft_putstr_fd("\n", 1);
+	//show_cmd_list(s->cmd_list);
+	//ft_putstr_fd("\n", 1);
 	
-	f = ft_calloc(s->nb_cmd, sizeof(pid_t));	
-	process_recursion(list, s, 0, f);
-	wait_all(s, f);
+	if (s->nb_cmd == 1 && is_builtin(list->cmd_args[0]))
+		exe_builtin(list, s);
+	else
+	{
+		f = ft_calloc(s->nb_cmd, sizeof(pid_t));
+		process_recursion(list, s, 0, f);
+		wait_all(s, f);
+	}
 	close_pipes(s->pipes);
 }
