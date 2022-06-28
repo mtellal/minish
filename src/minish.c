@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 17:07:24 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/28 16:51:53 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
          *      - 5 les pipes, beaucoup de pipe, quotes, sep, commande tricky sleep etc
          *      - 6 les cmd, script, absolu relatif, avec erreurs, awk etc
          *
+	 * 	- !!!!! builtin =>redirections a set et restore 
+	 *	- !!!!! corriger problemes signaux 
+	 *	- !!!!! QUOTE HANDLER 
+	 *
 	 * 	- unset s=5 => ne marche pas, param unset alphanum normalament 
          *      - QUOTES => echo "echo \"coucou\"lala"
 	 *      - modif les var d'envs => ne pas les modif si pipes genre ls | export d=5 (export fait rien)
@@ -71,6 +75,7 @@
 
 void	init_data(t_input *s, int argc, char **env)
 {
+	set_last_status(0);
 	s->argc = argc;
 	s->input = NULL;
 	s->tlist = NULL;
@@ -82,8 +87,6 @@ void	init_data(t_input *s, int argc, char **env)
 	s->nb_pipes = 0;
 	s->pipes = NULL;
 	s->env = NULL;
-	s->p_env = NULL;
-	s->lstatus = 0;
 	ft_init(s, env);
 	//show_env(s->env);
 	//print_tab_env(s->env);
@@ -120,7 +123,9 @@ int	launch_minishell(t_input *s)
 				minishell(s);
 		}
 		free(buffer);
+		buffer = NULL;
 	}
+	rl_clear_history();
 	return (0);
 }
 

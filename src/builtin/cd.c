@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:09:34 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 15:22:55 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/28 16:20:41 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ void	ft_cd(char **args, t_input *s)
 		if (chdir(var) == -1)
                 {
                         perror("cd");
-                        return (return_status(EXIT_FAILURE, s));
-                }
+                	return (return_status(EXIT_FAILURE, s));
+		}
 		if (set_paths(s, var) == -1)
 			return (return_status(EXIT_FAILURE, s));
 	}

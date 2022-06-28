@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 17:08:48 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/28 16:25:05 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,6 @@ typedef struct s_input
 	int		nb_pipes;
 	int		**pipes;
 	int		hd;
-	int		*p_env;
-	int		lstatus;
 	char	*input;
 	struct s_token	*tlist;
 	struct s_token	*clist;
@@ -142,8 +140,6 @@ void	update_env(t_input *s);
 int     ft_str_valid(char *str);
 void    ft_pwd(int i, t_input *s);
 void	ft_unset(char **args, t_input *s);
-
-void	return_status(int status, t_input *s);
 
 /////////////////////////////////////////////////////////
 //                       E N V	                       //
@@ -215,17 +211,24 @@ char	*wrap_bash(char *s);
 void	err_msg_invalid_cmd(char *cmd);
 
 /////	wait.c
+int		get_last_pid(void);
+void		set_last_pid(int pid);
 void    wait_all(t_input *s, pid_t *f);
 
 /////	close_utils.c
 void    set_fds(t_cmd *cmd);
 void    close_fds(t_input *s);
 void    close_pipes(int **pipes);
+void	restore_fds(t_coor fds);
 
 /////	err.c
 void    err_msg_cmd(char *cmd);
 void    err_cmd(t_cmd *cmd, t_input *s, int msg);
 
+/////	utils_status.c
+int	get_last_status(void);
+void	set_last_status(int status);
+void	return_status(int status, t_input *s);
 
 /////////////////////////////////////////////////////////
 //                      P A R S E R                    //
@@ -321,10 +324,10 @@ int     err_separator(t_token *list, t_input *s);
 
 /////	signals.c
 void    ctrl_d(t_input *s);
-void    redisplay(int n);
+void    exec_sig_int(int n);
 void    sig_int(int n);
-void    sig_quit(int n);
-
+void    exec_sig_quit(int n);
+void    init_exec_signals(void);
 
 
 /////////////////////////////////////////////////////////

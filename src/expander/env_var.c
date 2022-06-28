@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 10:11:27 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/08 15:04:54 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/28 16:26:52 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	var_match(int *i, char **s, char **final, t_input *ss)
 	}
 	else if ((*s)[*i] && (*s)[*i] == '?')
 	{
-		*final = ft_strjoin_free(*final, ft_itoa(ss->lstatus), 1, 0);
+		*final = ft_strjoin_free(*final, ft_itoa(get_last_status()), 1, 0);
 		*s += *i + 1;
 	}
 	else

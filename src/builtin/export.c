@@ -6,13 +6,11 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 20:31:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/24 16:06:23 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/28 16:23:13 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
-
-//	identifier valide = alnum ou '_'
 
 void	set_env_var(char *args, t_input *s)
 {
@@ -67,6 +65,5 @@ void	ft_export(char **args, t_input *s)
 		i++;
 	}
 	s->env = r;
-	env_to_pipe(s->env, s->p_env);
-	exit(EXIT_SUCCESS);
+	return (return_status(EXIT_SUCCESS, s));
 }

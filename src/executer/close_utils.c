@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:16:30 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 17:05:49 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/28 10:51:06 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,14 @@ void    set_fds(t_cmd *cmd)
         if (cmd->fdi > 2 && dup2(cmd->fdi, 0) == -1)
         {
                 ft_putstr_fd("\nerr dup2 ", 2);
-                ft_putstr_fd(cmd->args, 2);
-                ft_putstr_fd(" ", 2);
-                ft_putnbr_fd(cmd->fdi, 2);
-                ft_putstr_fd("\n", 2);
                 perror("");
-                exit(0);
+                exit(EXIT_FAILURE);
         }
         if (cmd->fdo > 2 && dup2(cmd->fdo, 1) == -1)
         {
                 ft_putstr_fd("\nerr dup2 ", 2);
-                ft_putstr_fd(cmd->args, 2);
-                ft_putstr_fd(" ", 2);
-                ft_putnbr_fd(cmd->fdo, 2);
-                ft_putstr_fd("\n", 2);
                 perror("");
-                exit(0);
+                exit(EXIT_FAILURE);
         }
 }
 
@@ -62,4 +54,10 @@ void	close_pipes(int **pipes)
 		close(pipes[i][1]);
 		i++;
 	}
+}
+
+void	restore_fds(t_coor fds)
+{
+	dup2(fds.i, STDIN_FILENO);
+	dup2(fds.j, STDOUT_FILENO);
 }

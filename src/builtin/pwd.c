@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 10:02:24 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 11:45:35 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/28 16:25:24 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,11 @@ void	ft_pwd(int i, t_input *s)
 			set_var_value("PWD", cwd, s);
 		else
 			ft_putendl_fd(cwd, 1);
+		return (return_status(EXIT_SUCCESS, s));
 	}
 	else
 	{
 		perror("pwd");
-		exit(EXIT_FAILURE);
+		return (return_status(EXIT_FAILURE, s));
 	}
-	if (s->nb_cmd > 1)
-		exit(EXIT_SUCCESS);
 }

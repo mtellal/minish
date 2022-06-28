@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 14:49:20 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/28 18:04:55 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ void	process_recursion(t_cmd *list, t_input *s, int i, pid_t *f)
 	if (i >= s->nb_cmd)
 		return ;
 	cmd = cmd_index(list, i);
-        s->p_env = pipe_env(cmd, s->nb_cmd);
 	f[i] = fork();
-	if (f[i] == -1)
-		ft_putstr_fd("err forking\n", 2);
+	set_last_pid(f[i]);
 	if (f[i] == 0)
 		execute(cmd, cmd->cmd_args, s);
 	else
@@ -45,28 +43,37 @@ void	process_recursion(t_cmd *list, t_input *s, int i, pid_t *f)
 		process_recursion(list, s, i + 1, f);
 		close_fds(s);
 		err_msg_redirection(cmd->err_redir);
-		if (s->nb_cmd == 1 && s->p_env)
-			need_update_env(cmd, s);
 	}
 }
 
 void	exe_builtin(t_cmd *cmd, t_input *s)
 {
-	builtin(cmd, s);
-	close_fds(s);
-	err_msg_redirection(cmd->err_redir);
+	t_coor	fds;
+
+	fds.i = dup(0);
+	fds.j = dup(1);
+	if (!cmd->err_redir)
+	{
+		set_fds(cmd);
+		builtin(cmd, s);
+		close_fds(s);
+		restore_fds(fds);
+	}
+	else
+	{
+		err_msg_redirection(cmd->err_redir);
+		set_last_status(EXIT_FAILURE);
+	}
 }
 
 void	executer(t_cmd *list, t_input *s)
 {
 	pid_t	*f;
 
-	signal(SIGINT, &redisplay);
-	set_pipes(list, s);
-	
+	init_exec_signals();
 	//show_cmd_list(s->cmd_list);
 	//ft_putstr_fd("\n", 1);
-	
+	set_pipes(list, s);
 	if (s->nb_cmd == 1 && is_builtin(list->cmd_args[0]))
 		exe_builtin(list, s);
 	else

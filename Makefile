@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/06/27 15:23:23 by mtellal          ###   ########.fr        #
+#    Updated: 2022/06/28 18:02:06 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,12 +23,12 @@ NAME = minishell
 
 SOURCES = main.c minish.c signals.c launch.c \
 
-FBUILTIN = echo.c env.c export.c export_utils.c pwd.c unset.c cd.c exit.c utils.c
+FBUILTIN = echo.c env.c export.c export_utils.c pwd.c unset.c cd.c exit.c
 
 FENV = env_init.c env_utils.c
 
 FEXECUTER = executer.c executer_utils.c pipes.c verify_commands.c verify_commands_utils.c \
-            wait.c close_utils.c err.c
+            wait.c close_utils.c err.c status.c
 
 #####	PARSER	#####
 
