@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 20:31:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/29 16:42:09 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/29 16:52:14 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**sort_env(t_env *lenv)
 	return (tab);
 }
 
-void	export_declare(t_input *s)
+void	print_export(t_input *s)
 {
 	char	**tab;
 	int	i;
@@ -70,6 +70,7 @@ void	export_declare(t_input *s)
 		ft_putendl_fd(tab[i], 1);
 		i++;
 	}
+	free_tab(tab);
 }
 
 void	ft_export(char **args, t_input *s)
@@ -80,7 +81,7 @@ void	ft_export(char **args, t_input *s)
 	r = s->env;
 	i = 1;
 	if (args && !args[i])
-		export_declare(s);
+		print_export(s);
 	while (args && args[i])
 	{
 		if (ft_str_valid_var(args[i]))

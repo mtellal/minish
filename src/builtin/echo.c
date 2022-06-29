@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 17:59:54 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/28 16:24:32 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/29 18:09:48 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,24 @@ void	echo(char *args, char *n_args)
 		ft_putstr_fd(" ", 1);
 }
 
+int	print_args(char *args)
+{
+	int	i;
+
+	 if (!ft_strncmp(args, "-n", 2))
+	 {
+		 i = 2;
+		 while (args[i] && args[i] == 'n')
+		 	i++;
+		 if (!args[i])
+			 return (0);
+		 else
+			 return (1);
+	 }
+	 else
+		 return (1);
+}
+
 void	ft_echo(char **args, t_input *s)
 {
 	int	i;
@@ -39,7 +57,8 @@ void	ft_echo(char **args, t_input *s)
 	}
 	while (args && args[i])
 	{
-		echo(args[i], args[i + 1]);
+		if (print_args(args[i]))
+			echo(args[i], args[i + 1]);
 		i++;
 	}
 	if (sl)
