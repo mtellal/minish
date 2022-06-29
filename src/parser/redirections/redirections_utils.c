@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 21:03:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/24 17:10:31 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/29 12:00:07 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	err_msg_redirection(char *err)
 
 void	init_cmd_redir(t_utils *data, t_input *s, char *r)
 {
+	int	fd = dup(STDIN_FILENO);
 	data->ptoken = list_index_token(s->clist, data->i_list - 1);
 	data->ntoken = list_index_token(s->clist, data->i_list + 1);
 	data->err_redir = NULL;
@@ -36,6 +37,10 @@ void	init_cmd_redir(t_utils *data, t_input *s, char *r)
 			data->err_redir = ft_strjoin(data->tab[0], " :");
 		       	data->err_redir = ft_strjoin_free(data->err_redir, strerror(errno), 1, 0);
 		}
+		if (get_quit_hd())
+			dup2(fd, STDIN_FILENO);
+		else
+			close(fd);
 	}
 }
 

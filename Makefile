@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/06/28 18:02:06 by mtellal          ###   ########.fr        #
+#    Updated: 2022/06/29 09:30:16 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ FPUTILS = utils.c parser_utils.c verify_separator.c
 
 FQUOTES = clear_word.c fill_args.c tab_quotes.c verif_quotes.c
 
-FREDIRECTIONS = cmd_redirections.c open_redirections.c redirections_utils.c
+FREDIRECTIONS = cmd_redirections.c open_redirections.c redirections_utils.c heredoc.c
 
 FSEPARATORS = cmd_pipes.c
 

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 11:26:38 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/23 16:38:56 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/29 12:00:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ void	launch_separators(t_input *s)
 
 void	launch_executer(t_input *s)
 {
-	fill_args(s->cmd_list, s);
-        executer(s->cmd_list, s);
+	if (!get_quit_hd())
+	{
+		fill_args(s->cmd_list, s);
+        	executer(s->cmd_list, s);
+	}
 }

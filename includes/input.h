@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/28 16:25:05 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/29 10:36:09 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,7 +280,12 @@ void	cmd_redirections(t_token *list, t_input *s);
 /////	open_utils.c
 int	open_data(t_utils *data, char *r);
 int	open_n_close(t_utils *data, int flags, mode_t mode, char *r);
+
+/////	heredoc.c
+int	get_quit_hd(void);
+void	set_quit_hd(int n);
 int	open_n_close_hd(t_utils *data);
+
 
 /////	redirections_utils.c
 void    err_msg_redirection(char *err);
@@ -328,7 +333,7 @@ void    exec_sig_int(int n);
 void    sig_int(int n);
 void    exec_sig_quit(int n);
 void    init_exec_signals(void);
-
+void	sig_int_hd(int n);
 
 /////////////////////////////////////////////////////////
 //                      U T I L S                      //

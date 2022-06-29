@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/28 16:51:53 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/29 11:51:47 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int	launch_minishell(t_input *s)
 	while (1)
 	{
 		signal(SIGINT, &sig_int);
+		set_quit_hd(0);
 		buffer = readline(PROMPT);
 		if (!buffer)
 			ctrl_d(s);
