@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 15:58:46 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 18:44:45 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/29 16:02:16 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_print_error1(char *str)
 	write(2, "': not a valid identifier\n", 26);
 }
 
-int	ft_str_valid(char *str)
+int	ft_str_valid_var(char *str)
 {
 	int	i;
 
@@ -42,14 +42,5 @@ int	ft_str_valid(char *str)
 	}
 	if (!str[i])
 		return (0);
-	while (str[i])
-	{
-		if (str[i] == '(' || str[i] == ')')
-		{
-			ft_putstr_fd("error: syntax error near unexpected token '('\n", 2);
-			return (0);
-		}
-		i++;
-	}
 	return (1);
 }

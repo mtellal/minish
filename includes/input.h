@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/29 10:36:09 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/29 16:09:01 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void    ft_export(char **args, t_input *s);
 void	env_to_pipe(t_env *env, int *pipe);
 void	update_env(t_input *s);
 
-int     ft_str_valid(char *str);
+int     ft_str_valid_var(char *str);
 void    ft_pwd(int i, t_input *s);
 void	ft_unset(char **args, t_input *s);
 
@@ -376,6 +376,8 @@ void	free_all(t_input *s, int env);
 void	show_env(t_env *env);
 void	print_tab_env(t_env *env);
 
+////	list_env_utils.c
+int	ft_lstenv_size(t_env *env);
 
 /////////////////////////////////////////////////////////
 //                      D E B U G                      //

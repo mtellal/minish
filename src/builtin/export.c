@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 20:31:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/28 16:23:13 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/29 16:42:09 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,43 @@ void	set_env_var(char *args, t_input *s)
 		ft_lstadd_back_env(&s->env, n);
 }
 
+char	**sort_env(t_env *lenv)
+{
+	int	ltab;
+	char	**tab;
+	char	*swap;
+	int	i;
+
+	i = 0;
+	tab = env_to_tab(lenv);
+	ltab = ft_strlen_tab(tab);
+	while (i < ltab)
+	{
+		if (i + 1 < ltab && (ft_strcmp(tab[i], tab[i + 1]) > 0))
+		{
+			swap = tab[i];
+			tab[i] = tab[i + 1];
+			tab[i + 1] = swap;
+			i = 0;
+		}
+		else
+			i++;
+	}
+	return (tab);
+}
+
 void	export_declare(t_input *s)
 {
-	while (s->env)
+	char	**tab;
+	int	i;
+
+	i = 0;
+	tab = sort_env(s->env);
+	while (tab && tab[i])
 	{
 		ft_putstr_fd("declare -x ", 1);
-		ft_putstr_fd(s->env->var, 1);
-		if (s->env->content && s->env->content[0])
-		{
-			ft_putstr_fd("=\"", 1);
-			ft_putstr_fd(s->env->content, 1);
-			ft_putstr_fd("\"", 1);
-		}
-		ft_putstr_fd("\n", 1);
-		s->env = s->env->next;
+		ft_putendl_fd(tab[i], 1);
+		i++;
 	}
 }
 
@@ -60,7 +83,7 @@ void	ft_export(char **args, t_input *s)
 		export_declare(s);
 	while (args && args[i])
 	{
-		if (ft_str_valid(args[i]))
+		if (ft_str_valid_var(args[i]))
 			set_env_var(args[i], s);
 		i++;
 	}

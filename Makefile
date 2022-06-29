@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/06/29 09:30:16 by mtellal          ###   ########.fr        #
+#    Updated: 2022/06/29 16:22:32 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ FSEPARATORS = cmd_pipes.c
 #####	UTILS	#####
 
 FUTILS = list_token_utils.c list_cmd_utils.c string_utils.c open_utils.c tab_utils.c tab_utils2.c \
-	 free_utils.c debug_lexer.c debug_parser.c commands_utils.c env_utils.c
+	 free_utils.c debug_lexer.c debug_parser.c commands_utils.c list_env_utils.c
 
 
 

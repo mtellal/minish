@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/29 11:51:47 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/29 15:32:51 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 	 * 	- !!!!! builtin =>redirections a set et restore 
 	 *	- !!!!! corriger problemes signaux 
 	 *	- !!!!! QUOTE HANDLER 
+	 *
+	 * 	-	export => trier les variables 
+	 * 	-	echo -n -n str ( afficher juste str) ou echo -nnnnn str 
 	 *
 	 * 	- unset s=5 => ne marche pas, param unset alphanum normalament 
          *      - QUOTES => echo "echo \"coucou\"lala"
