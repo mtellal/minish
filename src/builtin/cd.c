@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:09:34 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/28 16:20:41 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/02 22:00:45 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	set_paths(t_input *s, char *var)
 	}
 	else
 		set_var_value("OLDPWD", pwd, s);
-	if (!ft_strcmp(var, oldpwd))
+	if (var && oldpwd && !ft_strcmp(var, oldpwd))
 		set_var_value("PWD", oldpwd, s);
 	ft_pwd(1, s);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/02 18:11:52 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/02 22:44:11 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ void	executer(t_cmd *list, t_input *s)
 	ft_putstr_fd("args \n", 1);
 	print_tab(s->cmd->cmd_args);
 	*/set_pipes(list, s);
-	if (s->nb_cmd == 1 && is_builtin(list->cmd_args[0]))
+	if (s->nb_cmd == 1 && list->args &&
+			list->cmd_args && is_builtin(list->cmd_args[0]))
 		exe_builtin(list, s);
 	else
 	{
