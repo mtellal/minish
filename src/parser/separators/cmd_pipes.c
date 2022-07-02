@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:23:56 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/03 18:15:28 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/30 15:40:01 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ void    set_pipe(t_token *plist, t_token *nlist, t_input *s, int index)
 
         pcmd = NULL;
         ncmd = NULL;
-        if (s->cmd_list)
+        if (s->cmd)
         {
-                pcmd = cmd_index(s->cmd_list, index);
-		ncmd = cmd_index(s->cmd_list, index + 1);
+                pcmd = cmd_index(s->cmd, index);
+		ncmd = cmd_index(s->cmd, index + 1);
         }
         if (!pcmd)
         {
                 pcmd = cmd(0, -2, plist->c, index);
-                ft_lstaddb_cmd(&s->cmd_list, pcmd);
+                ft_lstaddb_cmd(&s->cmd, pcmd);
         }
         if (!ncmd)
         {
                 ncmd = cmd (-2, 1, nlist->c, index + 1);
-                ft_lstaddb_cmd(&s->cmd_list, ncmd);
+                ft_lstaddb_cmd(&s->cmd, ncmd);
         }
         if (ncmd && ncmd->fdi == 0)
                 ncmd->fdi  = -2;

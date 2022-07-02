@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug_parser.c                                     :+:      :+:    :+:   */
+/*   fill_args.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/06 14:01:36 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/02 18:37:04 by mtellal          ###   ########.fr       */
+/*   Created: 2022/07/01 17:57:26 by mtellal           #+#    #+#             */
+/*   Updated: 2022/07/02 18:08:57 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-/*
- *	affiche chaque token dans la tlist
- *	char c + type
- */
-
-void	show_command_table(t_input *s)
+void	fill_args(t_cmd *cmd, t_input *s)
 {
-	t_token	*r;
+	int	i;
+	char	**args;
 
-	r = s->clist;
-	while (s->clist)
+	i = 0;
+	while (i < s->nb_cmd)
 	{
-		printf(" '%s' ", s->clist->c);
-		s->clist = s->clist->next;
+		cmd = cmd_index(cmd, i);
+		args = ft_split(cmd->args, ' ');
+		cmd->cmd_args = clear_tab(args);
+		i++;
 	}
-	s->clist = r;
-	printf("\n");
 }

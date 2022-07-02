@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 21:03:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/29 12:00:07 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/30 15:40:23 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	init_cmd_redir(t_utils *data, t_input *s, char *r)
 	data->err_redir = NULL;
 	if (data->ntoken)
 	{
-		data->cmd = cmd_index(s->cmd_list, data->i_cmd);
+		data->cmd = cmd_index(s->cmd, data->i_cmd);
 		data->tab = ft_split(data->ntoken->c, ' ');
 		if (open_data(data, r) == -1)
 		{
@@ -55,13 +55,13 @@ void	add_cmd(t_utils *data, t_input *s, char **rest_args, char *r)
 	{
 		_cmd = cmd(data->file, 1, *rest_args, data->i_cmd);
 		_cmd->err_redir = data->err_redir;
-		ft_lstaddb_cmd(&s->cmd_list, _cmd);
+		ft_lstaddb_cmd(&s->cmd, _cmd);
 	}
 	if (*r == '>')
 	{
 		_cmd = cmd(0, data->file, *rest_args, data->i_cmd);
 		_cmd->err_redir = data->err_redir;
-		ft_lstaddb_cmd(&s->cmd_list, _cmd);
+		ft_lstaddb_cmd(&s->cmd, _cmd);
 	}
 	progress_list(data, s, *rest_args);	
 }

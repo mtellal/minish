@@ -6,50 +6,47 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/03 10:14:56 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/30 16:18:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-char	*tlist_to_s(t_token *list, int l)
+char	*tlist_to_s(t_token *llist, int l)
 {
-	t_token	*r;
+	t_token	*list;
 	int		i;
 	char	*tab;
 
 	i = 0;
-	tab = ft_calloc(l, sizeof(char));
+	tab = ft_calloc(l + 1, sizeof(char));
 	if (!tab)
 		return (NULL);
-	r = list;
+	list = llist;
 	while (list && i < l)
 	{
 		tab[i] = *list->c;
 		i++;
 		list = list->next;
 	}
-	while (i < l)
-		tab[i] = '\0';
-	tab[l] = '\0';
-	list = r;
+	tab[i] = '\0';
 	return (tab);
 }
 
-int	next_index_group(t_token *list)
+int	next_index_group(t_token *llist)
 {
 	int			i;
-	t_token		*token;
+	t_token		*list;
 	enum s_type	type;
 
 	i = 0;
-	if (!list)
+	if (!llist)
 		return (-1);
+	list = llist;
 	type = list->type;
 	while (list)
 	{
-		token = list;
-		if (token->type != type)
+		if (list->type != type)
 			return (i);
 		i++;
 		list = list->next;
@@ -86,14 +83,12 @@ int	number_of_groups(t_token *list)
 t_token	*tokenize(int next_group, t_token *list)
 {
 	t_token	*t;
-	char	*s;
 
 	t = ft_calloc(1, sizeof(t_token));
 	if (!t)
 		return (NULL);
-	s = tlist_to_s(list, next_group);
-	t->c = s;
-	t->type = type_token(*s);
+	t->c = tlist_to_s(list, next_group);
+	t->type = type_token(*t->c);
 	t->next = NULL;
 	return (t);
 }

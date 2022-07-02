@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/29 15:32:51 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/02 18:11:00 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 	 *
 	 * 	-	export => trier les variables 
 	 * 	-	echo -n -n str ( afficher juste str) ou echo -nnnnn str 
+	 *	
+	 *	- !!!!! QUOTES A GERER exemple ls '' => err_msg ''
+	 *	- !!!!! FILL_ARGS => probleme avec awk (prendre en compte les brackets)
 	 *
 	 * 	- unset s=5 => ne marche pas, param unset alphanum normalament 
          *      - QUOTES => echo "echo \"coucou\"lala"
@@ -80,15 +83,16 @@ void	init_data(t_input *s, int argc, char **env)
 {
 	set_last_status(0);
 	s->argc = argc;
-	s->input = NULL;
-	s->tlist = NULL;
 	s->llist = 0;
-	s->clist = NULL;
 	s->nb_sep = 0;
 	s->nb_cmd = 0;
-	s->cmd_list = NULL;
 	s->nb_pipes = 0;
+	s->hd = 0;
 	s->pipes = NULL;
+	s->input = NULL;
+	s->tlist = NULL;
+	s->clist = NULL;
+	s->cmd = NULL;
 	s->env = NULL;
 	ft_init(s, env);
 	//show_env(s->env);
@@ -101,7 +105,7 @@ void	minishell(t_input *s)
 	if (!err_separator(s->clist, s))
 	{
 		launch_separators(s);
-		expander(s->cmd_list, s);
+		expander(s->cmd, s);
 		launch_executer(s);
 	}
 	free_all(s, 0);
@@ -129,7 +133,6 @@ int	launch_minishell(t_input *s)
 		free(buffer);
 		buffer = NULL;
 	}
-	rl_clear_history();
 	return (0);
 }
 

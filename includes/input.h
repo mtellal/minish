@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/29 16:09:01 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/01 18:24:05 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,31 +46,31 @@ typedef struct s_token
 typedef struct s_cmd
 {
 	int		id;
-	char		*args;
 	int		fdi;
 	int		fdo;
-	char		**cmd_args;
-	char		*cmd;
-	char		*err_redir;
+	char	*args;
+	char	*cmd;
+	char	**cmd_args;
+	char	*err_redir;
 	struct s_cmd	*next;
 }		t_cmd;
 
 typedef struct s_env
 {
+	int		len;
 	char	*var;
 	char	*content;
-	int		len;
 	struct s_env	*next;
 
 }		t_env;
 
 typedef struct s_utils
 {
-	int	fdi;
-	int	fdo;
-	int	i_list;
-	int	i_cmd;
-	int	file;
+	int		fdi;
+	int		fdo;
+	int		i_list;
+	int		i_cmd;
+	int		file;
 	char	**tab;
 	char	*err_redir;
 	t_token	*token;
@@ -105,7 +105,7 @@ typedef struct s_input
 	char	*input;
 	struct s_token	*tlist;
 	struct s_token	*clist;
-	struct s_cmd	*cmd_list;
+	struct s_cmd	*cmd;
 	struct s_env	*env;
 
 }		t_input;
@@ -245,30 +245,23 @@ char    *tlist_to_s(t_token *list, int l);
 void    parser(t_input *s);
 int     number_of_groups(t_token *list);
 
+/////	fill_args.c
+void	fill_args(t_cmd *cmd, t_input *s);
+
 //////////		Q U O T E S		//////////
 
+/////	rm_empty_quotes
+char	*remove_empty_quotes(char *s);
+
+/////	clear_tab_quotes.c
+int     nb_quotes(char *s);
+char    **clear_tab(char **tab);
+
+/////	quote_cleaner.c
+void    quote_cleaner(t_input *s);
+
 /////	verif_quotes.c
-int     index_quote(char *s, char c);
-int     msg_err_quote(void);
 int     verif_pair_of_quotes(char *s);
-
-/////	fill_args.c
-int     n_space(char *s);
-void    clear_quotes(char *s, char ***args);
-int     fill_args(t_cmd *list, t_input *s);
-
-/////	tab_quotes.c
-int     n_space(char *s);
-char    **return_tab(char **tab, char *ns, char *s, int i);
-void    progress_next_word(char ***tab, char *s, char **ns, int *i);
-void    nspace_in_quotes(int lfquote, char *s, char **ns, int *i);
-void    init_tab_quotes(t_quote *q, int *i, char ***tab, char **ns);
-
-/////	clear_word.c
-void	set_first_char(int f_quote, char **ns, char *s, int i);
-void	set_i_fquote(int *i, int *fquote, int vi, int vfquote);
-char	*no_more_quotes(char *ms, char *s, int i, char _quote);
-void    init_clear_word(int *i, char *quote, char **ns);
 
 //////////	R E D I R E C T I O N S		////////// 	
 
@@ -341,7 +334,7 @@ void	sig_int_hd(int n);
 
 /////   tab_utils.c
 char    **merge_tab(char **tab, char **tab2);
-char    **add_tab(char **tab, char *s, int fs, int ftab);
+char    **add_tab(char **tab, char *s, int ftab, int fs);
 char    *tab_to_s(char **tab, int f);
 int     ft_strlen_tab(char **tab);
 void    free_tab(char **tab);
@@ -351,6 +344,7 @@ void	print_tab(char **tab);
 
 /////   string_utils.c
 int     ft_belong(char *s, char c);
+char    *add_char(char *s, char c);
 
 /////   open_utils.c
 int     ft_open(int *fd, char *file, int flags, mode_t mode);
@@ -379,14 +373,8 @@ void	print_tab_env(t_env *env);
 ////	list_env_utils.c
 int	ft_lstenv_size(t_env *env);
 
-/////////////////////////////////////////////////////////
-//                      D E B U G                      //
-/////////////////////////////////////////////////////////
-
-/////	deubg_lexer.c
-void	show_token_list(t_input *s);
-
-////	debug_parser.c
-void	show_command_table(t_input *s);
+/////	debug_utils.c
+void	show_lexer(t_input *s);
+void	show_parser(t_input *s);
 
 #endif

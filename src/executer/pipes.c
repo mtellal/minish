@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:12:38 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/06 14:55:11 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/30 11:45:11 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	pipes(int j, int *i_p, t_input *s)
 {
 	t_cmd	*cmd;
 
-	cmd = cmd_index(s->cmd_list, j);
+	cmd = cmd_index(s->cmd, j);
 	if (cmd && cmd->fdi == -2)
 	{
 		cmd->fdi = s->pipes[*i_p][0];

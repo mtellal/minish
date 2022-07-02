@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug_lexer.c                                      :+:      :+:    :+:   */
+/*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/05 19:11:04 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/02 17:57:48 by mtellal          ###   ########.fr       */
+/*   Created: 2022/06/30 10:35:53 by mtellal           #+#    #+#             */
+/*   Updated: 2022/06/30 20:16:40 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-void    show_token_list(t_input *s)
+void    show_lexer(t_input *s)
 {
         t_token *token;
         t_token	*r;
@@ -43,9 +43,29 @@ void    show_token_list(t_input *s)
                         type = "ARITHMETIC";
                 if (token->type == 8)
                         type = "OTHER";
-                printf("%c      %s\n",*(char*)(token->c), type );
+                ft_putchar_fd(*token->c, 1);
+		ft_putstr_fd("		", 1);
+		ft_putendl_fd(type, 1);
                 s->tlist = s->tlist->next;
 		i++;
         }
 	s->tlist = r;
 }
+
+void	show_parser(t_input *s)
+{
+	t_token	*r;
+
+	r = s->clist;
+	ft_putstr_fd("show parser\n", 1);
+	while (s->clist)
+	{
+		ft_putstr_fd("(", 1);
+		ft_putstr_fd(s->clist->c, 1);
+		ft_putstr_fd(")", 1);
+		s->clist = s->clist->next;
+	}
+	s->clist = r;
+	printf("\n");
+}
+

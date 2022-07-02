@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:21:09 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/06 21:01:30 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/01 19:21:47 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	show_cmd_list(t_cmd *lcmd)
 
 	i = 0;
 	cmd = lcmd;
+	if (!cmd)
+		ft_putstr_fd("no cmd list\n", 1);
 	while (cmd)
 	{
 		cmd = cmd_index(lcmd, i);

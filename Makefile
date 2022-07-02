@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/06/29 16:22:32 by mtellal          ###   ########.fr        #
+#    Updated: 2022/07/01 18:24:35 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,20 +32,20 @@ FEXECUTER = executer.c executer_utils.c pipes.c verify_commands.c verify_command
 
 #####	PARSER	#####
 
-FPUTILS = utils.c parser_utils.c verify_separator.c
+FPUTILS = utils.c parser_utils.c
 
-FQUOTES = clear_word.c fill_args.c tab_quotes.c verif_quotes.c
+FQUOTES = rm_empty_quotes.c clear_tab_quotes.c quote_cleaner.c verif_quotes.c
 
 FREDIRECTIONS = cmd_redirections.c open_redirections.c redirections_utils.c heredoc.c
 
-FSEPARATORS = cmd_pipes.c
+FSEPARATORS = cmd_pipes.c verify_separator.c
 
 
 
 #####	UTILS	#####
 
 FUTILS = list_token_utils.c list_cmd_utils.c string_utils.c open_utils.c tab_utils.c tab_utils2.c \
-	 free_utils.c debug_lexer.c debug_parser.c commands_utils.c list_env_utils.c
+	 free_utils.c debug_utils.c commands_utils.c list_env_utils.c
 
 
 
@@ -59,7 +59,7 @@ EXECUTER = $(addprefix executer/, $(FEXECUTER) )
 
 EXPANDER = $(addprefix expander/, env_var.c env_var_utils.c expander.c)
 
-PARSER = $(addprefix parser/, parser.c lexer.c $(addprefix utils/, $(FPUTILS)) $(addprefix quotes/, $(FQUOTES)) $(addprefix redirections/, $(FREDIRECTIONS)) $(addprefix separators/, $(FSEPARATORS)))
+PARSER = $(addprefix parser/, parser.c lexer.c fill_args.c $(addprefix utils/, $(FPUTILS)) $(addprefix quotes/, $(FQUOTES)) $(addprefix redirections/, $(FREDIRECTIONS)) $(addprefix separators/, $(FSEPARATORS)))
 
 UTILS = $(addprefix utils/, $(FUTILS))
 

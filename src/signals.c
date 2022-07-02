@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 17:35:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/29 11:34:43 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/30 10:20:02 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ctrl_d(t_input *s)
 {
-	free_env(s);
 	ft_putstr_fd("\nexit\n", 1);
+	free_all(s, 1);
 	exit(EXIT_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:16:30 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/28 10:51:06 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/06/30 11:45:32 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void    close_fds(t_input *s)
 {
         t_cmd   *cmd;
 
-        cmd = s->cmd_list;
+        cmd = s->cmd;
         while (cmd)
         {
                 if (cmd->fdi > 2)
