@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 14:46:43 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/03 17:48:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,9 @@ void    quote_cleaner(t_input *s);
 
 /////	verif_quotes.c
 int     verif_pair_of_quotes(char *s);
+
+/////	quotes_utils.c
+char    **quote_split(char *s);
 
 //////////	R E D I R E C T I O N S		////////// 	
 

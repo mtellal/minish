@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:27:22 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 14:43:38 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/03 18:35:15 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ char    *merge_quotes(char **tab)
                 n = nb_quotes(final[i]);
                 if (n)
                         final[i] = clear_word(final[i]);
-                if (ft_strlen(final[i]) > 2 && final[i][0] == '\'')
-			final[i] = ft_substr_free(final[i], 1, ft_strlen(final[i]) - 2, 1);
 		s = ft_strjoin_free(s, final[i], 1, 0);
-		if (type_token(final[i][0]) == ALPHANUM)
+                if (ft_strlen(final[i]) >= 1 && !ft_belong("'", final[i][0]) && type_token(final[i][0]) == ALPHANUM)
 			s = ft_strjoin_free(s, " ", 1, 0);
-                i++;
+		if (ft_strlen(final[i]) >= 2 && ft_belong("'", final[i][0]) && type_token(final[i][0]) == ALPHANUM)
+			s = ft_strjoin_free(s, " ", 1, 0);
+		i++;
         }
         return (s);
 }

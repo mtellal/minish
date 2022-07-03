@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 21:03:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/30 15:40:23 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/03 17:47:53 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	init_cmd_redir(t_utils *data, t_input *s, char *r)
 	if (data->ntoken)
 	{
 		data->cmd = cmd_index(s->cmd, data->i_cmd);
-		data->tab = ft_split(data->ntoken->c, ' ');
+		data->tab = quote_split(data->ntoken->c);
 		if (open_data(data, r) == -1)
 		{
 			data->err_redir = ft_strjoin(data->tab[0], " :");

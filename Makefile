@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/07/03 09:57:19 by mtellal          ###   ########.fr        #
+#    Updated: 2022/07/03 17:45:43 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ FEXECUTER = executer.c executer_utils.c pipes.c verify_commands.c verify_command
 
 FPUTILS = utils.c parser_utils.c
 
-FQUOTES = rm_empty_quotes.c clear_tab_quotes.c quote_cleaner.c verif_quotes.c
+FQUOTES = rm_empty_quotes.c clear_tab_quotes.c quote_cleaner.c verif_quotes.c quote_utils.c
 
 FREDIRECTIONS = cmd_redirections.c open_redirections.c redirections_utils.c heredoc.c
 

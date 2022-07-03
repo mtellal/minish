@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 14:44:05 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/03 18:49:55 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ void	executer(t_cmd *list, t_input *s)
 	pid_t	*f;
 
 	init_exec_signals();
-	/*show_cmd_list(s->cmd);
+/*	show_cmd_list(s->cmd);
 	ft_putstr_fd("\n", 1);
 	ft_putstr_fd("args \n", 1);
 	print_tab(s->cmd->cmd_args);
-	*/set_pipes(list, s);
+*/	set_pipes(list, s);
 	if (s->nb_cmd == 1 && list->args &&
 			list->cmd_args && is_builtin(list->cmd_args[0]))
 		exe_builtin(list, s);

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 21:19:07 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/02 16:47:52 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/03 18:39:21 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,11 @@ int	open_data(t_utils *data, char *r)
 {
 	int	flags;
 	mode_t	mode;
+	char	*file;
 
+	file = data->tab[0];
+	if (ft_strlen(file) > 2 && file[0] == '\'')
+                data->tab[0] = ft_substr_free(file, 1, ft_strlen(file) - 2, 1);
 	if (!set_options(r, &flags, &mode))
 		return (open_n_close(data, flags, mode, r));
 	else if (!ft_strcmp(r, "<<"))

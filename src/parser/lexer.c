@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:58:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 14:48:29 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/03 18:49:38 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void	lexer(t_input	*s)
 	quote = 0;
 	while (s->input && s->input[i])
 	{
-		if (quote && ft_belong("'\"", s->input[i]))
+		if (quote && quote == s->input[i] && ft_belong("'\"", s->input[i]))
 			quote = 0;
-		if (!quote && ft_belong("'\"", s->input[i]))
-			quote = 1;
+		else if (!quote && ft_belong("'\"", s->input[i]))
+			quote = s->input[i];
 		ft_lstaddb_token(&s->tlist, token(&s->input[i], quote));
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/02 21:54:41 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/03 18:52:08 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 	 *	- !!!!! QUOTES A GERER exemple ls '' => err_msg ''
 	 *	- !!!!! FILL_ARGS => probleme avec awk (prendre en compte les brackets)
 	 *	- !!!!!	LEAKS cd
+	 *
+	 * 	- ctrl-d dans le heredoc> => unlink le hd
 	 *
 	 * 	- unset s=5 => ne marche pas, param unset alphanum normalament 
          *      - QUOTES => echo "echo \"coucou\"lala"
