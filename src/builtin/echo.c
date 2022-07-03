@@ -50,7 +50,7 @@ void	ft_echo(char **args, t_input *s)
 
 	i = 1;
 	sl = 1;
-	if (args && args[i] && !print_args(args[i]))
+	while (args && args[i] && !print_args(args[i]))
 	{
 		i++;
 		sl = 0;
