@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/01 18:24:05 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/03 14:46:43 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,6 @@ void	return_status(int status, t_input *s);
 /////	lexer.c
 void    clear_telement(void     *s);
 enum s_type     type_token(char c);
-t_token         *token(char *c);
 void    lexer(t_input *s);
 
 /////	parser.c
