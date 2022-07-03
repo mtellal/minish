@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 11:26:38 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 18:50:18 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/03 20:54:17 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	launch_parser(t_input *s)
 	parser(s);
 	clear_space(s->clist);
 	quote_cleaner(s);
+	show_parser(s);
 }
 
 void	launch_separators(t_input *s)

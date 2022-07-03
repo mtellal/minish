@@ -6,11 +6,24 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:27:22 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 18:35:15 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/03 21:11:12 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
+
+void	modify_var_env(char **tab, t_input *s)
+{
+	int	i;
+
+	i = 0;
+	while (tab && tab[i])
+	{
+		if (!ft_belong("'", tab[i][0]))
+			tab[i] = var_env(tab[i], s);
+		i++;
+	}
+}
 
 char    *clear_word(char *s)
 {
@@ -37,7 +50,7 @@ char    *clear_word(char *s)
 	return (final);
 }
 
-char    *merge_quotes(char **tab)
+char    *merge_quotes(char **tab, t_input *ss)
 {
 	int		n;
 	int		i;
@@ -48,6 +61,7 @@ char    *merge_quotes(char **tab)
         i = 0;
 	n = 0;
 	final = clear_tab(tab);
+	modify_var_env(final, ss);
         while (final && final[i])
         {
                 n = nb_quotes(final[i]);
@@ -63,7 +77,7 @@ char    *merge_quotes(char **tab)
         return (s);
 }
 
-char    *clear_str(char *s)
+char    *clear_str(char *s, t_input *ss)
 {
         char    *final;
         char    **tab;
@@ -71,7 +85,7 @@ char    *clear_str(char *s)
         tab = NULL;
         final = remove_empty_quotes(s);
         tab = ft_split(final, ' ');
-        final = merge_quotes(tab);
+        final = merge_quotes(tab, ss);
         return (final);
 }
 
@@ -82,7 +96,7 @@ void    quote_cleaner(t_input *s)
         list = s->clist;
         while (list)
         {
-                list->c = clear_str(list->c);
+                list->c = clear_str(list->c, s);
                 list = list->next;
         }
 }

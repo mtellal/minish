@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 18:52:08 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/03 20:55:17 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	minishell(t_input *s)
 	if (!err_separator(s->clist, s))
 	{
 		launch_separators(s);
-		expander(s->cmd, s);
 		launch_executer(s);
 	}
 	free_all(s, 0);
