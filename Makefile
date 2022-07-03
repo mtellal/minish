@@ -6,20 +6,20 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/07/01 18:24:35 by mtellal          ###   ########.fr        #
+#    Updated: 2022/07/03 09:57:19 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .SILENT:
 
-GCC = gcc
+GCC = clang
 
 CFLAGS = -Wall -Wextra -Werror -g
 
 NAME = minishell
 
 
-#####	FILES	#####
+###############			FILES			###############
 
 SOURCES = main.c minish.c signals.c launch.c \
 
@@ -79,7 +79,7 @@ LIB = -lreadline -L ./libft -lft
 
 
 
-#####	COMMANDS	#####
+###############                 COMMANDS                   ###############
 
 all: compiling $(NAME) succeed
 
