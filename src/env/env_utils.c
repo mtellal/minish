@@ -84,7 +84,8 @@ char	**env_to_tab(t_env *list)
 	{
 		i = 0;
 		s = ft_strdup(env->var);
-		s = ft_strjoin(s, "=");
+		if (env->equal == 1)
+			s = ft_strjoin(s, "=");
 		s = ft_strjoin(s, env->content);
 		tab = add_tab(tab, s, 1, 0);
 		s = NULL;

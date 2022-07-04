@@ -76,6 +76,7 @@ void	print_export(t_input *s)
 void	ft_export(char **args, t_input *s)
 {
 	int		i;
+	;
 	t_env	*r;
 
 	r = s->env;
