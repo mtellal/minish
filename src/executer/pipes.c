@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:12:38 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/30 11:45:11 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 16:19:13 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,30 @@ void	pipes(int j, int *i_p, t_input *s)
 		close(s->pipes[*i_p][1]);
 }
 
+int	pipe_needed(t_cmd *lcmd)
+{
+	t_cmd	*cmd;
+
+	cmd = lcmd;
+	while (cmd)
+	{
+		if (cmd && cmd->fdi == -2)
+			return (1);
+		if (cmd && cmd->fdo == -2)
+			return (1);
+		cmd = cmd->next;
+	}
+	return (0);
+}
+
 void	set_pipes(t_cmd *list, t_input *s)
 {
 	int		len;
 	int		j;
 	int		i_p;
 
+	if (!pipe_needed(list))
+		return ;
 	len = ft_lstsize_cmd(list);
 	j = 0;
 	i_p = -1;

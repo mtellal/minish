@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 18:47:37 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/03 10:56:02 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 17:56:09 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ void    free_token(t_token **token)
 {
         if (!*token)
                 return ;
-        if ((*token)->c)
+        if (*token && (*token)->c)
                 free((*token)->c);
-        free(*token);
+        if (*token)
+		free(*token);
 }
 
 
@@ -40,15 +41,17 @@ void    ft_lstaddb_token(t_token **lst, t_token *n)
         }
 }
 
-void	ft_lstclear_token(t_token **list)
+void	ft_lstclear_parser(t_token **list)
 {
 	t_token *token;
 
 	while (*list)
 	{
+		if ((*list)->c)
+			free((*list)->c);
 		token = *list;
 		*list = (*list)->next;
-		free_token(&token);
+		free(token);
 	}
 	*list = NULL;
 }

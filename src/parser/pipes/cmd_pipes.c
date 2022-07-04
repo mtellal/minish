@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:23:56 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/30 15:40:01 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 14:42:36 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ void	cmd_pipes(t_token *token, t_input *s)
                         if (*list->c == '|')
                         {
                                 set_pipe(plist, list->next, s, i_cmd);
-                                list = s->clist;
+                                free(list->c);
+				free(list);
+				list = s->clist;
                                 i_cmd = -1;
                                 reset = 1;
 				s->nb_pipes++;

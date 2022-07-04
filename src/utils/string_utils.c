@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 16:16:50 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/01 11:32:57 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 15:55:50 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ char    *add_char(char *s, char c)
         char    *tab;
         int             i;
 
-        i = 0;
+	i = 0;
         tab = calloc(ft_strlen(s) + 2, sizeof(char));
-        if (!tab)
+	if (!tab)
                 return (NULL);
-        while (s && s[i])
-        {
-                tab[i] = s[i];
-                i++;
-        }
-        tab[i++] = c;
+	while (s && s[i])
+	{
+		tab[i] = s[i];
+		i++;
+	}
+	tab[i++] = c;
         tab[i] = '\0';
         if (s)
                 free(s);

@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/07/03 17:45:43 by mtellal          ###   ########.fr        #
+#    Updated: 2022/07/04 18:28:40 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,9 +36,9 @@ FPUTILS = utils.c parser_utils.c
 
 FQUOTES = rm_empty_quotes.c clear_tab_quotes.c quote_cleaner.c verif_quotes.c quote_utils.c
 
-FREDIRECTIONS = cmd_redirections.c open_redirections.c redirections_utils.c heredoc.c
+FREDIRECTIONS = cmd_redirections.c open_redirections.c cmd_redirections_utils.c heredoc.c utils.c 
 
-FSEPARATORS = cmd_pipes.c verify_separator.c
+FPIPES = cmd_pipes.c verify_separator.c
 
 
 
@@ -59,7 +59,7 @@ EXECUTER = $(addprefix executer/, $(FEXECUTER) )
 
 EXPANDER = $(addprefix expander/, env_var.c env_var_utils.c expander.c)
 
-PARSER = $(addprefix parser/, parser.c lexer.c fill_args.c $(addprefix utils/, $(FPUTILS)) $(addprefix quotes/, $(FQUOTES)) $(addprefix redirections/, $(FREDIRECTIONS)) $(addprefix separators/, $(FSEPARATORS)))
+PARSER = $(addprefix parser/, parser.c lexer.c fill_args.c $(addprefix utils/, $(FPUTILS)) $(addprefix quotes/, $(FQUOTES)) $(addprefix redirections/, $(FREDIRECTIONS)) $(addprefix pipes/, $(FPIPES)))
 
 UTILS = $(addprefix utils/, $(FUTILS))
 

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 15:10:28 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/02 18:07:00 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 15:38:25 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int     nb_quotes(char *s)
 
         nb = 0;
         i = 0;
+	quote = 0;
         while (s && s[i])
         {
                 if (ft_belong("'\"", s[i]))
@@ -74,7 +75,7 @@ char    **clear_tab(char **tab)
                 if (n && n % 2 != 0)
                 {
                         sub = merge_cell(&x, n, tab);
-			final = add_tab(final, sub, 1, 0);
+			final = add_tab(final, sub, 1, 1);
                 }
                 else
                         final = add_tab(final, tab[x.i], 1, 0);
@@ -83,5 +84,7 @@ char    **clear_tab(char **tab)
                 else
                         x.i++;
         }
+	if (tab)
+		free_tab(tab);
         return (final);
 }

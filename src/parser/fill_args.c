@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:57:26 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 18:03:29 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 16:38:18 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,22 +108,43 @@ char	**rm_quotes_word(char **tab)
 			final = add_tab(final, tab[i], 1, 0);
 		i++;
 	}
+	if (tab)
+		free_tab(tab);
 	return (final);
+}
+
+int	bracket_inside(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s && s[i])
+	{
+		if (ft_belong("{}", s[i]))
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 void	fill_args(t_cmd *cmd, t_input *s)
 {
 	int	i;
 	char	**args;
+	int	bracket;
 
 	i = 0;
 	while (i < s->nb_cmd)
 	{
-		cmd = cmd_index(cmd, i);
-		if (cmd->args)
+		bracket = 0;
+		cmd = cmd_index(s->cmd, i);
+		if (cmd && cmd->args)
 		{
+			if (bracket_inside(cmd->args))
+				bracket = 1;
 			args = quote_split(cmd->args);
-			args = join_brackets(args);
+			if (bracket)
+				args = join_brackets(args);
 			cmd->cmd_args = rm_quotes_word(args);
 		}
 		i++;

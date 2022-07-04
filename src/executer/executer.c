@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 18:49:55 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 16:54:30 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,12 @@ void	execute(t_cmd *cmd, char **args, t_input *s)
 	close_fds(s);
 	builtin(cmd, s);
 	env = env_to_tab(s->env);
-	cmd->cmd = is_valid_cmd(cmd->cmd_args[0], env);
-	if (execve(cmd->cmd, args, env) == -1)
+	cmd->cmd = is_valid_cmd(cmd, env);
+	if (!cmd->cmd || execve(cmd->cmd, args, env) == -1)
+	{
+		free_tab(env);
 		err_cmd(cmd, s, 1);
+	}
 }
 
 void	process_recursion(t_cmd *list, t_input *s, int i, pid_t *f)
@@ -71,11 +74,11 @@ void	executer(t_cmd *list, t_input *s)
 	pid_t	*f;
 
 	init_exec_signals();
-/*	show_cmd_list(s->cmd);
-	ft_putstr_fd("\n", 1);
-	ft_putstr_fd("args \n", 1);
-	print_tab(s->cmd->cmd_args);
-*/	set_pipes(list, s);
+	set_pipes(list, s);
+	//show_cmd_list(s->cmd);
+	//ft_putstr_fd("\n", 1);
+	//ft_putstr_fd("args \n", 1);
+	//print_tab(s->cmd->cmd_args);
 	if (s->nb_cmd == 1 && list->args &&
 			list->cmd_args && is_builtin(list->cmd_args[0]))
 		exe_builtin(list, s);
@@ -84,6 +87,8 @@ void	executer(t_cmd *list, t_input *s)
 		f = ft_calloc(s->nb_cmd, sizeof(pid_t));
 		process_recursion(list, s, 0, f);
 		wait_all(s, f);
+		free(f);
 	}
 	close_pipes(s->pipes);
 }
+

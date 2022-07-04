@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 10:26:30 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/28 18:21:24 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 14:20:23 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	builtin(t_cmd *cmd, t_input *s)
 {
 	char	*scmd;
 
+	if (!cmd || !cmd->cmd_args)
+		return ;
 	scmd = cmd->cmd_args[0];
 	if (!ft_strcmp(scmd, "exit"))
 		ft_exit(cmd, s);

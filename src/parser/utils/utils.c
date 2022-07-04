@@ -6,11 +6,26 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 11:18:51 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/02 18:14:50 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 18:23:22 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
+
+t_cmd   *cmd(int fdi, int fdo, char *args, int id)
+{
+        t_cmd   *cmd;
+
+        cmd = ft_calloc(1, sizeof(t_cmd));
+        cmd->fdi = fdi;
+        cmd->fdo = fdo;
+        cmd->args = ft_strdup(args);
+        cmd->id = id;
+        cmd->cmd = NULL;
+        cmd->cmd_args = NULL;
+        cmd->next = NULL;
+        return (cmd);
+}
 
 int	only_space(char *s)
 {

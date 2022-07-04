@@ -1,43 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quote_utils.c                                      :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/03 17:43:07 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 10:21:30 by mtellal          ###   ########.fr       */
+/*   Created: 2022/07/04 18:25:50 by mtellal           #+#    #+#             */
+/*   Updated: 2022/07/04 18:28:31 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-int     quote_inside(char *s)
+void    err_msg_redirection(char *err)
 {
-        int     i;
-
-        i = 0;
-        while (s && s[i])
+        if (err)
         {
-                if (ft_belong("'\"", s[i]))
-                        return (1);
-                i++;
+                ft_putstr_fd("error: ", 2);
+                ft_putstr_fd(err, 2);
+                ft_putstr_fd("\n", 2);
         }
-        return (0);
 }
 
-char	**quote_split(char *s)
+//      useful when sig quit is send in heredoc prompt
+
+void    reset_stdin(void)
 {
-	char	**tab;
-	int	i;
+        int     fd;
 
-	i = 0;
-	tab = NULL;
-	if (quote_inside(s))
-	{
-		tab = ft_split(s, ' ');
-		tab = clear_tab(tab);
-		return (tab);
-	}
-	return (ft_split(s, ' '));
+        fd = dup(STDIN_FILENO);
+        if (get_quit_hd())
+                dup2(fd, STDIN_FILENO);
+        else
+                close(fd);
 }
+
+
