@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 18:22:45 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 18:56:14 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,6 @@ void	progress_list(t_utils *data, t_input *s, char *rest_args)
 		data->ptoken->next = data->ntoken->next;
 		free_token(&data->ntoken);
 	}
-}
-
-void	free_utils_data(t_utils *data)
-{
-	if (data->ntoken)
-		free_tab(data->tab);
-	free(data);
 }
 
 void	modify_io_cmd(t_token *list, t_input *s, int i_cmd, int i_list)

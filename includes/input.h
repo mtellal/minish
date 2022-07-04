@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 18:29:34 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 18:55:34 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,6 +290,7 @@ void    modify_redirection(t_utils *data, char *rest_args, char *r);
 /////	utils.c
 void	err_msg_redirection(char *err);
 void	reset_stdin(void);
+void    free_utils_data(t_utils *data);
 
 //////////	S E P A R A T O R S 		//////////
 

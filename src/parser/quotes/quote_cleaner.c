@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 17:27:22 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 17:13:28 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 19:11:33 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	modify_var_env(char **tab, t_input *s)
 		if (!ft_belong("'", tab[i][0]))
 		{
 			var = var_env(tab[i], s);
-			free(tab[i]);
 			tab[i] = var;
 		}
 		i++;
@@ -112,7 +111,9 @@ void    quote_cleaner(t_input *s)
         {
 		if (quote_inside(list->c))
                 	list->c = clear_str(list->c, s);
-                list = list->next;
+		else
+			list->c = var_env(list->c, s);
+		list = list->next;
         }
 }
 

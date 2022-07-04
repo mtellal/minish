@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 18:25:50 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 18:28:31 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 18:55:15 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,9 @@ void    reset_stdin(void)
                 close(fd);
 }
 
-
+void    free_utils_data(t_utils *data)
+{
+        if (data->ntoken)
+                free_tab(data->tab);
+        free(data);
+}
