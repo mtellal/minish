@@ -107,7 +107,6 @@ typedef struct s_input
 	struct s_token	*clist;
 	struct s_cmd	*cmd;
 	struct s_env	*env;
-
 }		t_input;
 
 
