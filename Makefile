@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/07/04 18:28:40 by mtellal          ###   ########.fr        #
+#    Updated: 2022/07/04 21:41:59 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ ENV = $(addprefix env/, $(FENV))
 
 EXECUTER = $(addprefix executer/, $(FEXECUTER) )
 
-EXPANDER = $(addprefix expander/, env_var.c env_var_utils.c expander.c)
+EXPANDER = $(addprefix expander/, env_var.c env_var_utils.c )
 
 PARSER = $(addprefix parser/, parser.c lexer.c fill_args.c $(addprefix utils/, $(FPUTILS)) $(addprefix quotes/, $(FQUOTES)) $(addprefix redirections/, $(FREDIRECTIONS)) $(addprefix pipes/, $(FPIPES)))
 

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 18:55:34 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 21:41:23 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ typedef struct s_input
 	struct s_token	*clist;
 	struct s_cmd	*cmd;
 	struct s_env	*env;
+	
 }		t_input;
 
 
@@ -164,9 +165,6 @@ t_env	*ft_lstlast_env(t_input *s);
 /////////////////////////////////////////////////////////
 //                   E X P A N D E R                   //
 /////////////////////////////////////////////////////////
-
-/////	expander.c
-void	expander(t_cmd *lcmd, t_input *s);
 
 /////   env_var.c
 int     end_index_var(char *s);
