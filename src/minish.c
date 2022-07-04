@@ -113,6 +113,19 @@ void	minishell(t_input *s)
 	free_all(s, 0);
 }
 
+int	verif_cmd(char *str)
+{
+	if (str[0] == '.')	
+	{
+		if (str[1] == '/')
+			write (1, "./ls: No such file or directory\n", 32);
+		else
+			write(1, "Command \'.ls\'not found\n", 23);
+		return (0);
+	}
+	return (1);
+}
+
 int	launch_minishell(t_input *s)
 {
 	char	*buffer;
@@ -125,12 +138,16 @@ int	launch_minishell(t_input *s)
 		if (!buffer)
 			ctrl_d(s);
 		add_history(buffer);
-		if (verif_pair_of_quotes(buffer) != -1) 
+		printf("%s\n", buffer);
+		if (verif_cmd(buffer) == 1)
 		{
-			s->input = ft_strdup(buffer);
-			s->llist = ft_strlen(s->input);
-			if (s->input && *s->input)
-				minishell(s);
+			if (verif_pair_of_quotes(buffer) != -1) 
+			{
+				s->input = ft_strdup(buffer);
+				s->llist = ft_strlen(s->input);
+				if (s->input && *s->input)
+					minishell(s);
+			}
 		}
 		free(buffer);
 		buffer = NULL;
