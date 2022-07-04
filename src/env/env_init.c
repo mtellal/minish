@@ -65,6 +65,10 @@ t_env	*str_to_env(char *str)
 	n = ft_calloc(1, sizeof(t_env));
 	if (!n)
 		return (NULL);
+	if (ft_str_valid_var(str))
+		n->equal = 1;
+	else
+		n->equal = 0;
 	equal = equal_index(str);
 	n->len = ft_strlen(str);
 	n->var = ft_substr(str, 0, equal);

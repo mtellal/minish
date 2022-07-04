@@ -76,16 +76,23 @@ void	print_export(t_input *s)
 void	ft_export(char **args, t_input *s)
 {
 	int		i;
+	;
 	t_env	*r;
 
 	r = s->env;
 	i = 1;
 	if (args && !args[i])
 		print_export(s);
+	if (args[i] && !ft_isalpha(args[i][0]))
+	{
+		write(2, "export: `", 9);
+		write(2, args[i], ft_strlen(args[i]));
+		write(2, "': not a valid identifier\n", 26);
+		return (return_status(EXIT_FAILURE, s));
+	}
 	while (args && args[i])
 	{
-		if (ft_str_valid_var(args[i]))
-			set_env_var(args[i], s);
+		set_env_var(args[i], s);
 		i++;
 	}
 	s->env = r;

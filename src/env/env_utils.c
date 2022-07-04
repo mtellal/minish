@@ -72,6 +72,7 @@ void	free_env(t_input *s)
 
 char	**env_to_tab(t_env *list)
 {
+	int		i;
 	t_env	*env;
 	char	**tab;
 	char	*s;
@@ -81,10 +82,12 @@ char	**env_to_tab(t_env *list)
 	s = NULL;
 	while (env)
 	{
+		i = 0;
 		s = ft_strdup(env->var);
-		s = ft_strjoin_free(s, "=", 1, 0);
-		s = ft_strjoin_free(s, env->content, 1, 0);
-		tab = add_tab(tab, s, 1, 1);
+		if (env->equal == 1)
+			s = ft_strjoin(s, "=");
+		s = ft_strjoin(s, env->content);
+		tab = add_tab(tab, s, 1, 0);
 		s = NULL;
 		env = env->next;
 	}

@@ -58,6 +58,7 @@ typedef struct s_cmd
 typedef struct s_env
 {
 	int		len;
+	int		equal;
 	char	*var;
 	char	*content;
 	struct s_env	*next;
@@ -108,7 +109,6 @@ typedef struct s_input
 	struct s_token	*clist;
 	struct s_cmd	*cmd;
 	struct s_env	*env;
-	
 }		t_input;
 
 
