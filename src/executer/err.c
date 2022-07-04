@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:39:57 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/07 17:48:12 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 16:46:46 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ void	err_msg_cmd(char *cmd)
 
 void	err_cmd(t_cmd *cmd, t_input *s, int msg)
 {
-	if (msg)
+	if (msg && cmd->cmd)
 		err_msg_cmd(cmd->cmd_args[0]);
-	close_pipes(s->pipes);
+	if (s->pipes)
+		close_pipes(s->pipes);
+	free_all(s, 1);
 	exit(EXIT_FAILURE);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 21:17:10 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/02 11:18:25 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 16:39:07 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,18 @@ char	**add_tab_first(char *s, char **tab)
 	return (f);
 }
 
-char	*is_valid_cmd(char *cmd, char **env)
+char	*is_valid_cmd(t_cmd *scmd, char **env)
 {
 	char	**p;
 	char	*s;
 	int		i;
+	char	*cmd;
 
 	i = 0;
 	s = NULL;
+	if (!scmd->cmd_args)
+		return (NULL);
+	cmd = scmd->cmd_args[0];	
 	if (access(cmd, F_OK) == 0)
 		return (wrap_bash(cmd));
 	else

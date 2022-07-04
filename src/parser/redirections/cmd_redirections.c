@@ -6,42 +6,39 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 16:03:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/30 16:27:02 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 18:22:45 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-t_cmd	*cmd(int fdi, int fdo, char *args, int id)
-{
-	t_cmd	*cmd;
-
-	cmd = ft_calloc(1, sizeof(t_cmd));
-	cmd->fdi = fdi;
-	cmd->fdo = fdo;
-	cmd->args = ft_strdup(args);
-	cmd->id = id;
-	cmd->cmd = NULL;
-	cmd->cmd_args = NULL;
-	cmd->next = NULL;
-	return (cmd);
-}
-
 void	progress_list(t_utils *data, t_input *s, char *rest_args)
 {
+	free_token(&data->list);
 	if (!data->ptoken || (data->ptoken && data->ptoken->type == SEPARATOR))
 	{
 		if (data->ptoken)
 			data->ptoken->next = data->ntoken;
 		else
 			s->clist = data->ntoken;
+		free(data->ntoken->c);
 		data->ntoken->c = rest_args;
 	}
 	else if (data->ptoken)
 	{
+		if (data->ptoken->c)
+			free(data->ptoken->c);
 		data->ptoken->c = rest_args;
 		data->ptoken->next = data->ntoken->next;
+		free_token(&data->ntoken);
 	}
+}
+
+void	free_utils_data(t_utils *data)
+{
+	if (data->ntoken)
+		free_tab(data->tab);
+	free(data);
 }
 
 void	modify_io_cmd(t_token *list, t_input *s, int i_cmd, int i_list)
@@ -54,12 +51,14 @@ void	modify_io_cmd(t_token *list, t_input *s, int i_cmd, int i_list)
 	r = list->c;
 	data->i_cmd = i_cmd;
 	data->i_list = i_list;
+	data->list = list;
 	init_cmd_redir(data, s, r);
 	rest_args = join_tab(data->tab, 1, 0);
 	if (data->cmd)
 		modify_redirection(data, rest_args, r);
 	if (!data->cmd)
 		add_cmd(data, s, &rest_args, r);
+	free_utils_data(data);
 }
 
 void	redir_match(t_coor *c, t_input *s, t_token **list, int *reset)

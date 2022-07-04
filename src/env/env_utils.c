@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 16:54:37 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/27 11:42:20 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 11:57:23 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ char	**env_to_tab(t_env *list)
 	while (env)
 	{
 		s = ft_strdup(env->var);
-		s = ft_strjoin(s, "=");
-		s = ft_strjoin(s, env->content);
-		tab = add_tab(tab, s, 1, 0);
+		s = ft_strjoin_free(s, "=", 1, 0);
+		s = ft_strjoin_free(s, env->content, 1, 0);
+		tab = add_tab(tab, s, 1, 1);
 		s = NULL;
 		env = env->next;
 	}

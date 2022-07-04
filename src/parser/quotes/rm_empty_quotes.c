@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 11:26:22 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/01 11:39:07 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 15:39:02 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int     skip_quotes(char *quote, int *j, char *s)
 
         i = *j;
         if (s[i] && ft_belong("'\"", s[i])
-                && s[i] == *quote && s[i + 1] == *quote && rm_d_quotes(s[i + 2], s[i - 1], i))
+                && s[i] == *quote && s[i + 1] == *quote &&
+		s[i + 2] && i > 0 && rm_d_quotes(s[i + 2], s[i - 1], i))
                 {
                         *j += 2;
                         *quote = 0;
@@ -62,4 +63,3 @@ char    *remove_empty_quotes(char *s)
 		free(s);
         return (final);
 }
-

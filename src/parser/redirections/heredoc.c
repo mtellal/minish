@@ -6,12 +6,11 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 09:29:37 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/29 11:30:48 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 18:17:24 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
-
 
 static  int     *quit_hd(void)
 {

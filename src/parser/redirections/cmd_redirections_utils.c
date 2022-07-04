@@ -1,46 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections_utils.c                               :+:      :+:    :+:   */
+/*   cmd_redirections_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 21:03:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 17:47:53 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 18:27:14 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-void	err_msg_redirection(char *err)
-{
-	if (err)
-	{
-		ft_putstr_fd("error: ", 2);
-		ft_putstr_fd(err, 2);
-		ft_putstr_fd("\n", 2);
-	}
-}
-
 void	init_cmd_redir(t_utils *data, t_input *s, char *r)
 {
-	int	fd = dup(STDIN_FILENO);
+	reset_stdin();
 	data->ptoken = list_index_token(s->clist, data->i_list - 1);
 	data->ntoken = list_index_token(s->clist, data->i_list + 1);
 	data->err_redir = NULL;
 	if (data->ntoken)
 	{
 		data->cmd = cmd_index(s->cmd, data->i_cmd);
+		if (data->cmd)
+			data->err_redir = data->cmd->err_redir;
 		data->tab = quote_split(data->ntoken->c);
-		if (open_data(data, r) == -1)
+		if (!data->err_redir && open_data(data, r) == -1)
 		{
 			data->err_redir = ft_strjoin(data->tab[0], " :");
 		       	data->err_redir = ft_strjoin_free(data->err_redir, strerror(errno), 1, 0);
 		}
-		if (get_quit_hd())
-			dup2(fd, STDIN_FILENO);
-		else
-			close(fd);
 	}
 }
 
@@ -66,36 +54,22 @@ void	add_cmd(t_utils *data, t_input *s, char **rest_args, char *r)
 	progress_list(data, s, *rest_args);	
 }
 
-char	*join_tab(char **tab, int j, int ftab)
-{
-	char	*t;
-
-	t = NULL;
-	while (tab[j])
-	{
-		if (!t)
-			t = ft_strjoin_free(t, tab[j], 0, 0);
-		else
-			t = ft_strjoin_free(t, tab[j], 1, 0);
-		t = ft_strjoin_free(t, " ", 1, 0);
-		j++;
-	}
-	if (tab && ftab)
-		free_tab(tab);
-	return (t);
-}
-
 void	modify_redirection(t_utils *data, char *rest_args, char *r)
 {
 	if (*r == '<' && !data->err_redir)
 		data->cmd->fdi = data->file;
 	if (*r == '>' && !data->err_redir)
 		data->cmd->fdo = data->file;
-	data->cmd->err_redir = data->err_redir;
+	if (data->err_redir)
+		data->cmd->err_redir = data->err_redir;
 	if (data->ntoken)
+	{
 		data->ptoken->next = data->ntoken->next;
+		free_token(&data->ntoken);
+	}
 	else
 		data->ptoken->next = data->ntoken;
 	if (rest_args)
-		data->cmd->args = ft_strjoin_free(data->cmd->args, rest_args, 0, 1);
+		data->cmd->args = ft_strjoin_free(data->cmd->args, rest_args, 1, 1);
+	free_token(&data->list);
 }

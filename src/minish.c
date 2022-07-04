@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 20:55:17 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 16:56:35 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 	 *	- !!!!! QUOTES A GERER exemple ls '' => err_msg ''
 	 *	- !!!!! FILL_ARGS => probleme avec awk (prendre en compte les brackets)
 	 *	- !!!!!	LEAKS cd
+	 *	- !!!!! ls | cat < fwdf > wdf << wdfw
 	 *
 	 * 	- ctrl-d dans le heredoc> => unlink le hd
 	 *

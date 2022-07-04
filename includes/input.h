@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 17:48:27 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/04 18:29:34 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_utils
 	int		file;
 	char	**tab;
 	char	*err_redir;
+	t_token *list;
 	t_token	*token;
 	t_token	*ptoken;
 	t_token	*ntoken;
@@ -107,7 +108,7 @@ typedef struct s_input
 	struct s_token	*clist;
 	struct s_cmd	*cmd;
 	struct s_env	*env;
-
+	
 }		t_input;
 
 
@@ -204,7 +205,7 @@ char    **tab_path(char **env);
 int     valid_cmd(char *path, char *cmdi);
 char	**add_tab_first(char *s, char **tab);
 char	*wrap_bash(char *s);
-char    *is_valid_cmd(char *cmd, char **env);
+char    *is_valid_cmd(t_cmd *cmd, char **env);
 
 /////	verify_commands_utils.c
 char	*wrap_bash(char *s);
@@ -240,7 +241,6 @@ enum s_type     type_token(char c);
 void    lexer(t_input *s);
 
 /////	parser.c
-char    *tlist_to_s(t_token *list, int l);
 void    parser(t_input *s);
 int     number_of_groups(t_token *list);
 
@@ -263,12 +263,12 @@ void    quote_cleaner(t_input *s);
 int     verif_pair_of_quotes(char *s);
 
 /////	quotes_utils.c
+int	quote_inside(char *s);
 char    **quote_split(char *s);
 
 //////////	R E D I R E C T I O N S		////////// 	
 
 /////	cmd_redirections.c
-t_cmd   *cmd(int fdi, int fdo, char *args, int id);
 void    progress_list(t_utils *data, t_input *s, char *rest_args);
 void	cmd_redirections(t_token *list, t_input *s);
 
@@ -281,17 +281,15 @@ int	get_quit_hd(void);
 void	set_quit_hd(int n);
 int	open_n_close_hd(t_utils *data);
 
-
 /////	redirections_utils.c
 void    err_msg_redirection(char *err);
 void     init_cmd_redir(t_utils *data, t_input *s, char *r);
 void    add_cmd(t_utils *data, t_input *s, char **rest_args, char *r);
-char    *join_tab(char **tab, int j, int ftab);
 void    modify_redirection(t_utils *data, char *rest_args, char *r);
 
-void    show_cmd_list(t_cmd *list);
-void    clear_cmd_list(t_cmd **list);
-
+/////	utils.c
+void	err_msg_redirection(char *err);
+void	reset_stdin(void);
 
 //////////	S E P A R A T O R S 		//////////
 
@@ -308,6 +306,7 @@ void	clear_space(t_token *list);
 t_token	*list_index_token(t_token *list, int l);
 
 /////	utils.c
+t_cmd   *cmd(int fdi, int fdo, char *args, int id);
 int	only_space(char *s);
 int	index_separator(t_token *list);
 int     nb_token_type(t_token *list, enum s_type type);
@@ -343,6 +342,7 @@ void    free_tab(char **tab);
 
 /////	tab_utils2.c
 void	print_tab(char **tab);
+char    *join_tab(char **tab, int j, int ftab);
 
 /////   string_utils.c
 int     ft_belong(char *s, char c);
@@ -354,7 +354,7 @@ int     ft_open(int *fd, char *file, int flags, mode_t mode);
 /////	list_token_utils.c
 void    free_token(t_token **token);
 void    ft_lstaddb_token(t_token **lst, t_token *n);
-void	ft_lstclear_token(t_token **token);
+void	ft_lstclear_parser(t_token **token);
 t_token *list_index_token(t_token *list, int l);
 void    ft_lstclear_lexer(t_token **list);
 
@@ -378,5 +378,9 @@ int	ft_lstenv_size(t_env *env);
 /////	debug_utils.c
 void	show_lexer(t_input *s);
 void	show_parser(t_input *s);
+
+/////	commands_utils.c
+void	clear_cmd_list(t_cmd **cmd);
+void	show_cmd_list(t_cmd *lcmd);
 
 #endif
