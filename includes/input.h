@@ -104,6 +104,7 @@ typedef struct s_input
 	int		nb_pipes;
 	int		**pipes;
 	int		hd;
+	int		value;
 	char	*input;
 	struct s_token	*tlist;
 	struct s_token	*clist;
