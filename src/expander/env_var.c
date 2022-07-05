@@ -22,10 +22,16 @@ int	v_value(char **f, char *s, t_input *ss)
 	final = NULL;
 	if (s[i] == '$')
 		i++;
+	if (s[i] == '\0')
+		return (i);
 	while (s && s[i] && (s[i] =='_' || ft_isalnum(s[i])))
 		i++;
 	sub = ft_substr(s, 0, i);
 	final = value_attr(sub + 1, ss);
+	if (final)
+		ss->value = 1;
+	else
+		ss->value = 0;
 	if (!final && i == 1)
 	{
 		*f = add_char(*f, sub[i]);
