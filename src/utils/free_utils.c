@@ -6,11 +6,44 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 22:00:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 16:52:31 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/05 11:03:41 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
+
+void	ft_lstclear_parser(t_token **list)
+{
+	t_token *token;
+
+	while (*list)
+	{
+		if ((*list)->c)
+			free((*list)->c);
+		token = *list;
+		*list = (*list)->next;
+		free(token);
+	}
+	*list = NULL;
+}
+
+void	ft_lstclear_lexer(t_token **list)
+{
+	int	i;
+	t_token	*ft;
+
+	i = 0;
+	while (*list)
+	{
+		if (!i && (*list)->c)
+			free((*list)->c);
+		i++;
+		ft = *list;
+		*list = (*list)->next;
+		free(ft);
+	}
+	*list = NULL;
+}
 
 void	free_pipes(t_input *s)
 {

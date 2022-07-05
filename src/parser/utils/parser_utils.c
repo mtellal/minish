@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 14:47:42 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/03 10:56:48 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/05 11:52:24 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ t_cmd	*cmd_index(t_cmd *list, int index)
 
 void	clear_space(t_token *list)
 {
-	t_token *plist;
+	t_token	*plist;
 	t_token	*nlist;
 	t_token	*token;
-	t_token *r;
+	t_token	*r;
 
 	plist = NULL;
 	r = list;
@@ -53,8 +53,7 @@ void	clear_space(t_token *list)
 		list = list->next;
 		if (list)
 			nlist = list->next;
-		free_token(&token);	
+		free_token(&token);
 	}
 	list = r;
 }
-

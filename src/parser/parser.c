@@ -6,56 +6,24 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 09:06:00 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 11:48:59 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/05 11:17:16 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-int	next_index_group(t_token *llist)
+int	nb_type(t_token *llist, enum s_type type)
 {
-	int			i;
-	t_token		*list;
-	enum s_type	type;
+	int		i;
+	t_token	*list;
 
 	i = 0;
-	if (!llist)
-		return (-1);
 	list = llist;
-	type = list->type;
-	while (list)
+	while (list && list->type == type)
 	{
-		if (list->type != type)
-			return (i);
 		i++;
 		list = list->next;
 	}
-	return (i);
-}
-
-int	number_of_groups(t_token *list)
-{
-	int			i;
-	t_token		*r;
-	enum s_type	type;
-
-	i = 0;
-	r = list;
-	while (list)
-	{
-		if (i == 0)
-		{
-			type = list->type;
-			i++;
-		}	
-		if (list->type != type)
-		{
-			type = list->type;
-			i++;
-		}
-		list = list->next;
-	}
-	list = r;
 	return (i);
 }
 
@@ -74,28 +42,30 @@ t_token	*tokenize(int next_group, t_token *list)
 
 void	parser(t_input *s)
 {
-	int		nb_groups;
 	int		i;
-	int		next_group;
-	t_token	*token;
-	t_token	*r;
+	t_token	*list;
 
 	i = 0;
-	r = s->tlist;
-	nb_groups = number_of_groups(s->tlist);
-	s->llist = nb_groups;
-	while (i < nb_groups)
+	list = s->tlist;
+	while (list)
 	{
-		next_group = next_index_group(s->tlist);
-		token = tokenize(next_group, s->tlist);
-		if (!s->clist)
-			s->clist = token;
+		if (list->type == SEPARATOR && *list->c == '|')
+		{
+			ft_lstaddb_token(&s->clist, tokenize(1, list));
+			list = list->next;
+		}
 		else
-			ft_lstaddb_token(&s->clist, token);
-		s->tlist = list_index_token(s->tlist, next_group);
-		i++;
+		{
+			i = nb_type(list, list->type);
+			ft_lstaddb_token(&s->clist, tokenize(i, list));
+			while (i > 0 && list)
+			{
+				list = list->next;
+				i--;
+			}
+		}
 	}
 	s->nb_cmd = nb_token_type(s->clist, ALPHANUM);
 	s->nb_sep = nb_token_type(s->clist, SEPARATOR);
-	s->tlist = r;
+	show_parser(s);
 }

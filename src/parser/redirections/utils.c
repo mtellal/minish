@@ -6,38 +6,38 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 18:25:50 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 18:55:15 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/05 11:33:49 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
 
-void    err_msg_redirection(char *err)
+void	err_msg_redirection(char *err)
 {
-        if (err)
-        {
-                ft_putstr_fd("error: ", 2);
-                ft_putstr_fd(err, 2);
-                ft_putstr_fd("\n", 2);
-        }
+	if (err)
+	{
+		ft_putstr_fd("error: ", 2);
+		ft_putstr_fd(err, 2);
+		ft_putstr_fd("\n", 2);
+	}
 }
 
 //      useful when sig quit is send in heredoc prompt
 
-void    reset_stdin(void)
+void	reset_stdin(void)
 {
-        int     fd;
+	int	fd;
 
-        fd = dup(STDIN_FILENO);
-        if (get_quit_hd())
-                dup2(fd, STDIN_FILENO);
-        else
-                close(fd);
+	fd = dup(STDIN_FILENO);
+	if (get_quit_hd())
+		dup2(fd, STDIN_FILENO);
+	else
+		close(fd);
 }
 
-void    free_utils_data(t_utils *data)
+void	free_utils_data(t_utils *data)
 {
-        if (data->ntoken)
-                free_tab(data->tab);
-        free(data);
+	if (data->ntoken)
+		free_tab(data->tab);
+	free(data);
 }

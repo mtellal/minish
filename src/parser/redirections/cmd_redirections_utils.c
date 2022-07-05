@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 21:03:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 18:27:14 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/05 11:32:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	init_cmd_redir(t_utils *data, t_input *s, char *r)
 		if (!data->err_redir && open_data(data, r) == -1)
 		{
 			data->err_redir = ft_strjoin(data->tab[0], " :");
-		       	data->err_redir = ft_strjoin_free(data->err_redir, strerror(errno), 1, 0);
+			data->err_redir = ft_strjoin_free(data->err_redir,
+					strerror(errno), 1, 0);
 		}
 	}
 }
@@ -51,7 +52,7 @@ void	add_cmd(t_utils *data, t_input *s, char **rest_args, char *r)
 		_cmd->err_redir = data->err_redir;
 		ft_lstaddb_cmd(&s->cmd, _cmd);
 	}
-	progress_list(data, s, *rest_args);	
+	progress_list(data, s, *rest_args);
 }
 
 void	modify_redirection(t_utils *data, char *rest_args, char *r)

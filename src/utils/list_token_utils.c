@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 18:47:37 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 18:56:58 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/05 11:07:21 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,37 +41,19 @@ void    ft_lstaddb_token(t_token **lst, t_token *n)
         }
 }
 
-void	ft_lstclear_parser(t_token **list)
+int	ft_lstsize_token(t_token *llist)
 {
-	t_token *token;
-
-	while (*list)
-	{
-		if ((*list)->c)
-			free((*list)->c);
-		token = *list;
-		*list = (*list)->next;
-		free(token);
-	}
-	*list = NULL;
-}
-
-void	ft_lstclear_lexer(t_token **list)
-{
-	int	i;
-	t_token	*ft;
+	int		i;
+	t_token *list;
 
 	i = 0;
-	while (*list)
+	list = llist;
+	while (list)
 	{
-		if (!i && (*list)->c)
-			free((*list)->c);
+		list = list->next;
 		i++;
-		ft = *list;
-		*list = (*list)->next;
-		free(ft);
 	}
-	*list = NULL;
+	return (i);
 }
 
 t_token *list_index_token(t_token *token, int l)

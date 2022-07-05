@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 21:41:23 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/05 11:06:36 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct s_coor
 typedef struct s_input
 {
 	int		argc;
-	int		llist;
+	//int		llist;
 	int		nb_sep;
 	int		nb_cmd;
 	int		nb_pipes;
@@ -242,6 +242,10 @@ void    lexer(t_input *s);
 void    parser(t_input *s);
 int     number_of_groups(t_token *list);
 
+//////////            F I L L _ A R G S          //////////
+int     bracket_inside(char *s);
+char    **join_brackets(char **args);
+
 /////	fill_args.c
 void	fill_args(t_cmd *cmd, t_input *s);
 
@@ -296,6 +300,12 @@ void    free_utils_data(t_utils *data);
 t_cmd   *cmd_index(t_cmd *list, int index);
 void    cmd_pipes(t_token *list, t_input *s);
 
+/////	verify_separator_utils.c	
+int	err_separator(t_token *list, t_input *s);
+
+/////	verify_separator_utils.c
+int     msg_err_separator(char *s, int err_sep);
+int     err_redi(t_token *list, t_token *nlist);
 
 //////////		U T I L S 		//////////
 
@@ -309,13 +319,6 @@ t_cmd   *cmd(int fdi, int fdo, char *args, int id);
 int	only_space(char *s);
 int	index_separator(t_token *list);
 int     nb_token_type(t_token *list, enum s_type type);
-
-/////	verify_separator.c
-int     same_char(char *s, char c, int l);
-int     valid_separator(char    *s, int *err_sep);
-int     msg_err_separator(char *s, int err_sep);
-int     err_separator(t_token *list, t_input *s);
-
 
 
 //////////	S I G N A L S . C		//////////
@@ -353,9 +356,8 @@ int     ft_open(int *fd, char *file, int flags, mode_t mode);
 /////	list_token_utils.c
 void    free_token(t_token **token);
 void    ft_lstaddb_token(t_token **lst, t_token *n);
-void	ft_lstclear_parser(t_token **token);
+int     ft_lstsize_token(t_token *llist);
 t_token *list_index_token(t_token *list, int l);
-void    ft_lstclear_lexer(t_token **list);
 
 /////	list_cmd_utils.c
 int     ft_lstsize_cmd(t_cmd *list);

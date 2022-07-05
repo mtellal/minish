@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 15:42:49 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 16:56:35 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/05 11:01:16 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 	 *	- !!!!! FILL_ARGS => probleme avec awk (prendre en compte les brackets)
 	 *	- !!!!!	LEAKS cd
 	 *	- !!!!! ls | cat < fwdf > wdf << wdfw
+	 *	- !!!!!	echo "$'USER'"
 	 *
 	 * 	- ctrl-d dans le heredoc> => unlink le hd
 	 *
@@ -87,7 +88,6 @@ void	init_data(t_input *s, int argc, char **env)
 {
 	set_last_status(0);
 	s->argc = argc;
-	s->llist = 0;
 	s->nb_sep = 0;
 	s->nb_cmd = 0;
 	s->nb_pipes = 0;
@@ -114,19 +114,6 @@ void	minishell(t_input *s)
 	free_all(s, 0);
 }
 
-int	verif_cmd(char *str)
-{
-	if (str[0] == '.')	
-	{
-		if (str[1] == '/')
-			write (1, "./ls: No such file or directory\n", 32);
-		else
-			write(1, "Command \'.ls\'not found\n", 23);
-		return (0);
-	}
-	return (1);
-}
-
 int	launch_minishell(t_input *s)
 {
 	char	*buffer;
@@ -139,16 +126,11 @@ int	launch_minishell(t_input *s)
 		if (!buffer)
 			ctrl_d(s);
 		add_history(buffer);
-		printf("%s\n", buffer);
-		if (verif_cmd(buffer) == 1)
+		if (verif_pair_of_quotes(buffer) != -1) 
 		{
-			if (verif_pair_of_quotes(buffer) != -1) 
-			{
-				s->input = ft_strdup(buffer);
-				s->llist = ft_strlen(s->input);
-				if (s->input && *s->input)
-					minishell(s);
-			}
+			s->input = ft_strdup(buffer);
+			if (s->input && *s->input)
+				minishell(s);
 		}
 		free(buffer);
 		buffer = NULL;

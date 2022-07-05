@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 14:58:59 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/03 18:49:38 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/05 09:15:03 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_token	*token(char *c, char quote)
 
 void	lexer(t_input	*s)
 {
-	int			i;
+	int		i;
 	char	quote;
 
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 10:11:27 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/04 21:38:36 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/05 09:12:26 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char    *var_env(char *s, t_input *ss)
 			quote = s[i];
 		else if (quote && ft_belong("'\"", s[i]))
 			quote = 0;
-		if (s[i] == '$')
+		if (s[i] == '$' && quote != '\'')
 			i += v_value(&final, s + i, ss);
 		else
 		{
