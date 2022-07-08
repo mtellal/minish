@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 20:31:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/08 20:17:23 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/08 20:22:22 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,7 @@ int	valid_identifier(char *s)
 	while (s && s[i] && s[i] != '=')
 	{
 		if (!isalnum(s[i]) && s[i] != '_')
-		{
-			ft_putnbr_fd(i, 1);
 			return (0);
-		}
 		i++;
 	}
 	return (1);
