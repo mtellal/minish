@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 20:31:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/08 14:43:18 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/08 20:17:23 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	set_env_var(char *args, t_input *s)
 	t_env	*n;
 
 	n = str_to_env(args);
+	n->equal = 1;
 	e = var_exists(n->var, s->env);
 	if (e)
 	{
