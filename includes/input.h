@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/07 09:24:28 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/08 16:39:44 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,8 @@ char	*is_valid_cmd(t_cmd *cmd, char **env, t_input *s);
 /////	verify_commands_utils.c
 char	*wrap_bash(char *s, char **env, t_input *ss);
 void	err_msg_invalid_cmd(char *cmd, char **env, t_input *s);
+void	err_msg_redir(t_cmd *c, t_input *s, int builtin);
+void	err_execve(char **env, t_input *s);
 
 /////	wait.c
 int		get_last_pid(void);
@@ -212,12 +214,8 @@ void	wait_all(t_input *s, pid_t *f);
 /////	close_utils.c
 void	set_fds(t_cmd *cmd);
 void	close_fds(t_input *s);
-void	close_pipes(int **pipes);
+void	close_pipes(int **pipes, int nb_pipes);
 void	restore_fds(t_coor fds);
-
-/////	err.c
-void	err_msg_cmd(char *cmd);
-void	err_cmd(t_cmd *cmd, t_input *s, int msg);
 
 /////	utils_status.c
 int		get_last_status(void);
@@ -289,14 +287,11 @@ int		open_n_close_hd(t_utils *data);
 void	set_quit_hd(int n);
 
 /////	redirections_utils.c
-void	err_msg_redirection(char *err);
 void	init_cmd_redir(t_utils *data, t_input *s, char *r);
 void	add_cmd(t_utils *data, t_input *s, char **rest_args, char *r);
 void	modify_redirection(t_utils *data, char *rest_args, char *r);
 
 /////	utils.c
-void	err_msg_redirection(char *err);
-void	reset_stdin(void);
 void	free_utils_data(t_utils *data);
 
 //////////		P I P E S 		//////////

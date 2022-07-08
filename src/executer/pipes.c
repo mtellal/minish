@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 15:12:38 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/05 17:20:59 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/08 15:27:55 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	**create_pipes(int nb_pipes)
 	while (i < nb_pipes)
 		p[i++] = NULL;
 	i = 0;
-	while (i < nb_pipes)
+	while (i < nb_pipes && i < 512)
 	{
 		p[i] = ft_calloc(2, sizeof(int));
 		if (!p[i] || pipe(p[i]) == -1)
@@ -97,7 +97,7 @@ void	set_pipes(t_cmd *list, t_input *s)
 	s->pipes = create_pipes(s->nb_pipes);
 	if (!s->pipes)
 		return ;
-	while (j < len)
+	while (j < len && j < 512)
 	{
 		pipes(j, &i_p, s);
 		j++;

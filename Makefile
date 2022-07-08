@@ -6,7 +6,7 @@
 #    By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/24 10:39:17 by mtellal           #+#    #+#              #
-#    Updated: 2022/07/07 14:49:51 by mtellal          ###   ########.fr        #
+#    Updated: 2022/07/08 16:35:37 by mtellal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ FBUILTIN = echo.c env.c export.c export_utils.c pwd.c unset.c cd.c exit.c \
 
 FENV = env_init.c env_utils.c env_var.c
 
-FEXECUTER = executer.c executer_utils.c pipes.c err.c signals.c close_utils.c \
+FEXECUTER = executer.c executer_utils.c pipes.c signals.c close_utils.c \
 	    verif_cmd/verify_commands.c verif_cmd/verify_commands_utils.c \
             status/wait.c  status/status.c 
 

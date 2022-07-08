@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 17:16:30 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/05 15:24:22 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/08 15:36:00 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ void	close_fds(t_input *s)
 	}
 }
 
-void	close_pipes(int **pipes)
+void	close_pipes(int **pipes, int index)
 {
 	int	i;
 
 	i = 0;
-	while (pipes && pipes[i])
+	while (pipes && pipes[i] && i < index)
 	{
 		close(pipes[i][0]);
 		close(pipes[i][1]);

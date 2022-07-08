@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/07 08:58:11 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/08 16:51:27 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,14 @@ void	execute(t_cmd *cmd, char **args, t_input *s)
 	char	**env;
 
 	if (cmd->err_redir)
-		err_cmd(cmd, s, 0);
+		err_msg_redir(cmd, s, 0);
 	set_fds(cmd);
 	close_fds(s);
 	builtin(cmd, s);
 	env = env_to_tab(s->env);
 	cmd->cmd = is_valid_cmd(cmd, env, s);
-	if (!cmd->cmd || execve(cmd->cmd, args, env) == -1)
-	{
-		free_tab(env);
-		err_cmd(cmd, s, 1);
-	}
+	if (execve(cmd->cmd, args, env) == -1)
+		err_execve(env, s);
 }
 
 void	process_recursion(t_cmd *list, t_input *s, int i, pid_t *f)
@@ -48,7 +45,6 @@ void	process_recursion(t_cmd *list, t_input *s, int i, pid_t *f)
 	{
 		process_recursion(list, s, i + 1, f);
 		close_fds(s);
-		err_msg_redirection(cmd->err_redir);
 	}
 }
 
@@ -56,20 +52,19 @@ void	exe_builtin(t_cmd *cmd, t_input *s)
 {
 	t_coor	fds;
 
-	fds.i = dup(0);
-	fds.j = dup(1);
 	if (!cmd->err_redir)
 	{
+		fds.i = dup(0);
+		fds.j = dup(1);
 		set_fds(cmd);
 		builtin(cmd, s);
 		close_fds(s);
 		restore_fds(fds);
+		close(fds.i);
+		close(fds.j);
 	}
 	else
-	{
-		err_msg_redirection(cmd->err_redir);
-		set_last_status(EXIT_FAILURE);
-	}
+		err_msg_redir(cmd, s, 1);
 }
 
 /*
@@ -93,5 +88,4 @@ void	executer(t_cmd *list, t_input *s)
 		wait_all(s, f);
 		free(f);
 	}
-	close_pipes(s->pipes);
 }

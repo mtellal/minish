@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 21:17:10 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/08 14:03:54 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/08 16:49:34 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ char	**tab_path(char **env)
 	while (env && *env && ft_strncmp("PATH", *env, 4) != 0)
 		env++;
 	if (!*env)
-	{
-		ft_putstr_fd("err PATH invalid\n", 2);
 		return (NULL);
-	}
 	tab = ft_split(*env + 5, ':');
 	return (tab);
 }
@@ -38,12 +35,6 @@ int	valid_cmd(char *path, char *cmd)
 	s = ft_strjoin_free(c, cmd, 1, 0);
 	if (access(s, F_OK) == 0)
 	{
-		if (access(s, X_OK) == -1)
-		{
-			free(s);
-			perror("error");
-			exit(EXIT_FAILURE);
-		}
 		free(s);
 		return (1);
 	}
@@ -85,7 +76,7 @@ char	*wrap_binary(char *cmd, char **env, t_input *ss)
 	}
 	p = tab_path(env);
 	if (!p)
-		return (NULL);
+		err_msg_invalid_cmd(cmd, env, ss);
 	while (p[i] && !valid_cmd(p[i], cmd))
 		i++;
 	if (p[i])

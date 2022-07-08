@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 22:00:11 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/06 16:49:26 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/08 16:53:41 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,14 @@ void	free_all(t_input *s, int env)
 	if (s->cmd)
 		clear_cmd_list(&s->cmd);
 	if (s->pipes)
+	{
+		close_pipes(s->pipes, s->nb_pipes);
 		free_pipes(s);
+	}
 	if (env && s->env)
 	{
 		free_env(&s->env);
 		rl_clear_history();
-		free(rl_line_buffer);
 	}
 	if (s->hd)
 		unlink(".heredoc");
