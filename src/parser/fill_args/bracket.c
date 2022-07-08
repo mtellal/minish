@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 09:17:39 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/05 09:30:41 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/08 17:32:17 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,7 @@ char	**join_brackets(char **args)
 		if (args[i])
 			i++;
 	}
+	if (args)
+		free_tab(args);
 	return (tab);
 }
