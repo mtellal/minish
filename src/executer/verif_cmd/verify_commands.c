@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 21:17:10 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/09 20:24:09 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/09 21:58:52 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ char	*wrap_binary(char *cmd, char **env, t_input *ss)
 
 	s = NULL;
 	i = 0;
-	ft_putstr_fd("wrap_binary\n", 1);
 	p = tab_path(env);
 	if (!p)
 		err_msg_invalid_cmd(cmd, env, ss);
