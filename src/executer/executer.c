@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/08 16:51:27 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/09 17:13:30 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,6 @@ void	exe_builtin(t_cmd *cmd, t_input *s)
 	else
 		err_msg_redir(cmd, s, 1);
 }
-
-/*
- *	show_cmd_list(s->cmd);
- *	ft_putstr_fd("\n", 1);
- */
 
 void	executer(t_cmd *list, t_input *s)
 {

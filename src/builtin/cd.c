@@ -6,11 +6,17 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:09:34 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/06 15:49:17 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/09 18:22:24 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
+
+static void	free_str(char *str)
+{
+	if (str)
+		free(str);
+}
 
 char	*verif_paths(char *args, t_input *s)
 {
@@ -21,6 +27,7 @@ char	*verif_paths(char *args, t_input *s)
 		var = get_var_value("HOME", s);
 		if (!var || !*var)
 		{
+			free_str(var);
 			ft_putstr_fd("error: cd: HOME undefined\n", 2);
 			return (NULL);
 		}
@@ -30,12 +37,13 @@ char	*verif_paths(char *args, t_input *s)
 		var = get_var_value("OLDPWD", s);
 		if (!var || !*var)
 		{
+			free_str(var);
 			ft_putstr_fd("error: cd: OLDPWD undefined\n", 2);
 			return (NULL);
 		}
 	}
 	else
-		return (args);
+		return (ft_strdup(args));
 	return (var);
 }
 
@@ -48,6 +56,8 @@ int	set_paths(t_input *s, char *var)
 	pwd = get_var_value("PWD", s);
 	if (!pwd)
 	{
+		free(var);
+		free(oldpwd);
 		ft_putstr_fd("error: cd: PWD undefined\n", 2);
 		return (-1);
 	}
@@ -57,8 +67,8 @@ int	set_paths(t_input *s, char *var)
 		set_var_value("PWD", oldpwd, s);
 	if (oldpwd)
 		free(oldpwd);
-	if (pwd)
-		free(pwd);
+	free(pwd);
+	free(var);
 	ft_pwd(1, s);
 	return (0);
 }	
@@ -78,6 +88,7 @@ void	ft_cd(char **args, t_input *s)
 		if (chdir(var) == -1)
 		{
 			perror("cd");
+			free(var);
 			return (return_status(EXIT_FAILURE, s));
 		}
 		if (set_paths(s, var) == -1)
