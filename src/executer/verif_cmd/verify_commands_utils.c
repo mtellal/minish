@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 11:14:07 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/08 17:00:52 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/09 21:50:29 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,21 @@
 
 char	*wrap_bash(char *s, char **env, t_input *ss)
 {
+	int		err_status;
 	char	*cmd;
 
 	cmd = NULL;
-	if (!ft_strncmp(s, "./", 2) && access(s, X_OK) == -1)
+	err_status = 0;
+	if (access(s + 2, F_OK) == -1)
+		err_status = 127;
+	if (!err_status && access(s + 2, X_OK) == -1)
+		err_status = 126;
+	if (err_status)
 	{
 		perror("error");
 		free_tab(env);
 		free_all(ss, 1);
-		exit(126);
+		exit(err_status);
 	}
 	else
 		cmd = ft_strdup(s);
@@ -56,5 +62,5 @@ void	err_execve(char **env, t_input *s)
 	free_tab(env);
 	perror("error: ");
 	free_all(s, 1);
-	exit(EXIT_FAILURE);
+	exit(127);
 }

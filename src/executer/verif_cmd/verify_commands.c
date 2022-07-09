@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 21:17:10 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/08 16:49:34 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/09 20:24:09 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,7 @@ char	*wrap_binary(char *cmd, char **env, t_input *ss)
 
 	s = NULL;
 	i = 0;
-	if (!ft_strncmp(cmd, "./", 2) || !ft_strncmp(cmd, "/", 1))
-	{
-		err_msg_invalid_cmd(cmd, env, ss);
-		return (NULL);
-	}
+	ft_putstr_fd("wrap_binary\n", 1);
 	p = tab_path(env);
 	if (!p)
 		err_msg_invalid_cmd(cmd, env, ss);
@@ -97,7 +93,7 @@ char	*is_valid_cmd(t_cmd *scmd, char **env, t_input *s)
 	if (!scmd->cmd_args)
 		return (NULL);
 	cmd = scmd->cmd_args[0];
-	if (access(cmd, F_OK) == 0)
+	if (ft_strlen(cmd) >= 2 && !ft_strncmp(cmd, "./", 2))
 		return (wrap_bash(cmd, env, s));
 	else
 		return (wrap_binary(cmd, env, s));

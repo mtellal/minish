@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/08 16:39:44 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/09 20:54:03 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,7 @@ void	executer(t_cmd *list, t_input *s);
 /////	executer_utils.c
 int		*pipe_env(t_cmd *cmd, int nb_cmd);
 int		is_builtin(char *args);
+void	update_shlvl(t_input *s);
 void	need_update_env(t_cmd *cmd, t_input *s);
 void	builtin(t_cmd *cmd, t_input *s);
 
