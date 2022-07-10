@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 14:56:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/09 17:13:30 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 11:17:40 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	execute(t_cmd *cmd, char **args, t_input *s)
 	env = env_to_tab(s->env);
 	cmd->cmd = is_valid_cmd(cmd, env, s);
 	if (execve(cmd->cmd, args, env) == -1)
-		err_execve(env, s);
+		err_execve(env, cmd->cmd, s);
 }
 
 void	process_recursion(t_cmd *list, t_input *s, int i, pid_t *f)

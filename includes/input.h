@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 14:46:31 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/09 20:54:03 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 10:14:46 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ char	*is_valid_cmd(t_cmd *cmd, char **env, t_input *s);
 char	*wrap_bash(char *s, char **env, t_input *ss);
 void	err_msg_invalid_cmd(char *cmd, char **env, t_input *s);
 void	err_msg_redir(t_cmd *c, t_input *s, int builtin);
-void	err_execve(char **env, t_input *s);
+void	err_execve(char **env, char *cmd, t_input *s);
 
 /////	wait.c
 int		get_last_pid(void);

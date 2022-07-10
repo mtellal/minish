@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 10:11:27 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/07 09:04:58 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 11:58:08 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ int	match_status(char **f)
 {
 	*f = ft_strjoin_free(*f, ft_itoa(get_last_status()), 1, 1);
 	return (2);
+}
+
+void	just_dollars(char **f, char c, int quote)
+{
+	if (quote || c == ' ' || c == '$' || !c)
+		*f = add_char(*f, '$');
 }
 
 int	v_value(char **f, char *s, char quote, t_input *ss)
@@ -35,12 +41,11 @@ int	v_value(char **f, char *s, char quote, t_input *ss)
 	sub = ft_substr(s, 0, i);
 	final = value_attr(sub + 1, ss);
 	if (!final && i == 1)
-	{
-		if (quote || s[1] == ' ' || s[1] == '$' || !s[1])
-			*f = add_char(*f, '$');
-	}
+		just_dollars(f, s[1], quote);
 	else if (final)
 		*f = ft_strjoin_free(*f, final, 1, 1);
+	else if (sub && !final)
+		*f = ft_strjoin_free(*f, "", 1, 0);
 	if (sub)
 		free(sub);
 	return (i);

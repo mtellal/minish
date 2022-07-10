@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 17:04:46 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/07 10:36:12 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 11:59:33 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,17 @@ t_env	*previous_already_exists(t_env *n, t_env *env)
 	return (NULL);
 }
 
-int	verif_args(char **tab)
+int	verif_args(char *tab, int *err_status)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (tab && tab[i])
 	{
-		j = 0;
-		while (tab[i][j])
+		if (!isalnum(tab[i]) && tab[i] != '_')
 		{
-			if (!isalnum(tab[i][j]))
-				return (msg_err_unset(tab[i]));
-			j++;
+			*err_status = EXIT_FAILURE;
+			return (msg_err_unset(tab));
 		}
 		i++;
 	}
@@ -62,6 +59,7 @@ int	verif_args(char **tab)
 void	ft_unset(char **args, t_input *s)
 {
 	int		i;
+	int		err_status;
 	t_env	*n;
 	t_env	*pe;
 	t_env	*r;
@@ -69,10 +67,11 @@ void	ft_unset(char **args, t_input *s)
 	n = NULL;
 	pe = NULL;
 	r = s->env;
-	i = 1;
-	if (verif_args(args) != -1)
+	i = 0;
+	err_status = EXIT_SUCCESS;
+	while (args && args[++i])
 	{
-		while (args && args[i])
+		if (verif_args(args[i], &err_status) != -1)
 		{
 			n = str_to_env(args[i]);
 			pe = previous_already_exists(n, s->env);
@@ -80,9 +79,8 @@ void	ft_unset(char **args, t_input *s)
 				s->env = n;
 			else
 				free_env(&n);
-			i++;
 		}
 	}
 	s->env = r;
-	return (return_status(0, s));
+	return (return_status(err_status, s));
 }

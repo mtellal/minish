@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 10:26:30 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/09 21:44:18 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 11:38:22 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,16 @@ void	update_shlvl(t_input *s)
 
 int	is_minishell(char *s)
 {
+	int		ls;
 	char	*sub;
 
 	sub = NULL;
 	if (!s || !*s)
 		return (0);
-	if (s && ft_strlen(s) == 11 && !ft_strcmp(s, "./minishell")
-			&& !access(s + 2, F_OK) && !access(s + 2, X_OK))
+	ls = ft_strlen(s);
+	if (s && ((ft_strlen(s) == 11 && !ft_strcmp(s, "./minishell"))
+			|| (!ft_strncmp(s, "./", 2) && !ft_strcmp(s + ls - 9, "minishell")))
+		&& !access(s + 2, F_OK) && !access(s + 2, X_OK))
 		return (1);
 	else
 		return (0);

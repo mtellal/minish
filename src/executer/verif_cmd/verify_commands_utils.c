@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 11:14:07 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/09 21:50:29 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 10:16:19 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,13 @@ void	err_msg_redir(t_cmd *c, t_input *s, int builtin)
 		exit(EXIT_FAILURE);
 }
 
-void	err_execve(char **env, t_input *s)
+void	err_execve(char **env, char *cmd, t_input *s)
 {
 	free_tab(env);
-	perror("error: ");
+	ft_putstr_fd("error: ", 2);
+	if (cmd)
+		ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": command not found\n", 2);
 	free_all(s, 1);
 	exit(127);
 }

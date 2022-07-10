@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 21:17:10 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/09 21:58:52 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 10:47:28 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,17 @@ char	*is_valid_cmd(t_cmd *scmd, char **env, t_input *s)
 	char	*cmd;
 
 	if (!scmd->cmd_args)
-		return (NULL);
+		err_msg_invalid_cmd(NULL, env, s);
 	cmd = scmd->cmd_args[0];
+	if (ft_strlen(cmd) == 1 && !ft_strcmp(cmd, "."))
+	{
+		ft_putstr_fd("error: file name needed for argument\n", 2);
+		free_tab(env);
+		free_all(s, 1);
+		exit (2);
+	}
+	if (ft_strlen(cmd) == 2 && !ft_strcmp(cmd, ".."))
+		err_msg_invalid_cmd(cmd, env, s);
 	if (ft_strlen(cmd) >= 2 && !ft_strncmp(cmd, "./", 2))
 		return (wrap_bash(cmd, env, s));
 	else

@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 20:31:35 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/09 18:43:33 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 11:39:58 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	set_env_var(char *args, t_input *s)
 	{
 		if (!n->equal)
 		{
-			free_env(&n);	
+			free_env(&n);
 			return ;
 		}
 		if (!e->equal)
@@ -47,7 +47,7 @@ char	**sort_env(t_env *lenv)
 	i = 0;
 	tab = env_to_tab(lenv);
 	ltab = ft_strlen_tab(tab);
-	while (i < ltab)
+	while (tab && tab[i] && i < ltab)
 	{
 		if (i + 1 < ltab && (ft_strcmp(tab[i], tab[i + 1]) > 0))
 		{
@@ -97,24 +97,27 @@ int	valid_identifier(char *s)
 void	ft_export(char **args, t_input *s)
 {
 	int		i;
+	int		err_status;
 	t_env	*r;
 
 	r = s->env;
 	i = 1;
+	err_status = EXIT_SUCCESS;
 	if (args && !args[i])
 		print_export(s);
-	if (args[i] && !valid_identifier(args[i]))
-	{
-		write(2, "export: ", 9);
-		write(2, args[i], ft_strlen(args[i]));
-		write(2, ": not a valid identifier\n", 26);
-		return (return_status(EXIT_FAILURE, s));
-	}
 	while (args && args[i])
 	{
-		set_env_var(args[i], s);
+		if (!valid_identifier(args[i]))
+		{
+			ft_putstr_fd("export: ", 2);
+			ft_putstr_fd(args[i], 2);
+			ft_putstr_fd(": not a valid identifier\n", 2);
+			err_status = EXIT_FAILURE;
+		}
+		else
+			set_env_var(args[i], s);
 		i++;
 	}
 	s->env = r;
-	return (return_status(EXIT_SUCCESS, s));
+	return (return_status(err_status, s));
 }
