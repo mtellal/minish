@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:09:34 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/09 18:22:24 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 16:37:51 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ void	ft_cd(char **args, t_input *s)
 		{
 			perror("cd");
 			free(var);
-			return (return_status(EXIT_FAILURE, s));
+			return (return_status(2, s));
 		}
 		if (set_paths(s, var) == -1)
-			return (return_status(EXIT_FAILURE, s));
+			return (return_status(2, s));
 	}
 	return (return_status(0, s));
 }

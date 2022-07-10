@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 10:26:30 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/10 11:38:22 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 16:18:24 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	is_minishell(char *s)
 	if (!s || !*s)
 		return (0);
 	ls = ft_strlen(s);
-	if (s && ((ft_strlen(s) == 11 && !ft_strcmp(s, "./minishell"))
+	if (s && ft_strlen(s) >= 11 && ((!ft_strcmp(s, "./minishell"))
 			|| (!ft_strncmp(s, "./", 2) && !ft_strcmp(s + ls - 9, "minishell")))
 		&& !access(s + 2, F_OK) && !access(s + 2, X_OK))
 		return (1);

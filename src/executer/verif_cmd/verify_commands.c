@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/22 21:17:10 by mtellal           #+#    #+#             */
-/*   Updated: 2022/07/10 10:47:28 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 16:23:50 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	**add_tab_first(char *s, char **tab)
 	return (f);
 }
 
-char	*wrap_binary(char *cmd, char **env, t_input *ss)
+char	*wrap_binary(char *cmd, char **env)
 {
 	int		i;
 	char	**p;
@@ -70,17 +70,15 @@ char	*wrap_binary(char *cmd, char **env, t_input *ss)
 	s = NULL;
 	i = 0;
 	p = tab_path(env);
-	if (!p)
-		err_msg_invalid_cmd(cmd, env, ss);
-	while (p[i] && !valid_cmd(p[i], cmd))
-		i++;
-	if (p[i])
-		s = ft_strjoin_free(ft_strjoin(p[i], "/"), cmd, 1, 0);
-	else
+	if (cmd[0] != '/' && p)
 	{
-		free_tab(p);
-		err_msg_invalid_cmd(cmd, env, ss);
+		while (p[i] && !valid_cmd(p[i], cmd))
+			i++;
+		if (p[i])
+			s = ft_strjoin_free(ft_strjoin(p[i], "/"), cmd, 1, 0);
 	}
+	if (!p || !p[i] || (cmd && cmd[0] == '/'))
+		s = ft_strdup(cmd);
 	free_tab(p);
 	return (s);
 }
@@ -104,5 +102,5 @@ char	*is_valid_cmd(t_cmd *scmd, char **env, t_input *s)
 	if (ft_strlen(cmd) >= 2 && !ft_strncmp(cmd, "./", 2))
 		return (wrap_bash(cmd, env, s));
 	else
-		return (wrap_binary(cmd, env, s));
+		return (wrap_binary(cmd, env));
 }

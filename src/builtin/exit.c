@@ -6,7 +6,7 @@
 /*   By: mtellal <mtellal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 10:17:47 by mtellal           #+#    #+#             */
-/*   Updated: 2022/06/28 17:45:04 by mtellal          ###   ########.fr       */
+/*   Updated: 2022/07/10 17:07:43 by mtellal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,26 @@ int	is_num(char *s)
 int	set_status(char **args)
 {
 	int	status;
+	int	i;
 
-	if (is_num(args[1]))
+	i = 0;
+	if (is_num(args[1]) || (ft_belong("-+", args[1][0]) && is_num(args[1] + 1)))
+	{
 		status = ft_atoi(args[1]);
+		if (status < 0)
+			status *= -255 - status;
+		if (args[2])
+		{
+			status = -1;
+			ft_putstr_fd("error: exit: error too many arguments\n", 2);
+		}
+	}
 	else
 	{
 		ft_putstr_fd("error: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": numeric argument needed\n", 2);
-		status = EXIT_FAILURE;
-	}
-	if (ft_strlen_tab(args) > 2)
-	{
-		if (status == EXIT_FAILURE && is_num(args[2]))
-			status = 2;
-		else
-		{	
-			ft_putstr_fd("error: exit: too many arguments\n", 2);
-			status = -1;
-		}
+		status = 2;
 	}
 	return (status);
 }
